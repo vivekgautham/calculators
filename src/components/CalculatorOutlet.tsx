@@ -1,10 +1,15 @@
 import React from "react";
 import {
+  Divider,
   Grid,
   GridColumn,
+  Header,
+  Icon,
   Menu,
   MenuItem,
   MenuItemProps,
+  Search,
+  Segment,
   Sidebar
 } from "semantic-ui-react";
 
@@ -30,10 +35,17 @@ function CalculatoryOutlet() {
           visible={true}
           width="wide"
         >
+          <Divider />
+          <Header as='h2' color='teal'>Advanced Economics</Header>
+          <Icon name='calculator' size='huge' color='teal'> </Icon>
+          <Divider />
+          <Search />
+          <Divider />
           <MenuItem
             name={"sharperatio"}
             active={value === "sharperatio"}
             onClick={handleChange}
+            header={value === "sharperatio"}
           >
             Sharpe Ratio
           </MenuItem>
@@ -41,6 +53,7 @@ function CalculatoryOutlet() {
             name={"unleveredbeta"}
             active={value === "unleveredbeta"}
             onClick={handleChange}
+            header={value === "unleveredbeta"}
           >
             Unlevered Beta
           </MenuItem>
