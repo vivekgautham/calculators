@@ -1,5 +1,5 @@
 {
-  "name": "react-app-ci",
+  "name": "calculators",
   "private": true,
   "version": "0.0.0",
   "homepage": "https://vivekgautham.github.io/calculators",
@@ -12,6 +12,9 @@
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,html}'",
     "preview": "vite preview",
     "deploy": "gh-pages -d build"
+  },
+  "exports": {
+    "./config": "./eslint.config.mjs"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
