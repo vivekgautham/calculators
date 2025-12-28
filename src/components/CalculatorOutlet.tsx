@@ -1,16 +1,11 @@
-import { Tab, Tabs, Box } from "@mui/material";
 import React from "react";
 import {
-  MenuItem,
-  GridColumn,
-  Checkbox,
   Grid,
-  Header,
-  Icon,
-  Image,
+  GridColumn,
   Menu,
-  Sidebar,
+  MenuItem,
   MenuItemProps,
+  Sidebar
 } from "semantic-ui-react";
 
 function CalculatoryOutlet() {
