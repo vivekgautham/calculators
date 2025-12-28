@@ -1,8 +1,6 @@
 import { Tab, Tabs, Box } from "@mui/material";
 import React from "react";
 import {
-  SidebarPusher,
-  SidebarPushable,
   MenuItem,
   GridColumn,
   Checkbox,
@@ -11,7 +9,6 @@ import {
   Icon,
   Image,
   Menu,
-  Segment,
   Sidebar,
   MenuItemProps,
 } from "semantic-ui-react";
