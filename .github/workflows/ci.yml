@@ -1,6 +1,6 @@
 name: Continuous Integration
 
-# this is trigger CI on push and PR for main branch only
+# this is trigger CI on push and PR for main branch only...
 # on:
 #   push:
 #     branches: [ main ]
