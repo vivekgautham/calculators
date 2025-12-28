@@ -9,7 +9,6 @@ import {
   MenuItem,
   MenuItemProps,
   Search,
-  Segment,
   Sidebar
 } from "semantic-ui-react";
 
