@@ -3,7 +3,7 @@ name: Build and Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main # Replace with your main development branch
+      - main # Replace with your main development branch...
 
 jobs:
   build-and-deploy:
