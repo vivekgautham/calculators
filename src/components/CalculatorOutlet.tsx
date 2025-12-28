@@ -9,21 +9,20 @@ function CalculatoryOutlet() {
     };
 
     return (
-    <Box
-        sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 224 }}
+        <Box
+            sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 224 }}
         >
-        <Tabs
-            orientation="vertical"
-            variant="scrollable"
-            value={value}
-            onChange={handleChange}
-            sx={{ borderRight: 1, borderColor: 'divider' }}
-        >
-            <Tab label="Item One" />
-            <Tab label="Item Two"  />
-        </Tabs>
-
-    </Box>
+            <Tabs
+                orientation="vertical"
+                variant="scrollable"
+                value={value}
+                onChange={handleChange}
+                sx={{ borderRight: 1, borderColor: 'divider' }}
+            >
+                <Tab label="Item One" />
+                <Tab label="Item Two"  />
+            </Tabs>
+        </Box>
     );
 }
 export default CalculatoryOutlet;
