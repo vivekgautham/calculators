@@ -1,19 +1,14 @@
-import React from "react";
+
 import "./App.css";
-import { Typography } from "@mui/material";
+import { Stack } from "@mui/material";
+import CalculatoryOutlet from "./components/CalculatorOutlet";
 
 function App() {
-  const [count, setCount] = React.useState<number>(0);
 
   return (
-    <>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-      </div>
-      <Typography>Salute to Calcs</Typography>
-    </>
+    <Stack direction={"row"} justifyContent={"space-between"}>
+      <CalculatoryOutlet />
+    </Stack>
   );
 }
 
