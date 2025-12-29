@@ -16,17 +16,16 @@ import { PanelProps } from "../types";
 
 function CalculatoryOutlet() {
   const [value, setValue] = React.useState<string | undefined>("sharperatio");
-  const [name, setName] = React.useState<string | undefined>("Sharpe Ratio");
 
   const handleChange = (
     _: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
     data: MenuItemProps,
   ) => {
     setValue(data.name);
-    setName(CALCULATORS_AND_SIMULATORS.find((item) => item.value === value)?.name ?? 'SharpeRatio')
   };
 
   const currentPanel = CALCULATORS_AND_SIMULATORS.find((item) => item.value === value)?.panel
+  const name = CALCULATORS_AND_SIMULATORS.find((item) => item.value === value)?.name ?? 'Sharpe Ratio'
 
   return (
     <Grid columns={2}>
@@ -48,6 +47,7 @@ function CalculatoryOutlet() {
           <Divider />
           {CALCULATORS_AND_SIMULATORS.map((item) =>
               <MenuItem
+                key={item.name}
                 name={item.value}
                 active={value === item.value}
                 onClick={handleChange}

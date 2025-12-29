@@ -1,4 +1,5 @@
 import SharpeRatio from "./components/calculators/SharpeRatio";
+import UnleveredBeta from "./components/calculators/UnleveredBeta";
 
 
 export const CALCULATORS_AND_SIMULATORS = [
@@ -14,7 +15,7 @@ export const CALCULATORS_AND_SIMULATORS = [
         name: "Unlevered Beta",
         value: "unleveredbeta",
         tags: ["finance", "econ"],
-        description: "",
-        panel: SharpeRatio
+        description: "Unlevered Beta",
+        panel: UnleveredBeta
     }
 ]
