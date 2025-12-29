@@ -15,7 +15,7 @@ export const CALCULATORS_AND_SIMULATORS = [
         name: "Unlevered Beta",
         value: "unleveredbeta",
         tags: ["finance", "econ"],
-        description: "Unlevered Beta",
+        description: "A measure of company's market risk (systematic risk) without the influence of debt. It isolates the risk inherent in the company's core operations and assets, allowing for a pure comparison of business risk between companies with different capital structures. ",
         panel: UnleveredBeta
     }
 ]
