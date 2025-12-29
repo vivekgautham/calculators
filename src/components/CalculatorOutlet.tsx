@@ -12,15 +12,19 @@ import {
   Sidebar
 } from "semantic-ui-react";
 import { CALCULATORS_AND_SIMULATORS } from "../config";
+import SharpeRatio from "./calculators/SharpeRatio";
+import { PanelProps } from "../types";
 
 function CalculatoryOutlet() {
   const [value, setValue] = React.useState<string | undefined>("sharperatio");
+  const [panel, setPanel] = React.useState<React.FunctionComponent<PanelProps>>(SharpeRatio);
 
   const handleChange = (
     _: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
     data: MenuItemProps,
   ) => {
     setValue(data.name);
+    setPanel(CALCULATORS_AND_SIMULATORS.find((item) => item.value === value)?.panel ?? SharpeRatio)
   };
 
   return (
@@ -53,6 +57,11 @@ function CalculatoryOutlet() {
           )}
         </Sidebar>
       </GridColumn>
+      <GridColumn>
+          <Divider />
+          {panel && React.createElement(panel, {name: value} as PanelProps)}
+      </GridColumn>
+
     </Grid>
   );
 }
