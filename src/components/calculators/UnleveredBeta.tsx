@@ -6,7 +6,7 @@ import {
 import { CALCULATORS_AND_SIMULATORS } from "../../config";
 import { PanelProps } from "../../types";
 
-const SharpeRatio: React.FunctionComponent<PanelProps> = (props) => {
+const UnleveredBeta: React.FunctionComponent<PanelProps> = (props) => {
 
   return (
         <>
@@ -20,4 +20,4 @@ const SharpeRatio: React.FunctionComponent<PanelProps> = (props) => {
   );
 }
 
-export default SharpeRatio;
+export default UnleveredBeta;

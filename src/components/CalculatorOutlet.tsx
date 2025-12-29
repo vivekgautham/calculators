@@ -12,12 +12,11 @@ import {
   Sidebar
 } from "semantic-ui-react";
 import { CALCULATORS_AND_SIMULATORS } from "../config";
-import SharpeRatio from "./calculators/SharpeRatio";
 import { PanelProps } from "../types";
 
 function CalculatoryOutlet() {
   const [value, setValue] = React.useState<string | undefined>("sharperatio");
-  const [name, setName] = React.useState<string | undefined>("SharpeRatio");
+  const [name, setName] = React.useState<string | undefined>("Sharpe Ratio");
 
   const handleChange = (
     _: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
