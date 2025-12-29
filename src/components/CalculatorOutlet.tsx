@@ -11,9 +11,10 @@ import {
   Search,
   Sidebar
 } from "semantic-ui-react";
+import { CALCULATORS_AND_SIMULATORS } from "../config";
 
 function CalculatoryOutlet() {
-  const [value, setValue] = React.useState<string | undefined>("unleveredbeta");
+  const [value, setValue] = React.useState<string | undefined>("sharperatio");
 
   const handleChange = (
     _: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
@@ -35,27 +36,21 @@ function CalculatoryOutlet() {
           width="wide"
         >
           <Divider />
-          <Header as='h2' color='teal'>Advanced Economics</Header>
+          <Header as='h3' color='teal'>Advanced Calculators & Simulators</Header>
           <Icon name='calculator' size='huge' color='teal'> </Icon>
           <Divider />
           <Search />
           <Divider />
-          <MenuItem
-            name={"sharperatio"}
-            active={value === "sharperatio"}
-            onClick={handleChange}
-            header={value === "sharperatio"}
-          >
-            Sharpe Ratio
-          </MenuItem>
-          <MenuItem
-            name={"unleveredbeta"}
-            active={value === "unleveredbeta"}
-            onClick={handleChange}
-            header={value === "unleveredbeta"}
-          >
-            Unlevered Beta
-          </MenuItem>
+          {CALCULATORS_AND_SIMULATORS.map((item) =>
+              <MenuItem
+                name={item.value}
+                active={value === item.value}
+                onClick={handleChange}
+                header={value === item.value}
+              >
+                {item.name}
+              </MenuItem>
+          )}
         </Sidebar>
       </GridColumn>
     </Grid>
