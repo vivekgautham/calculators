@@ -17,19 +17,21 @@ import { PanelProps } from "../types";
 
 function CalculatoryOutlet() {
   const [value, setValue] = React.useState<string | undefined>("sharperatio");
-  const [panel, setPanel] = React.useState<React.FunctionComponent<PanelProps>>(SharpeRatio);
+  const [name, setName] = React.useState<string | undefined>("SharpeRatio");
 
   const handleChange = (
     _: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
     data: MenuItemProps,
   ) => {
     setValue(data.name);
-    setPanel(CALCULATORS_AND_SIMULATORS.find((item) => item.value === value)?.panel ?? SharpeRatio)
+    setName(CALCULATORS_AND_SIMULATORS.find((item) => item.value === value)?.name ?? 'SharpeRatio')
   };
+
+  const currentPanel = CALCULATORS_AND_SIMULATORS.find((item) => item.value === value)?.panel
 
   return (
     <Grid columns={2}>
-      <GridColumn>
+      <GridColumn width={4}>
         <Sidebar
           as={Menu}
           animation="overlay"
@@ -57,9 +59,8 @@ function CalculatoryOutlet() {
           )}
         </Sidebar>
       </GridColumn>
-      <GridColumn>
-          <Divider />
-          {panel && React.createElement(panel, {name: value} as PanelProps)}
+      <GridColumn width={12}>
+          {currentPanel && React.createElement(currentPanel, {name: name} as PanelProps)}
       </GridColumn>
 
     </Grid>
