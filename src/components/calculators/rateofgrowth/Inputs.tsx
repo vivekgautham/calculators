@@ -8,7 +8,6 @@ import {
   InputLabel,
   Select,
   IconButton,
-  Button,
   Typography,
   Divider,
 } from "@mui/material";
@@ -37,16 +36,29 @@ const Inputs: React.FC = () => {
               <Typography variant="subtitle2" sx={{ fontWeight: "bold", flexGrow: 1 }}>
                 {scenario.name} (ID: {scenario.id})
               </Typography>
-              {scenarios.length > 1 && (
-                <IconButton
-                  size="small"
-                  color="error"
-                  onClick={() => removeScenario(scenario.key)}
-                  title="Remove Scenario"
-                >
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
-              )}
+
+              <Stack direction="row" spacing={0.5}>
+                {scenarios.length > 1 && (
+                  <IconButton
+                    size="small"
+                    color="error"
+                    onClick={() => removeScenario(scenario.key)}
+                    title="Remove Scenario"
+                  >
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                )}
+                {index === scenarios.length - 1 && (
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    onClick={addScenario}
+                    title="Add Scenario"
+                  >
+                    <AddIcon fontSize="small" />
+                  </IconButton>
+                )}
+              </Stack>
             </Stack>
             <Stack
               direction={{ xs: "column", md: "row" }}
@@ -148,16 +160,6 @@ const Inputs: React.FC = () => {
             {index < scenarios.length - 1 && <Divider sx={{ mt: 2 }} />}
           </Box>
         ))}
-        <Button
-          startIcon={<AddIcon />}
-          variant="contained"
-          size="medium"
-          color="primary"
-          onClick={addScenario}
-          sx={{ alignSelf: "flex-start", mt: 1 }}
-        >
-          Add New Scenario
-        </Button>
       </Stack>
     </Box>
   );
