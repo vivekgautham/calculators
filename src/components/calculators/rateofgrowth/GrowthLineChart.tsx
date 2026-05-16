@@ -72,7 +72,7 @@ const GrowthLineChart: React.FC = () => {
         {
           name: "Growth",
           data: data,
-          color: "#008080",
+          color: "#36741e",
           marker: {
             enabled: false
           }
