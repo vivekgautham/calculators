@@ -15,7 +15,7 @@ import { CALCULATORS_AND_SIMULATORS } from "../config";
 import { PanelProps } from "../types";
 
 function CalculatoryOutlet() {
-  const [value, setValue] = React.useState<string | undefined>("sharperatio");
+  const [value, setValue] = React.useState<string | undefined>("rateofgrowth");
 
   const handleChange = (
     _: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
@@ -25,7 +25,7 @@ function CalculatoryOutlet() {
   };
 
   const currentPanel = CALCULATORS_AND_SIMULATORS.find((item) => item.value === value)?.panel
-  const name = CALCULATORS_AND_SIMULATORS.find((item) => item.value === value)?.name ?? 'Sharpe Ratio'
+  const name = CALCULATORS_AND_SIMULATORS.find((item) => item.value === value)?.name ?? 'Rate of Growth'
 
   return (
     <Grid columns={2}>
