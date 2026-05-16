@@ -53,10 +53,23 @@ export const RateOfGrowthProvider: React.FC<{ children: ReactNode }> = ({ childr
       timeSpan: 10,
       color: AVAILABLE_COLORS[0],
     },
+    {
+      key: "init-2",
+      id: "2",
+      name: "Scenario 2",
+      initialAmount: 1000,
+      frequency: GrowthFrequency.ANNUALLY,
+      rate: 6,
+      timeSpan: 10,
+      color: AVAILABLE_COLORS[1],
+    },
   ]);
 
   const addScenario = () => {
-    const nextNum = scenarios.length + 1;
+    // Generate a unique numeric ID for display based on current scenarios
+    const existingIds = scenarios.map(s => parseInt(s.id)).filter(id => !isNaN(id));
+    const nextNum = existingIds.length > 0 ? Math.max(...existingIds) + 1 : scenarios.length + 1;
+
     // Try to find a color that isn't used yet, or just cycle
     const usedColors = scenarios.map(s => s.color);
     const nextColor = AVAILABLE_COLORS.find(c => !usedColors.includes(c)) ||
