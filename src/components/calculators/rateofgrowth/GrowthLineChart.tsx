@@ -4,54 +4,78 @@ import HighchartsReact from "highcharts-react-official";
 import { Box } from "@mui/material";
 import { useRateOfGrowth, GrowthFrequency } from "./RateOfGrowthContext";
 
+const formatNumber = (value: number): string => {
+  if (value >= 1000000000) {
+    return (value / 1000000000).toFixed(1) + "B";
+  }
+  if (value >= 1000000) {
+    return (value / 1000000).toFixed(1) + "M";
+  }
+  if (value >= 1000) {
+    return (value / 1000).toFixed(1) + "K";
+  }
+  return value.toString();
+};
+
 const GrowthLineChart: React.FC = () => {
-  const { initialAmount, frequency, rate, timeSpan } = useRateOfGrowth();
+  const { scenarios } = useRateOfGrowth();
 
   const chartOptions = useMemo(() => {
-    const data: [number, number][] = [];
-    const r = rate / 100;
+    const series = scenarios.map((scenario) => {
+      const data: [number, number][] = [];
+      const r = scenario.rate / 100;
 
-    let periodsPerYear = 1;
-    switch (frequency) {
-      case GrowthFrequency.DAILY:
-        periodsPerYear = 365;
-        break;
-      case GrowthFrequency.WEEKLY:
-        periodsPerYear = 52;
-        break;
-      case GrowthFrequency.MONTHLY:
-        periodsPerYear = 12;
-        break;
-      case GrowthFrequency.ANNUALLY:
-      default:
-        periodsPerYear = 1;
-        break;
-    }
+      let periodsPerYear = 1;
+      switch (scenario.frequency) {
+        case GrowthFrequency.DAILY:
+          periodsPerYear = 365;
+          break;
+        case GrowthFrequency.WEEKLY:
+          periodsPerYear = 52;
+          break;
+        case GrowthFrequency.MONTHLY:
+          periodsPerYear = 12;
+          break;
+        case GrowthFrequency.ANNUALLY:
+        default:
+          periodsPerYear = 1;
+          break;
+      }
 
-    const totalPeriods = Math.floor(timeSpan * periodsPerYear);
-    const ratePerPeriod = r / periodsPerYear;
+      const totalPeriods = Math.floor(scenario.timeSpan * periodsPerYear);
+      const ratePerPeriod = r / periodsPerYear;
 
-    for (let i = 0; i <= totalPeriods; i++) {
-      const value = initialAmount * Math.pow(1 + ratePerPeriod, i);
-      const year = i / periodsPerYear;
-      data.push([year, parseFloat(value.toFixed(2))]);
-    }
+      for (let i = 0; i <= totalPeriods; i++) {
+        const value = scenario.initialAmount * Math.pow(1 + ratePerPeriod, i);
+        const year = i / periodsPerYear;
+        data.push([year, parseFloat(value.toFixed(2))]);
+      }
+
+      return {
+        name: scenario.name,
+        data: data,
+        color: scenario.color,
+        marker: {
+          enabled: false,
+        },
+      };
+    });
 
     return {
       chart: {
-        type: 'line',
-        zoomType: 'x',
+        type: "line",
+        zoomType: "x",
         spacingLeft: 0,
-        spacingRight: 0,
+        spacingRight: 10,
       },
       title: {
-        text: "Projected Growth Over Time",
+        text: "Projected Growth Comparison",
       },
       xAxis: {
         title: {
           text: "Years",
         },
-        crosshair: true
+        crosshair: true,
       },
       yAxis: {
         title: {
@@ -59,30 +83,26 @@ const GrowthLineChart: React.FC = () => {
         },
         labels: {
           formatter: function (this: Highcharts.AxisLabelsFormatterContextObject) {
-            return "$" + Highcharts.numberFormat(this.value as number, 0, ".", ",");
+            const val = this.value as number;
+            return "$" + formatNumber(val);
           },
         },
       },
       tooltip: {
         shared: true,
-        pointFormat: "Value: <b>${point.y}</b>",
+        pointFormat:
+          '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>${point.y}</b><br/>',
         valueDecimals: 2,
       },
-      series: [
-        {
-          name: "Growth",
-          data: data,
-          color: "#36741e",
-          marker: {
-            enabled: false
-          }
-        },
-      ],
+      series: series,
       credits: {
         enabled: false,
       },
+      legend: {
+        enabled: true,
+      },
     };
-  }, [initialAmount, frequency, rate, timeSpan]);
+  }, [scenarios]);
 
   return (
     <Box sx={{ width: "100%" }}>

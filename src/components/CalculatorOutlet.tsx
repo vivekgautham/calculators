@@ -1,8 +1,6 @@
 import React from "react";
 import {
   Divider,
-  Grid,
-  GridColumn,
   Header,
   Icon,
   Menu,
@@ -11,6 +9,7 @@ import {
   Search,
   Sidebar
 } from "semantic-ui-react";
+import { Stack, Box } from "@mui/material";
 import { CALCULATORS_AND_SIMULATORS } from "../config";
 import { PanelProps } from "../types";
 
@@ -28,8 +27,8 @@ function CalculatoryOutlet() {
   const name = CALCULATORS_AND_SIMULATORS.find((item) => item.value === value)?.name ?? 'Rate of Growth'
 
   return (
-    <Grid columns={2}>
-      <GridColumn width={4}>
+    <Stack direction="row" sx={{ width: '100vw', height: '100vh', overflow: 'hidden' }}>
+      <Box sx={{ width: '30vw', flexShrink: 0, height: '100%' }}>
         <Sidebar
           as={Menu}
           animation="overlay"
@@ -37,13 +36,13 @@ function CalculatoryOutlet() {
           inverted
           vertical
           visible={true}
-          width="wide"
+          style={{ width: '100%', position: 'relative' }}
         >
           <Divider />
           <Header as='h3' color='teal'>Advanced Calculators & Simulators</Header>
           <Icon name='calculator' size='huge' color='teal'> </Icon>
           <Divider />
-          <Search />
+          <Search fluid />
           <Divider />
           {CALCULATORS_AND_SIMULATORS.map((item) =>
               <MenuItem
@@ -57,12 +56,11 @@ function CalculatoryOutlet() {
               </MenuItem>
           )}
         </Sidebar>
-      </GridColumn>
-      <GridColumn width={12}>
+      </Box>
+      <Box sx={{ width: '70vw', flexGrow: 1, height: '100%', overflow: 'hidden' }}>
           {currentPanel && React.createElement(currentPanel, {name: name} as PanelProps)}
-      </GridColumn>
-
-    </Grid>
+      </Box>
+    </Stack>
   );
 }
 export default CalculatoryOutlet;
