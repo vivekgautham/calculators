@@ -5,16 +5,21 @@ import { Box } from "@mui/material";
 import { useRateOfGrowth, GrowthFrequency } from "./RateOfGrowthContext";
 
 const formatNumber = (value: number): string => {
-  if (value >= 1000000000) {
-    return (value / 1000000000).toFixed(1) + "B";
+  const absoluteValue = Math.abs(value);
+  const sign = value < 0 ? "-" : "";
+
+  let formatted = absoluteValue.toString();
+  if (absoluteValue >= 1000000000) {
+    formatted = (absoluteValue / 1000000000).toFixed(1) + "B";
+  } else if (absoluteValue >= 1000000) {
+    formatted = (absoluteValue / 1000000).toFixed(1) + "M";
+  } else if (absoluteValue >= 1000) {
+    formatted = (absoluteValue / 1000).toFixed(1) + "K";
+  } else {
+    formatted = absoluteValue.toFixed(2);
   }
-  if (value >= 1000000) {
-    return (value / 1000000).toFixed(1) + "M";
-  }
-  if (value >= 1000) {
-    return (value / 1000).toFixed(1) + "K";
-  }
-  return value.toString();
+
+  return sign + formatted;
 };
 
 const GrowthLineChart: React.FC = () => {
@@ -81,18 +86,27 @@ const GrowthLineChart: React.FC = () => {
         title: {
           text: "Value",
         },
+        plotLines: [{
+          value: 0,
+          width: 2,
+          color: '#888',
+          zIndex: 1
+        }],
         labels: {
           formatter: function (this: Highcharts.AxisLabelsFormatterContextObject) {
             const val = this.value as number;
-            return "$" + formatNumber(val);
+            const prefix = val < 0 ? "-$" : "$";
+            return prefix + formatNumber(Math.abs(val));
           },
         },
       },
       tooltip: {
         shared: true,
-        pointFormat:
-          '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>${point.y}</b><br/>',
-        valueDecimals: 2,
+        pointFormatter: function(this: Highcharts.Point) {
+            const val = this.y ?? 0;
+            const prefix = val < 0 ? "-$" : "$";
+            return `<span style="color:${this.series.color}">\u25CF</span> ${this.series.name}: <b>${prefix}${Math.abs(val).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</b><br/>`;
+        }
       },
       series: series,
       credits: {
