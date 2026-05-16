@@ -28,7 +28,7 @@ function CalculatoryOutlet() {
 
   return (
     <Stack direction="row" sx={{ width: '100vw', height: '100vh', overflow: 'hidden' }}>
-      <Box sx={{ width: '30vw', flexShrink: 0, height: '100%' }}>
+      <Box sx={{ width: '25vw', flexShrink: 0, height: '100%' }}>
         <Sidebar
           as={Menu}
           animation="overlay"
@@ -57,7 +57,7 @@ function CalculatoryOutlet() {
           )}
         </Sidebar>
       </Box>
-      <Box sx={{ width: '70vw', flexGrow: 1, height: '100%', overflow: 'hidden' }}>
+      <Box sx={{ width: '75vw', flexGrow: 1, height: '100%', overflow: 'hidden' }}>
           {currentPanel && React.createElement(currentPanel, {name: name} as PanelProps)}
       </Box>
     </Stack>
