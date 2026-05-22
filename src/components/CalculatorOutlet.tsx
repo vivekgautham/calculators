@@ -143,7 +143,7 @@ function CalculatoryOutlet() {
           sx={{
             position: 'absolute',
             right: isCollapsed ? '-40px' : '5px',
-            top: '10px',
+            bottom: '20px',
             backgroundColor: '#1b1c1d',
             color: '#00b5ad',
             zIndex: 101,
@@ -154,7 +154,7 @@ function CalculatoryOutlet() {
             },
             width: '30px',
             height: '30px',
-            transition: 'right 0.3s ease'
+            transition: 'all 0.3s ease'
           }}
           size="small"
         >
