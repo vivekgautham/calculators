@@ -14,4 +14,6 @@ export const SERIES_NAMES = [
   { id: "DEXUSEU", name: "EUR/USD" },
   { id: "DEXSIUS", name: "USD/SGD" },
   { id: "DEXUSNZ", name: "NZD/USD" },
+  { id: "DEXTAUS", name: "TWD/USD" },
+  { id: "DEXBZUS", name: "BRL/USD" },
 ];

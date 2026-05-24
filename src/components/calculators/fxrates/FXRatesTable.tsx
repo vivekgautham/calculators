@@ -39,6 +39,7 @@ const FXRatesTable: React.FC = () => {
       percentChange: percentChange.toFixed(2),
       isPositive: percentChange >= 0,
       rawPercentChange: percentChange,
+      verdict: percentChange >= 0 ? "USD Strengthened" : `${quote} Strengthened`,
     };
   })
     .filter((row): row is NonNullable<typeof row> => row !== null)
@@ -58,6 +59,7 @@ const FXRatesTable: React.FC = () => {
             <TableCell align="right"><strong>Start Rate</strong></TableCell>
             <TableCell align="right"><strong>End Rate</strong></TableCell>
             <TableCell align="right"><strong>% Change</strong></TableCell>
+            <TableCell><strong>Verdict</strong></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -81,6 +83,14 @@ const FXRatesTable: React.FC = () => {
                 }}
               >
                 {row.isPositive ? "+" : ""}{row.percentChange}%
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: row.isPositive ? "green" : "#1976d2",
+                  fontWeight: "bold",
+                }}
+              >
+                {row.verdict}
               </TableCell>
             </TableRow>
           ))}
