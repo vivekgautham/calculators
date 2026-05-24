@@ -30,11 +30,21 @@ const FXRatesLineChart: React.FC = () => {
         const url = `${FRED_URL}&series_id=${series.id}&file_type=json`;
         const response = await axios.get<FredResponse>(url);
 
-        let observations = response.data.observations.map((obs) => ({
-          date: new Date(obs.date).getTime(),
-          dateStr: obs.date, // Keep string for filtering
-          value: parseFloat(obs.value),
-        })).filter(obs => !isNaN(obs.value));
+        const isBaseNotUsd = !series.name.startsWith("USD/");
+        const invertedName = isBaseNotUsd
+          ? `USD/${series.name.split('/')[0]}`
+          : series.name;
+
+        let observations = response.data.observations.map((obs) => {
+          const rawValue = parseFloat(obs.value);
+          const value = (isBaseNotUsd && rawValue !== 0) ? 1 / rawValue : rawValue;
+
+          return {
+            date: new Date(obs.date).getTime(),
+            dateStr: obs.date, // Keep string for filtering
+            value: value,
+          };
+        }).filter(obs => !isNaN(obs.value));
 
         // Local filtering
         if (startStr) {
@@ -45,11 +55,13 @@ const FXRatesLineChart: React.FC = () => {
         }
 
         return {
-          series,
+          series: {
+            ...series,
+            name: invertedName
+          },
           observations,
         };
-      },
-      staleTime: 1000 * 60 * 60, // 1 hour
+      },      staleTime: 1000 * 60 * 60, // 1 hour
     })),
   });
 
