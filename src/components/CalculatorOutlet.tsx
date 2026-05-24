@@ -18,7 +18,7 @@ const MIN_WIDTH = 200;
 const MAX_WIDTH = 600;
 const DEFAULT_WIDTH = 350;
 
-function CalculatoryOutlet() {
+function CalculatorOutlet() {
   const [value, setValue] = useState<string | undefined>("rateofgrowth");
   const [sidebarWidth, setSidebarWidth] = useState(DEFAULT_WIDTH);
   const [isResizing, setIsResizing] = useState(false);
@@ -175,4 +175,4 @@ function CalculatoryOutlet() {
     </Stack>
   );
 }
-export default CalculatoryOutlet;
+export default CalculatorOutlet;

@@ -1,9 +1,9 @@
 import "./App.css";
-import CalculatoryOutlet from "./components/CalculatorOutlet";
+import CalculatorOutlet from "./components/CalculatorOutlet";
 
 function App() {
   return (
-      <CalculatoryOutlet />
+      <CalculatorOutlet />
   );
 }
 
