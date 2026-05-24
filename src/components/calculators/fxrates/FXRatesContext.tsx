@@ -3,13 +3,20 @@ import dayjs, { Dayjs } from "dayjs";
 
 import { SERIES_NAMES } from "./constants";
 
+export interface SeriesData {
+  series: string;
+  observations: { date: number; dateStr: string; value: number }[];
+}
+
 interface FXRatesContextType {
   startDate: Dayjs | null;
   endDate: Dayjs | null;
   selectedSeries: string[];
+  ratesData: SeriesData[];
   setStartDate: (date: Dayjs | null) => void;
   setEndDate: (date: Dayjs | null) => void;
   setSelectedSeries: (series: string[]) => void;
+  setRatesData: (data: SeriesData[]) => void;
 }
 
 const FXRatesContext = createContext<FXRatesContextType | undefined>(undefined);
@@ -18,6 +25,7 @@ export const FXRatesProvider: React.FC<{ children: ReactNode }> = ({ children })
   const [startDate, setStartDate] = useState<Dayjs | null>(dayjs().subtract(1, 'year'));
   const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
   const [selectedSeries, setSelectedSeries] = useState<string[]>(SERIES_NAMES);
+  const [ratesData, setRatesData] = useState<SeriesData[]>([]);
 
   return (
     <FXRatesContext.Provider
@@ -25,9 +33,11 @@ export const FXRatesProvider: React.FC<{ children: ReactNode }> = ({ children })
         startDate,
         endDate,
         selectedSeries,
+        ratesData,
         setStartDate,
         setEndDate,
         setSelectedSeries,
+        setRatesData,
       }}
     >
       {children}

@@ -33,7 +33,7 @@ const Inputs: React.FC = () => {
             renderInput={(params) => (
               <TextField {...params} label="Select Series" placeholder="Currencies" />
             )}
-            sx={{ flexGrow: 1, minWidth: 300 }}
+            sx={{ flexGrow: 1, minWidth: 200, maxWidth: 600 }}
           />
         </Stack>
       </Box>

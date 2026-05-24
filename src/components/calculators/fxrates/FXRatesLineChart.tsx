@@ -18,7 +18,7 @@ interface FredResponse {
 }
 
 const FXRatesLineChart: React.FC = () => {
-  const { startDate, endDate, selectedSeries } = useFXRates();
+  const { startDate, endDate, selectedSeries, setRatesData } = useFXRates();
 
   const startStr = startDate?.format("YYYY-MM-DD");
   const endStr = endDate?.format("YYYY-MM-DD");
@@ -55,6 +55,15 @@ const FXRatesLineChart: React.FC = () => {
 
   const isLoading = results.some((result) => result.isLoading);
   const isError = results.some((result) => result.isError);
+
+  React.useEffect(() => {
+    const data = results
+      .map((r) => r.data)
+      .filter((d): d is NonNullable<typeof d> => !!d);
+    if (data.length > 0) {
+      setRatesData(data);
+    }
+  }, [results, setRatesData]);
 
   if (isLoading) {
     return (
