@@ -17,7 +17,7 @@ const FXRatesContext = createContext<FXRatesContextType | undefined>(undefined);
 export const FXRatesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [startDate, setStartDate] = useState<Dayjs | null>(dayjs().subtract(1, 'month'));
   const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
-  const [selectedSeries, setSelectedSeries] = useState<string[]>(SERIES_NAMES.slice(0, 3));
+  const [selectedSeries, setSelectedSeries] = useState<string[]>(SERIES_NAMES);
 
   return (
     <FXRatesContext.Provider

@@ -1,11 +1,11 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { useQueries } from "@tanstack/react-query";
 import axios from "axios";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography, Grid, Paper } from "@mui/material";
 import { useFXRates } from "./FXRatesContext";
-import { FRED_URL, SERIES_NAMES } from "./constants";
+import { FRED_URL } from "./constants";
 
 interface Observation {
   date: string;
@@ -55,42 +55,6 @@ const FXRatesLineChart: React.FC = () => {
   const isLoading = results.some((result) => result.isLoading);
   const isError = results.some((result) => result.isError);
 
-  const chartOptions = useMemo(() => {
-    const seriesData = results
-      .map((result) => {
-        if (!result.data) return null;
-        return {
-          name: result.data.series,
-          data: result.data.observations.map((obs) => [obs.date, obs.value]),
-          marker: { enabled: false },
-        };
-      })
-      .filter((s): s is NonNullable<typeof s> => s !== null);
-
-    return {
-      chart: {
-        type: "line",
-        zoomType: "x",
-      },
-      title: {
-        text: "Foreign Exchange Rates (FRED)",
-      },
-      xAxis: {
-        type: "datetime",
-        title: { text: "Date" },
-      },
-      yAxis: {
-        title: { text: "Exchange Rate" },
-      },
-      tooltip: {
-        shared: true,
-        xDateFormat: "%Y-%m-%d",
-      },
-      series: seriesData,
-      credits: { enabled: false },
-    };
-  }, [results]);
-
   if (isLoading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 400 }}>
@@ -108,8 +72,50 @@ const FXRatesLineChart: React.FC = () => {
   }
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <HighchartsReact highcharts={Highcharts} options={chartOptions} />
+    <Box sx={{ width: "100%", p: 1 }}>
+      <Grid container spacing={3}>
+        {results.map((result) => {
+          if (!result.data) return null;
+
+          const options: Highcharts.Options = {
+            chart: {
+              type: "line",
+              zoomType: "x",
+              height: 300,
+            },
+            title: {
+              text: result.data.series,
+            },
+            xAxis: {
+              type: "datetime",
+              title: { text: "Date" },
+            },
+            yAxis: {
+              title: { text: "Exchange Rate" },
+            },
+            tooltip: {
+              xDateFormat: "%Y-%m-%d",
+              valueDecimals: 4,
+            },
+            series: [{
+              name: result.data.series,
+              data: result.data.observations.map((obs) => [obs.date, obs.value]),
+              marker: { enabled: false },
+              type: 'line'
+            }],
+            credits: { enabled: false },
+            legend: { enabled: false }
+          };
+
+          return (
+            <Grid item xs={12} md={6} key={result.data.series}>
+              <Paper elevation={2} sx={{ p: 1 }}>
+                <HighchartsReact highcharts={Highcharts} options={options} />
+              </Paper>
+            </Grid>
+          );
+        })}
+      </Grid>
     </Box>
   );
 };
