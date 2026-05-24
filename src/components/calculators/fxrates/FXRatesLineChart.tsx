@@ -3,7 +3,7 @@ import { useQueries } from "@tanstack/react-query";
 import axios from "axios";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { Box, CircularProgress, Typography, Grid, Paper } from "@mui/material";
+import { Box, CircularProgress, Typography, Stack, Paper } from "@mui/material";
 import { useFXRates } from "./FXRatesContext";
 import { FRED_URL } from "./constants";
 
@@ -73,7 +73,7 @@ const FXRatesLineChart: React.FC = () => {
 
   return (
     <Box sx={{ width: "100%", p: 1 }}>
-      <Grid container spacing={3}>
+      <Stack spacing={3}>
         {results.map((result) => {
           if (!result.data) return null;
 
@@ -108,14 +108,12 @@ const FXRatesLineChart: React.FC = () => {
           };
 
           return (
-            <Grid item xs={12} md={6} key={result.data.series}>
-              <Paper elevation={2} sx={{ p: 1 }}>
-                <HighchartsReact highcharts={Highcharts} options={options} />
-              </Paper>
-            </Grid>
+            <Box key={result.data.series} sx={{ width: '100%' }}>
+              <HighchartsReact highcharts={Highcharts} options={options} />
+            </Box>
           );
         })}
-      </Grid>
+      </Stack>
     </Box>
   );
 };
