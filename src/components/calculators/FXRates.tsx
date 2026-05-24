@@ -5,6 +5,7 @@ import { CALCULATORS_AND_SIMULATORS } from "../../config";
 import { PanelProps } from "../../types";
 import { FXRatesProvider } from "./fxrates/FXRatesContext";
 import Inputs from "./fxrates/Inputs";
+import FXRatesLineChart from "./fxrates/FXRatesLineChart";
 
 const FXRates: React.FunctionComponent<PanelProps> = (props) => {
   return (
@@ -29,6 +30,9 @@ const FXRates: React.FunctionComponent<PanelProps> = (props) => {
         <Stack spacing={3} sx={{ mt: 2, pb: 4 }}>
           <Paper elevation={3} sx={{ p: 1 }}>
             <Inputs />
+          </Paper>
+          <Paper elevation={3} sx={{ p: 1, minHeight: 450 }}>
+            <FXRatesLineChart />
           </Paper>
         </Stack>
       </Box>
