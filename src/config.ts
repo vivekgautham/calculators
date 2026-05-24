@@ -13,7 +13,7 @@ export const CALCULATORS_AND_SIMULATORS = [
         name: "FX Rates",
         value: "fxrates",
         tags: ["finance", "forex"],
-        description: "Historical and real-time foreign exchange rates.",
+        description: "Historical FX rates for fiat currencies.",
         panel: FXRates
     }
 ]
