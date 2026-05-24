@@ -3,9 +3,10 @@ import { useQueries } from "@tanstack/react-query";
 import axios from "axios";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { Box, CircularProgress, Typography, Stack, Paper } from "@mui/material";
+import { Box, CircularProgress, Typography, Stack } from "@mui/material";
 import { useFXRates } from "./FXRatesContext";
 import { FRED_URL } from "./constants";
+import { AVAILABLE_COLORS } from "../rateofgrowth/RateOfGrowthContext";
 
 interface Observation {
   date: string;
@@ -74,8 +75,10 @@ const FXRatesLineChart: React.FC = () => {
   return (
     <Box sx={{ width: "100%", p: 1 }}>
       <Stack spacing={3}>
-        {results.map((result) => {
+        {results.map((result, index) => {
           if (!result.data) return null;
+
+          const color = AVAILABLE_COLORS[index % AVAILABLE_COLORS.length];
 
           const options: Highcharts.Options = {
             chart: {
@@ -101,7 +104,8 @@ const FXRatesLineChart: React.FC = () => {
               name: result.data.series,
               data: result.data.observations.map((obs) => [obs.date, obs.value]),
               marker: { enabled: false },
-              type: 'line'
+              type: 'line',
+              color: color
             }],
             credits: { enabled: false },
             legend: { enabled: false }

@@ -1,7 +1,6 @@
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
-import { SingleInputDateRangeField } from "@mui/x-date-pickers-pro/SingleInputDateRangeField";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { Stack, Box, Autocomplete, TextField } from "@mui/material";
 import React from "react";
 import { useFXRates } from "./FXRatesContext";
@@ -14,15 +13,17 @@ const Inputs: React.FC = () => {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box sx={{ p: 2 }}>
         <Stack direction="row" spacing={3} alignItems="center">
-          <DateRangePicker
-            localeText={{ start: 'Start Date', end: 'End Date' }}
-            value={[startDate, endDate]}
-            onChange={(newValue) => {
-              setStartDate(newValue[0]);
-              setEndDate(newValue[1]);
-            }}
-            slots={{ field: SingleInputDateRangeField }}
-            sx={{ width: 300 }}
+          <DatePicker
+            label="Start Date"
+            value={startDate}
+            onChange={(newValue) => setStartDate(newValue)}
+            sx={{ width: 200 }}
+          />
+          <DatePicker
+            label="End Date"
+            value={endDate}
+            onChange={(newValue) => setEndDate(newValue)}
+            sx={{ width: 200 }}
           />
           <Autocomplete
             multiple
