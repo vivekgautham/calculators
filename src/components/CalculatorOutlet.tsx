@@ -24,7 +24,7 @@ function CalculatoryOutlet() {
   const [isResizing, setIsResizing] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  const startResizing = useCallback((mouseDownEvent: React.MouseEvent) => {
+  const startResizing = useCallback((_mouseDownEvent: React.MouseEvent) => {
     setIsResizing(true);
   }, []);
 
