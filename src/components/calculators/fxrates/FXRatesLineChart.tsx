@@ -104,7 +104,9 @@ const FXRatesLineChart: React.FC = () => {
           const options: Highcharts.Options = {
             chart: {
               type: "line",
-              zoomType: "x",
+              zooming: {
+                type: "x",
+              },
               height: 300,
             },
             title: {

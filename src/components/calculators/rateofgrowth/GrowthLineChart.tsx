@@ -69,7 +69,9 @@ const GrowthLineChart: React.FC = () => {
     return {
       chart: {
         type: "line",
-        zoomType: "x",
+        zooming: {
+          type: "x",
+        },
         spacingLeft: 0,
         spacingRight: 10,
       },
