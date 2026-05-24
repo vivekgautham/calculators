@@ -3,8 +3,10 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 import pluginReact from "eslint-plugin-react";
 
-export default [
-  { files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"] },
+export default tseslint.config(
+  {
+    ignores: ["dist/**", "node_modules/**", "build/**"],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
@@ -15,5 +17,21 @@ export default [
         ...globals.node,
       },
     },
-  },
-];
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
+    rules: {
+      "react/react-in-jsx-scope": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
+    },
+  }
+);
