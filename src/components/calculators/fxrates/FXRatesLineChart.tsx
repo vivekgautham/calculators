@@ -17,13 +17,13 @@ interface FredResponse {
 }
 
 const FXRatesLineChart: React.FC = () => {
-  const { startDate, endDate } = useFXRates();
+  const { startDate, endDate, selectedSeries } = useFXRates();
 
   const startStr = startDate?.format("YYYY-MM-DD");
   const endStr = endDate?.format("YYYY-MM-DD");
 
   const results = useQueries({
-    queries: SERIES_NAMES.map((series) => ({
+    queries: selectedSeries.map((series) => ({
       queryKey: ["fxRate", series, startStr, endStr],
       queryFn: async () => {
         const url = `${FRED_URL}&series_id=${series}&file_type=json`;
