@@ -1,3 +1,4 @@
+import FXRates from "./components/calculators/FXRates";
 import RateOfGrowth from "./components/calculators/RateOfGrowth";
 
 export const CALCULATORS_AND_SIMULATORS = [
@@ -7,5 +8,12 @@ export const CALCULATORS_AND_SIMULATORS = [
         tags: ["finance", "economics"],
         description: "The rate at which a variable increases over a specific period of time.",
         panel: RateOfGrowth
+    },
+    {
+        name: "FX Rates",
+        value: "fxrates",
+        tags: ["finance", "forex"],
+        description: "Historical and real-time foreign exchange rates.",
+        panel: FXRates
     }
 ]
