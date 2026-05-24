@@ -25,9 +25,9 @@ const FXRatesLineChart: React.FC = () => {
 
   const results = useQueries({
     queries: selectedSeries.map((series) => ({
-      queryKey: ["fxRate", series, startStr, endStr],
+      queryKey: ["fxRate", series.id, startStr, endStr],
       queryFn: async () => {
-        const url = `${FRED_URL}&series_id=${series}&file_type=json`;
+        const url = `${FRED_URL}&series_id=${series.id}&file_type=json`;
         const response = await axios.get<FredResponse>(url);
 
         let observations = response.data.observations.map((obs) => ({
@@ -96,7 +96,7 @@ const FXRatesLineChart: React.FC = () => {
               height: 300,
             },
             title: {
-              text: result.data.series,
+              text: result.data.series.name,
             },
             xAxis: {
               type: "datetime",
@@ -110,7 +110,7 @@ const FXRatesLineChart: React.FC = () => {
               valueDecimals: 4,
             },
             series: [{
-              name: result.data.series,
+              name: result.data.series.name,
               data: result.data.observations.map((obs) => [obs.date, obs.value]),
               marker: { enabled: false },
               type: 'line',
@@ -121,7 +121,7 @@ const FXRatesLineChart: React.FC = () => {
           };
 
           return (
-            <Box key={result.data.series} sx={{ width: '100%' }}>
+            <Box key={result.data.series.id} sx={{ width: '100%' }}>
               <HighchartsReact highcharts={Highcharts} options={options} />
             </Box>
           );

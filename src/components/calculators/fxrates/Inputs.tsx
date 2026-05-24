@@ -28,6 +28,8 @@ const Inputs: React.FC = () => {
           <Autocomplete
             multiple
             options={SERIES_NAMES}
+            getOptionLabel={(option) => option.name}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
             value={selectedSeries}
             onChange={(_, newValue) => setSelectedSeries(newValue)}
             renderInput={(params) => (
