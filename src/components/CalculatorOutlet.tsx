@@ -19,10 +19,33 @@ const MAX_WIDTH = 600;
 const DEFAULT_WIDTH = 350;
 
 function CalculatorOutlet() {
-  const [value, setValue] = useState<string | undefined>("rateofgrowth");
+  const [value, setValue] = useState<string | undefined>(() => {
+    const hash = window.location.hash.replace("#", "");
+    return CALCULATORS_AND_SIMULATORS.some((c) => c.value === hash)
+      ? hash
+      : "rateofgrowth";
+  });
   const [sidebarWidth, setSidebarWidth] = useState(DEFAULT_WIDTH);
   const [isResizing, setIsResizing] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace("#", "");
+      if (CALCULATORS_AND_SIMULATORS.some((c) => c.value === hash)) {
+        setValue(hash);
+      }
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
+
+  useEffect(() => {
+    if (value) {
+      window.location.hash = value;
+    }
+  }, [value]);
 
   const startResizing = useCallback((_mouseDownEvent: React.MouseEvent) => {
     setIsResizing(true);
