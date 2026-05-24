@@ -5,7 +5,7 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { Box, CircularProgress, Typography, Stack } from "@mui/material";
 import { useFXRates } from "./FXRatesContext";
-import { FRED_URL } from "./constants";
+import { ALLOW_ORIGINS, API_KEY, LOCAL_DEV_URL } from "./constants";
 import { AVAILABLE_COLORS } from "../rateofgrowth/RateOfGrowthContext";
 
 interface Observation {
@@ -27,7 +27,11 @@ const FXRatesLineChart: React.FC = () => {
     queries: selectedSeries.map((series) => ({
       queryKey: ["fxRate", series.id, startStr, endStr],
       queryFn: async () => {
-        const url = `${FRED_URL}&series_id=${series.id}&file_type=json`;
+        const prodSeriesApi = `https://api.stlouisfed.org/fred/series/observations?api_key=${API_KEY}&series_id=${series.id}&file_type=json`
+        const prodUrl = `${ALLOW_ORIGINS}${encodeURIComponent(prodSeriesApi)}`;
+        const localDevUrl = `${LOCAL_DEV_URL}&series_id=${series.id}&file_type=json`;
+        const url = import.meta.env.DEV ? localDevUrl : prodUrl
+
         const response = await axios.get<FredResponse>(url);
 
         const isBaseNotUsd = !series.name.startsWith("USD/");

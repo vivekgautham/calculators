@@ -3,11 +3,10 @@ export const API_KEY = "2d9fe8dbad89dabfd5afba8ca6e5f4f6";
 // In development, we use Vite's proxy (defined in vite.config.ts) to avoid CORS issues.
 // In production (GitHub Pages), we use allorigins.win as a CORS proxy because FRED API
 // does not support Cross-Origin Resource Sharing for browser requests.
-export const FRED_URL = import.meta.env.DEV
-  ? `/api/fred/fred/series/observations?api_key=${API_KEY}`
-  : `https://api.allorigins.win/raw?url=${encodeURIComponent(
-      `https://api.stlouisfed.org/fred/series/observations?api_key=${API_KEY}`
-    )}`;
+export const ALLOW_ORIGINS = 'https://api.allorigins.win/raw?url='
+
+export const LOCAL_DEV_URL = `/api/fred/fred/series/observations?api_key=${API_KEY}`
+
 
 export const SERIES_NAMES = [
   { id: "DEXINUS", name: "USD/INR" },
