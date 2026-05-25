@@ -151,7 +151,8 @@ function CalculatorOutlet() {
                 />
             </Box>
             <Divider />
-            {filteredCalculators.map((item) =>
+            {filteredCalculators.length > 0 ? (
+              filteredCalculators.map((item) => (
                 <MenuItem
                   key={item.name}
                   name={item.value}
@@ -161,6 +162,11 @@ function CalculatorOutlet() {
                 >
                   {item.name}
                 </MenuItem>
+              ))
+            ) : (
+              <Box sx={{ p: '10px 15px', color: 'rgba(255,255,255,0.5)' }}>
+                No calculators found
+              </Box>
             )}
           </Menu>
         </Box>
