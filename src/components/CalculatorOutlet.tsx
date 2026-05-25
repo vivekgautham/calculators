@@ -28,6 +28,23 @@ function CalculatorOutlet() {
   const [sidebarWidth, setSidebarWidth] = useState(DEFAULT_WIDTH);
   const [isResizing, setIsResizing] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearchChange = (
+    _: React.MouseEvent<HTMLElement, MouseEvent>,
+    { value }: { value?: string },
+  ) => {
+    setSearchQuery(value ?? "");
+  };
+
+  const filteredCalculators = CALCULATORS_AND_SIMULATORS.filter((item) => {
+    const searchLower = searchQuery.toLowerCase();
+    return (
+      item.name.toLowerCase().includes(searchLower) ||
+      item.tags.some((tag) => tag.toLowerCase().includes(searchLower)) ||
+      item.description.toLowerCase().includes(searchLower)
+    );
+  });
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -125,10 +142,16 @@ function CalculatorOutlet() {
             <Icon name='calculator' size='huge' color='teal' style={{ display: 'block', margin: '10px auto' }} />
             <Divider />
             <Box sx={{ p: '0 15px' }}>
-                <Search fluid />
+                <Search
+                  fluid
+                  onSearchChange={handleSearchChange}
+                  value={searchQuery}
+                  showNoResults={false}
+                  placeholder="Search calculators..."
+                />
             </Box>
             <Divider />
-            {CALCULATORS_AND_SIMULATORS.map((item) =>
+            {filteredCalculators.map((item) =>
                 <MenuItem
                   key={item.name}
                   name={item.value}
