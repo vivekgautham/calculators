@@ -9,7 +9,7 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import { useFXRatesData } from "./useFXRatesData";
+import { useFXRatesData } from "./hooks/useFXRatesData";
 
 const FXRatesTable: React.FC = () => {
 

@@ -1,7 +1,7 @@
 import { useQueries, UseQueryResult } from "@tanstack/react-query";
 import axios from "axios";
-import { useFXRates, SeriesData } from "./FXRatesContext";
-import { ALLOW_ORIGINS, API_KEY, LOCAL_DEV_URL } from "./constants";
+import { useFXRates, SeriesData } from "../FXRatesContext";
+import { ALLOW_ORIGINS, API_KEY, LOCAL_DEV_URL } from "../constants";
 
 interface Observation {
   date: string;

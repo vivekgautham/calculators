@@ -3,7 +3,7 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { Box, CircularProgress, Typography, Stack } from "@mui/material";
 import { AVAILABLE_COLORS } from "../rateofgrowth/RateOfGrowthContext";
-import { useFXRatesData } from "./useFXRatesData";
+import { useFXRatesData } from "./hooks/useFXRatesData";
 
 const FXRatesLineChart: React.FC = () => {
   const results = useFXRatesData();
