@@ -77,7 +77,8 @@ const PlanBarChart: React.FC = () => {
       },
       plotOptions: {
         column: {
-          pointPadding: 0.2,
+          pointPadding: 0.05,
+          groupPadding: 0.05,
           borderWidth: 0,
         },
       },
