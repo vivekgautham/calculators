@@ -8,7 +8,6 @@ import {
   TableRow,
   Paper,
   Typography,
-  Box,
 } from "@mui/material";
 import { useBasicFinancialPlanner } from "./BasicFinancialPlannerContext";
 
