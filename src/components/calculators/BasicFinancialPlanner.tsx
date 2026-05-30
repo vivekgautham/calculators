@@ -5,6 +5,8 @@ import { CALCULATORS_AND_SIMULATORS } from "../../config";
 import { PanelProps } from "../../types";
 import { BasicFinancialPlannerProvider } from "./basicfinancialplanner/BasicFinancialPlannerContext";
 import Inputs from "./basicfinancialplanner/Inputs";
+import PlanTable from "./basicfinancialplanner/PlanTable";
+import PlanBarChart from "./basicfinancialplanner/PlanBarChart";
 
 const BasicFinancialPlanner: React.FunctionComponent<PanelProps> = (props) => {
   return (
@@ -30,7 +32,10 @@ const BasicFinancialPlanner: React.FunctionComponent<PanelProps> = (props) => {
           <Paper elevation={3} sx={{ p: 1 }}>
             <Inputs />
           </Paper>
-          {/* Future results/charts will go here */}
+          <Paper elevation={3} sx={{ p: 1, minHeight: 400 }}>
+            <PlanBarChart />
+          </Paper>
+          <PlanTable />
         </Stack>
       </Box>
     </BasicFinancialPlannerProvider>
