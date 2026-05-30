@@ -1,6 +1,7 @@
 import FXRates from "./components/calculators/FXRates";
 import RateOfGrowth from "./components/calculators/RateOfGrowth";
 import GrowthTarget from "./components/calculators/GrowthTarget";
+import BasicFinancialPlanner from "./components/calculators/BasicFinancialPlanner";
 
 export const CALCULATORS_AND_SIMULATORS = [
     {
@@ -23,5 +24,12 @@ export const CALCULATORS_AND_SIMULATORS = [
         tags: ["finance", "forex"],
         description: "Historical FX rates for fiat currencies.",
         panel: FXRates
+    },
+    {
+        name: "Basic Financial Planner",
+        value: "basicfinancialplanner",
+        tags: ["finance", "planning"],
+        description: "A simple tool to plan your financial future based on corpus, expenses, and growth.",
+        panel: BasicFinancialPlanner
     }
 ]
