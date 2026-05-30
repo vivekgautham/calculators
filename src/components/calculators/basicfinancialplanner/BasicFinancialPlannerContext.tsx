@@ -14,6 +14,7 @@ interface BasicFinancialPlannerContextType {
   inflationRate: number;
   corpusGrowthRate: number;
   planData: YearlyData[];
+  multiplier: number;
   setCorpusAmount: (value: number) => void;
   setYearsToGo: (value: number) => void;
   setAnnualExpense: (value: number) => void;
@@ -63,6 +64,14 @@ export const BasicFinancialPlannerProvider: React.FC<{ children: ReactNode }> = 
     return data;
   }, [corpusAmount, yearsToGo, annualExpense, inflationRate, corpusGrowthRate]);
 
+  const multiplier = useMemo(() => {
+    const r = (1 + inflationRate / 100) / (1 + corpusGrowthRate / 100);
+    if (Math.abs(r - 1) < 0.0001) {
+      return yearsToGo;
+    }
+    return r * (1 - Math.pow(r, yearsToGo)) / (1 - r);
+  }, [yearsToGo, inflationRate, corpusGrowthRate]);
+
   return (
     <BasicFinancialPlannerContext.Provider
       value={{
@@ -72,6 +81,7 @@ export const BasicFinancialPlannerProvider: React.FC<{ children: ReactNode }> = 
         inflationRate,
         corpusGrowthRate,
         planData,
+        multiplier,
         setCorpusAmount,
         setYearsToGo,
         setAnnualExpense,
