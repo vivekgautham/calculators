@@ -144,12 +144,13 @@ function CalculatorOutlet() {
             <Box sx={{ p: '0 15px' }}>
                 <Search
                   fluid
+                  input={{ fluid: true }}
+                  style={{ width: '100%' }}
                   onSearchChange={handleSearchChange}
                   value={searchQuery}
                   showNoResults={false}
                   placeholder="Search calculators..."
-                />
-            </Box>
+                />            </Box>
             <Divider />
             {filteredCalculators.length > 0 ? (
               filteredCalculators.map((item) => (
