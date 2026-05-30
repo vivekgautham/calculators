@@ -26,7 +26,7 @@ const BasicFinancialPlannerContext = createContext<BasicFinancialPlannerContextT
 
 export const BasicFinancialPlannerProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [corpusAmount, setCorpusAmount] = useState<number>(1000000);
-  const [yearsToGo, setYearsToGo] = useState<number>(20);
+  const [yearsToGo, setYearsToGo] = useState<number>(35);
   const [annualExpense, setAnnualExpense] = useState<number>(50000);
   const [inflationRate, setInflationRate] = useState<number>(6);
   const [corpusGrowthRate, setCorpusGrowthRate] = useState<number>(10);
