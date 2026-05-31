@@ -2,6 +2,7 @@ import FXRates from "./components/calculators/FXRates";
 import RateOfGrowth from "./components/calculators/RateOfGrowth";
 import GrowthTarget from "./components/calculators/GrowthTarget";
 import BasicFinancialPlanner from "./components/calculators/BasicFinancialPlanner";
+import FedRates from "./components/calculators/FedRates";
 
 export const CALCULATORS_AND_SIMULATORS = [
     {
@@ -31,5 +32,12 @@ export const CALCULATORS_AND_SIMULATORS = [
         tags: ["finance", "planning"],
         description: "A simple tool to plan your financial future based on corpus, expenses, and growth.",
         panel: BasicFinancialPlanner
+    },
+    {
+        name: "Fed Rates",
+        value: "fedrates",
+        tags: ["finance", "economics", "fed"],
+        description: "Federal Reserve interest rates (EFFR, SOFR, etc.) from the NY Fed API.",
+        panel: FedRates
     }
 ]
