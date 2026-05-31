@@ -3,8 +3,16 @@ import RateOfGrowth from "./components/calculators/RateOfGrowth";
 import GrowthTarget from "./components/calculators/GrowthTarget";
 import BasicFinancialPlanner from "./components/calculators/BasicFinancialPlanner";
 import FedRates from "./components/calculators/FedRates";
+import ProgressiveTax from "./components/calculators/ProgressiveTax";
 
 export const CALCULATORS_AND_SIMULATORS = [
+    {
+        name: "Progressive Tax",
+        value: "progressivetax",
+        tags: ["finance", "tax"],
+        description: "Calculate progressive tax based on custom brackets and income.",
+        panel: ProgressiveTax
+    },
     {
         name: "Rate of Growth",
         value: "rateofgrowth",
