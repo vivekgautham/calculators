@@ -8,7 +8,7 @@ import {
   MenuItemProps,
   Search,
 } from "semantic-ui-react";
-import { Stack, Box, IconButton } from "@mui/material";
+import { Stack, Box, IconButton, Typography } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { CALCULATORS_AND_SIMULATORS } from "../config";
@@ -132,43 +132,63 @@ function CalculatorOutlet() {
               height: '100%',
               margin: 0,
               borderRadius: 0,
-              border: 'none'
+              border: 'none',
+              display: 'flex',
+              flexDirection: 'column'
             }}
           >
-            <Divider />
-            <Header as='h3' color='teal' style={{ padding: '0 15px' }}>
-                Advanced Calculators & Simulators
-            </Header>
-            <Icon name='calculator' size='huge' color='teal' style={{ display: 'block', margin: '10px auto' }} />
-            <Divider />
-            <Box sx={{ p: '0 15px' }}>
-                <Search
-                  fluid
-                  input={{ fluid: true }}
-                  style={{ width: '100%' }}
-                  onSearchChange={handleSearchChange}
-                  value={searchQuery}
-                  showNoResults={false}
-                  placeholder="Search calculators..."
-                />            </Box>
-            <Divider />
-            {filteredCalculators.length > 0 ? (
-              filteredCalculators.map((item) => (
-                <MenuItem
-                  key={item.name}
-                  name={item.value}
-                  active={value === item.value}
-                  onClick={handleChange}
-                  header={value === item.value}
-                >
-                  {item.name}
-                </MenuItem>
-              ))
-            ) : (
-              <Box sx={{ p: '10px 15px', color: 'rgba(255,255,255,0.5)' }}>
-                No calculators found
+            <Box sx={{ flexShrink: 0 }}>
+              <Divider />
+              <Header as='h3' color='teal' style={{ padding: '0 15px' }}>
+                  Advanced Calculators & Simulators
+              </Header>
+              <Icon name='calculator' size='huge' color='teal' style={{ display: 'block', margin: '10px auto' }} />
+              <Divider />
+              <Box sx={{ p: '0 15px' }}>
+                  <Search
+                    fluid
+                    input={{ fluid: true }}
+                    style={{ width: '100%' }}
+                    onSearchChange={handleSearchChange}
+                    value={searchQuery}
+                    showNoResults={false}
+                    placeholder="Search calculators..."
+                  />
               </Box>
-            )}
+              <Divider />
+            </Box>
+
+            <Box sx={{ flexGrow: 1, overflowY: 'auto' }}>
+              {filteredCalculators.length > 0 ? (
+                filteredCalculators.map((item) => (
+                  <MenuItem
+                    key={item.name}
+                    name={item.value}
+                    active={value === item.value}
+                    onClick={handleChange}
+                    header={value === item.value}
+                  >
+                    {item.name}
+                  </MenuItem>
+                ))
+              ) : (
+                <Box sx={{ p: '10px 15px', color: 'rgba(255,255,255,0.5)' }}>
+                  No calculators found
+                </Box>
+              )}
+            </Box>
+
+            <Box sx={{ flexShrink: 0, p: 2, textAlign: 'center' }}>
+              <Divider inverted />
+              <Stack direction="row" alignItems="center" justifyContent="center" spacing={1}>
+                <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)' }}>
+                  © {new Date().getFullYear()} vivekgautham
+                </Typography>
+                <a className="item" href="https://www.github.com/vivekgautham" target="_blank" rel="noopener noreferrer" style={{ color: '#00b5ad' }}>
+                  <i className="github icon link icon" style={{ margin: 0 }}></i>
+                </a>
+              </Stack>
+            </Box>
           </Menu>
         </Box>
 
