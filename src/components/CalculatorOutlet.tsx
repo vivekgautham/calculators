@@ -23,7 +23,7 @@ function CalculatorOutlet() {
     const hash = window.location.hash.replace("#", "");
     return CALCULATORS_AND_SIMULATORS.some((c) => c.value === hash)
       ? hash
-      : "rateofgrowth";
+      : "basicfinancialplanner";
   });
   const [sidebarWidth, setSidebarWidth] = useState(DEFAULT_WIDTH);
   const [isResizing, setIsResizing] = useState(false);
@@ -101,7 +101,7 @@ function CalculatorOutlet() {
   };
 
   const currentPanel = CALCULATORS_AND_SIMULATORS.find((item) => item.value === value)?.panel;
-  const name = CALCULATORS_AND_SIMULATORS.find((item) => item.value === value)?.name ?? 'Rate of Growth';
+  const name = CALCULATORS_AND_SIMULATORS.find((item) => item.value === value)?.name ?? 'Basic Financial Planner';
 
   return (
     <Stack direction="row" sx={{ width: '100vw', height: '100vh', overflow: 'hidden' }}>
