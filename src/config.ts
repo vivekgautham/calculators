@@ -4,6 +4,7 @@ import GrowthTarget from "./components/calculators/GrowthTarget";
 import BasicFinancialPlanner from "./components/calculators/BasicFinancialPlanner";
 import FedRates from "./components/calculators/FedRates";
 import ProgressiveTax from "./components/calculators/ProgressiveTax";
+import BlendedInvestment from "./components/calculators/BlendedInvestment";
 
 export const CALCULATORS_AND_SIMULATORS = [
     {
@@ -47,5 +48,12 @@ export const CALCULATORS_AND_SIMULATORS = [
         tags: ["finance", "economics"],
         description: "The rate at which a variable increases over a specific period of time.",
         panel: RateOfGrowth
+    },
+    {
+        name: "Blended Investment",
+        value: "blendedinvestment",
+        tags: ["finance", "planning", "investment"],
+        description: "Project growth of a portfolio with multiple different investment types and rates.",
+        panel: BlendedInvestment
     }
 ]
