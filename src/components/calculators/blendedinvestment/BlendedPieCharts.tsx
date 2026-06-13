@@ -1,26 +1,10 @@
 import React, { useMemo } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { useBlendedInvestment } from "./BlendedInvestmentContext";
 
-const formatNumber = (value: number): string => {
-  const absoluteValue = Math.abs(value);
-  const sign = value < 0 ? "-" : "";
 
-  let formatted = absoluteValue.toString();
-  if (absoluteValue >= 1000000000) {
-    formatted = (absoluteValue / 1000000000).toFixed(1) + "B";
-  } else if (absoluteValue >= 1000000) {
-    formatted = (absoluteValue / 1000000).toFixed(1) + "M";
-  } else if (absoluteValue >= 1000) {
-    formatted = (absoluteValue / 1000).toFixed(1) + "K";
-  } else {
-    formatted = absoluteValue.toFixed(2);
-  }
-
-  return sign + formatted;
-};
 
 const BlendedPieCharts: React.FC = () => {
   const { investments, totalYears } = useBlendedInvestment();

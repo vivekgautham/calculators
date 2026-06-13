@@ -139,7 +139,12 @@ function CalculatorOutlet() {
           >
             <Box sx={{ flexShrink: 0 }}>
               <Divider />
-              <Header as='h3' color='teal' style={{ padding: '0 15px' }}>
+              <Header
+                as='h3'
+                color='teal'
+                style={{ padding: '0 15px', cursor: 'pointer' }}
+                onClick={() => window.location.href = window.location.origin + window.location.pathname}
+              >
                   Advanced Calculators & Simulators
               </Header>
               <Icon name='calculator' size='huge' color='teal' style={{ display: 'block', margin: '10px auto' }} />
