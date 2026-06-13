@@ -5,6 +5,7 @@ import BasicFinancialPlanner from "./components/calculators/BasicFinancialPlanne
 import FedRates from "./components/calculators/FedRates";
 import ProgressiveTax from "./components/calculators/ProgressiveTax";
 import BlendedInvestment from "./components/calculators/BlendedInvestment";
+import StockAnalysis from "./components/calculators/StockAnalysis";
 
 export const CALCULATORS_AND_SIMULATORS = [
     {
@@ -55,5 +56,12 @@ export const CALCULATORS_AND_SIMULATORS = [
         tags: ["finance", "planning", "investment"],
         description: "Project growth of a portfolio with multiple different investment types and rates.",
         panel: BlendedInvestment
+    },
+    {
+        name: "Stock Analysis",
+        value: "stockanalysis",
+        tags: ["finance", "stocks", "investing"],
+        description: "Analyze stock price history from CSV files with interactive charts.",
+        panel: StockAnalysis
     }
 ]
