@@ -32,11 +32,11 @@ const BlendedInvestment: React.FunctionComponent<PanelProps> = (props) => {
           <Paper elevation={3} sx={{ p: 2 }}>
             <Inputs />
           </Paper>
-          <Paper elevation={3} sx={{ p: 2 }}>
-            <BlendedPieCharts />
-          </Paper>
           <Paper elevation={3} sx={{ p: 2, minHeight: 450 }}>
             <BlendedBarChart />
+          </Paper>
+          <Paper elevation={3} sx={{ p: 2 }}>
+            <BlendedPieCharts />
           </Paper>
         </Stack>
       </Box>
