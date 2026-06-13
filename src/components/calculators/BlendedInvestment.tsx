@@ -6,6 +6,7 @@ import { PanelProps } from "../../types";
 import { BlendedInvestmentProvider } from "./blendedinvestment/BlendedInvestmentContext";
 import Inputs from "./blendedinvestment/Inputs";
 import BlendedBarChart from "./blendedinvestment/BlendedBarChart";
+import BlendedPieCharts from "./blendedinvestment/BlendedPieCharts";
 
 const BlendedInvestment: React.FunctionComponent<PanelProps> = (props) => {
   return (
@@ -30,6 +31,9 @@ const BlendedInvestment: React.FunctionComponent<PanelProps> = (props) => {
         <Stack spacing={3} sx={{ mt: 2, pb: 4 }}>
           <Paper elevation={3} sx={{ p: 2 }}>
             <Inputs />
+          </Paper>
+          <Paper elevation={3} sx={{ p: 2 }}>
+            <BlendedPieCharts />
           </Paper>
           <Paper elevation={3} sx={{ p: 2, minHeight: 450 }}>
             <BlendedBarChart />

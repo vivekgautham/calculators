@@ -40,18 +40,26 @@ export const BlendedInvestmentProvider: React.FC<{ children: ReactNode }> = ({ c
     {
       key: "inv-1",
       id: "1",
-      name: "S&P 500",
-      amount: 10000,
-      rate: 8,
+      name: "Equity",
+      amount: 150000,
+      rate: 9,
       color: AVAILABLE_COLORS[0],
     },
     {
       key: "inv-2",
       id: "2",
-      name: "Bonds",
-      amount: 5000,
+      name: "FD",
+      amount: 400000,
       rate: 4,
       color: AVAILABLE_COLORS[1],
+    },
+    {
+      key: "inv-3",
+      id: "3",
+      name: "HYSA",
+      amount: 500000,
+      rate: 3,
+      color: AVAILABLE_COLORS[2],
     },
   ]);
 
