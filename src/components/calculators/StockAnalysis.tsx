@@ -6,6 +6,7 @@ import { PanelProps } from "../../types";
 import { StockAnalysisProvider } from "./stockanalysis/StockAnalysisContext";
 import Inputs from "./stockanalysis/Inputs";
 import StockChart from "./stockanalysis/StockChart";
+import SMAChart from "./stockanalysis/SMAChart";
 
 const StockAnalysis: React.FunctionComponent<PanelProps> = (props) => {
   return (
@@ -33,6 +34,9 @@ const StockAnalysis: React.FunctionComponent<PanelProps> = (props) => {
           </Paper>
           <Paper elevation={3} sx={{ p: 2, minHeight: 450 }}>
             <StockChart />
+          </Paper>
+          <Paper elevation={3} sx={{ p: 2, minHeight: 450 }}>
+            <SMAChart />
           </Paper>
         </Stack>
       </Box>
