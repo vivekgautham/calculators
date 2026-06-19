@@ -5,6 +5,7 @@ import { CALCULATORS_AND_SIMULATORS } from "../../config";
 import { PanelProps } from "../../types";
 import { PortfolioInMultipleCcysProvider } from "./portfolioinmultipleccys/PortfolioInMultipleCcysContext";
 import Inputs from "./portfolioinmultipleccys/Inputs";
+import PortfolioBarChart from "./portfolioinmultipleccys/PortfolioBarChart";
 
 const PortfolioInMultipleCcys: React.FunctionComponent<PanelProps> = (
   props,
@@ -33,6 +34,9 @@ const PortfolioInMultipleCcys: React.FunctionComponent<PanelProps> = (
         <Stack spacing={3} sx={{ mt: 2, pb: 4 }}>
           <Paper elevation={3} sx={{ p: 2 }}>
             <Inputs />
+          </Paper>
+          <Paper elevation={3} sx={{ p: 2, minHeight: 450 }}>
+            <PortfolioBarChart />
           </Paper>
         </Stack>
       </Box>

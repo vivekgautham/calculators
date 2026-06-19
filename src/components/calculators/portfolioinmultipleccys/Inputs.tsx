@@ -35,7 +35,7 @@ const Inputs: React.FC = () => {
             label="Total Years"
             type="number"
             value={totalYears}
-            onChange={(e) => setTotalYears(Number(e.target.value))}
+            onChange={(e) => setTotalYears(e.target.value)}
             size="small"
             sx={{ width: 150 }}
             slotProps={{
@@ -94,7 +94,7 @@ const Inputs: React.FC = () => {
                         value={currency.corpusAmount}
                         onChange={(e) =>
                           updateCurrency(currency.key, {
-                            corpusAmount: Number(e.target.value),
+                            corpusAmount: e.target.value,
                           })
                         }
                         fullWidth
@@ -106,7 +106,7 @@ const Inputs: React.FC = () => {
                         value={currency.growthRate}
                         onChange={(e) =>
                           updateCurrency(currency.key, {
-                            growthRate: Number(e.target.value),
+                            growthRate: e.target.value,
                           })
                         }
                         fullWidth
@@ -128,7 +128,7 @@ const Inputs: React.FC = () => {
                         value={currency.annualIncDecRate}
                         onChange={(e) =>
                           updateCurrency(currency.key, {
-                            annualIncDecRate: Number(e.target.value),
+                            annualIncDecRate: e.target.value,
                           })
                         }
                         fullWidth

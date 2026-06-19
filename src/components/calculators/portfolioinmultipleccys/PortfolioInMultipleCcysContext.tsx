@@ -4,15 +4,15 @@ export interface CurrencyAsset {
   key: string;
   id: string;
   ccyName: string;
-  corpusAmount: number;
-  growthRate: number;
-  annualIncDecRate: number;
+  corpusAmount: number | string;
+  growthRate: number | string;
+  annualIncDecRate: number | string;
 }
 
 interface PortfolioInMultipleCcysContextType {
   currencies: CurrencyAsset[];
-  totalYears: number;
-  setTotalYears: (years: number) => void;
+  totalYears: number | string;
+  setTotalYears: (years: number | string) => void;
   addCurrency: () => void;
   removeCurrency: (key: string) => void;
   updateCurrency: (key: string, updates: Partial<CurrencyAsset>) => void;
@@ -25,7 +25,7 @@ const PortfolioInMultipleCcysContext = createContext<
 export const PortfolioInMultipleCcysProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
-  const [totalYears, setTotalYears] = useState<number>(10);
+  const [totalYears, setTotalYears] = useState<number | string>(10);
   const [currencies, setCurrencies] = useState<CurrencyAsset[]>([
     {
       key: "ccy-1",
