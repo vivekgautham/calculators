@@ -88,14 +88,18 @@ const GrowthLineChart: React.FC = () => {
         title: {
           text: "Value",
         },
-        plotLines: [{
-          value: 0,
-          width: 2,
-          color: '#888',
-          zIndex: 1
-        }],
+        plotLines: [
+          {
+            value: 0,
+            width: 2,
+            color: "#888",
+            zIndex: 1,
+          },
+        ],
         labels: {
-          formatter: function (this: Highcharts.AxisLabelsFormatterContextObject) {
+          formatter: function (
+            this: Highcharts.AxisLabelsFormatterContextObject,
+          ) {
             const val = this.value as number;
             const prefix = val < 0 ? "-$" : "$";
             return prefix + formatNumber(Math.abs(val));
@@ -104,11 +108,11 @@ const GrowthLineChart: React.FC = () => {
       },
       tooltip: {
         shared: true,
-        pointFormatter: function(this: Highcharts.Point) {
-            const val = this.y ?? 0;
-            const prefix = val < 0 ? "-$" : "$";
-            return `<span style="color:${this.series.color}">\u25CF</span> ${this.series.name}: <b>${prefix}${Math.abs(val).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</b><br/>`;
-        }
+        pointFormatter: function (this: Highcharts.Point) {
+          const val = this.y ?? 0;
+          const prefix = val < 0 ? "-$" : "$";
+          return `<span style="color:${this.series.color}">\u25CF</span> ${this.series.name}: <b>${prefix}${Math.abs(val).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</b><br/>`;
+        },
       },
       series: series,
       credits: {

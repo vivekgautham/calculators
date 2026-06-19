@@ -19,7 +19,9 @@ interface BlendedInvestmentContextType {
   availableColors: string[];
 }
 
-const BlendedInvestmentContext = createContext<BlendedInvestmentContextType | undefined>(undefined);
+const BlendedInvestmentContext = createContext<
+  BlendedInvestmentContextType | undefined
+>(undefined);
 
 export const AVAILABLE_COLORS = [
   "#2E86C1", // Blue
@@ -34,7 +36,9 @@ export const AVAILABLE_COLORS = [
   "#FF5733", // Orange-Red
 ];
 
-export const BlendedInvestmentProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const BlendedInvestmentProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [totalYears, setTotalYears] = useState<number>(10);
   const [investments, setInvestments] = useState<Investment[]>([
     {
@@ -64,12 +68,18 @@ export const BlendedInvestmentProvider: React.FC<{ children: ReactNode }> = ({ c
   ]);
 
   const addInvestment = () => {
-    const existingIds = investments.map(i => parseInt(i.id)).filter(id => !isNaN(id));
-    const nextNum = existingIds.length > 0 ? Math.max(...existingIds) + 1 : investments.length + 1;
+    const existingIds = investments
+      .map((i) => parseInt(i.id))
+      .filter((id) => !isNaN(id));
+    const nextNum =
+      existingIds.length > 0
+        ? Math.max(...existingIds) + 1
+        : investments.length + 1;
 
-    const usedColors = investments.map(i => i.color);
-    const nextColor = AVAILABLE_COLORS.find(c => !usedColors.includes(c)) ||
-                      AVAILABLE_COLORS[investments.length % AVAILABLE_COLORS.length];
+    const usedColors = investments.map((i) => i.color);
+    const nextColor =
+      AVAILABLE_COLORS.find((c) => !usedColors.includes(c)) ||
+      AVAILABLE_COLORS[investments.length % AVAILABLE_COLORS.length];
 
     const newInvestment: Investment = {
       key: `inv-${Date.now()}`,
@@ -90,7 +100,7 @@ export const BlendedInvestmentProvider: React.FC<{ children: ReactNode }> = ({ c
 
   const updateInvestment = (key: string, updates: Partial<Investment>) => {
     setInvestments(
-      investments.map((i) => (i.key === key ? { ...i, ...updates } : i))
+      investments.map((i) => (i.key === key ? { ...i, ...updates } : i)),
     );
   };
 
@@ -114,7 +124,9 @@ export const BlendedInvestmentProvider: React.FC<{ children: ReactNode }> = ({ c
 export const useBlendedInvestment = () => {
   const context = useContext(BlendedInvestmentContext);
   if (!context) {
-    throw new Error("useBlendedInvestment must be used within a BlendedInvestmentProvider");
+    throw new Error(
+      "useBlendedInvestment must be used within a BlendedInvestmentProvider",
+    );
   }
   return context;
 };

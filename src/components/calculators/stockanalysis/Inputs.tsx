@@ -22,22 +22,26 @@ const Inputs: React.FC = () => {
   };
 
   const parseCSV = (text: string, name: string) => {
-    const lines = text.split("\n").filter(line => line.trim() !== "");
+    const lines = text.split("\n").filter((line) => line.trim() !== "");
     if (lines.length < 2) return;
 
     // Detect separator: comma or tab
     const firstLine = lines[0];
     const separator = firstLine.includes("\t") ? "\t" : ",";
 
-    const headers = lines[0].split(separator).map(h => h.trim().toLowerCase());
+    const headers = lines[0]
+      .split(separator)
+      .map((h) => h.trim().toLowerCase());
 
-    const dateIdx = headers.findIndex(h => h.includes("date"));
-    const openIdx = headers.findIndex(h => h.includes("open"));
-    const highIdx = headers.findIndex(h => h.includes("high"));
-    const lowIdx = headers.findIndex(h => h.includes("low"));
+    const dateIdx = headers.findIndex((h) => h.includes("date"));
+    const openIdx = headers.findIndex((h) => h.includes("open"));
+    const highIdx = headers.findIndex((h) => h.includes("high"));
+    const lowIdx = headers.findIndex((h) => h.includes("low"));
     // Handle "Close/Last" or "Close"
-    const closeIdx = headers.findIndex(h => (h.includes("close") || h.includes("last")) && !h.includes("adj"));
-    const volumeIdx = headers.findIndex(h => h.includes("volume"));
+    const closeIdx = headers.findIndex(
+      (h) => (h.includes("close") || h.includes("last")) && !h.includes("adj"),
+    );
+    const volumeIdx = headers.findIndex((h) => h.includes("volume"));
 
     const cleanNumber = (val: string): number => {
       if (!val) return 0;
@@ -49,7 +53,7 @@ const Inputs: React.FC = () => {
     const parsedData: StockDataPoint[] = [];
 
     for (let i = 1; i < lines.length; i++) {
-      const values = lines[i].split(separator).map(v => v.trim());
+      const values = lines[i].split(separator).map((v) => v.trim());
       if (values.length < headers.length) continue;
 
       const dateStr = values[dateIdx];
@@ -110,7 +114,8 @@ const Inputs: React.FC = () => {
           </Stack>
         ) : (
           <Typography variant="body2" color="textSecondary">
-            Upload a CSV file (e.g., from Yahoo Finance) with Date, High, Low, Close columns.
+            Upload a CSV file (e.g., from Yahoo Finance) with Date, High, Low,
+            Close columns.
           </Typography>
         )}
       </Stack>

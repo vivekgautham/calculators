@@ -67,7 +67,7 @@ const SMAChart: React.FC = () => {
       series: [
         {
           name: "Close Price",
-          data: data.map(d => [d.date, d.close]),
+          data: data.map((d) => [d.date, d.close]),
           color: "#A0A0A0", // Darker grey
           lineWidth: 1.5,
           dashStyle: "Solid",
@@ -103,8 +103,13 @@ const SMAChart: React.FC = () => {
     <Box sx={{ width: "100%" }}>
       <HighchartsReact highcharts={Highcharts} options={chartOptions} />
       {data.length < 200 && (
-        <Typography variant="caption" color="textSecondary" sx={{ mt: 1, display: "block", textAlign: "center" }}>
-          Note: SMA 200 (and possibly SMA 50) may not appear if the data set contains fewer than required records.
+        <Typography
+          variant="caption"
+          color="textSecondary"
+          sx={{ mt: 1, display: "block", textAlign: "center" }}
+        >
+          Note: SMA 200 (and possibly SMA 50) may not appear if the data set
+          contains fewer than required records.
         </Typography>
       )}
     </Box>

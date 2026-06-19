@@ -47,7 +47,7 @@ export const useFedRatesData = () => {
       }, {});
 
       // Sort observations by date for each type
-      Object.values(grouped).forEach(series => {
+      Object.values(grouped).forEach((series) => {
         series.observations.sort((a, b) => a.date - b.date);
       });
 

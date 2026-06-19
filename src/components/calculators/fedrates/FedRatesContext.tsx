@@ -8,10 +8,16 @@ interface FedRatesContextType {
   setEndDate: (date: Dayjs) => void;
 }
 
-const FedRatesContext = createContext<FedRatesContextType | undefined>(undefined);
+const FedRatesContext = createContext<FedRatesContextType | undefined>(
+  undefined,
+);
 
-export const FedRatesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [startDate, setStartDate] = useState<Dayjs>(dayjs().subtract(15, "year"));
+export const FedRatesProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
+  const [startDate, setStartDate] = useState<Dayjs>(
+    dayjs().subtract(15, "year"),
+  );
   const [endDate, setEndDate] = useState<Dayjs>(dayjs());
 
   return (

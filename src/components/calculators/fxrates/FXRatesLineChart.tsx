@@ -11,10 +11,16 @@ const FXRatesLineChart: React.FC = () => {
   const isLoading = results.some((result) => result.isLoading);
   const isError = results.some((result) => result.isError);
 
-
   if (isLoading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 400 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: 400,
+        }}
+      >
         <CircularProgress />
       </Box>
     );
@@ -58,19 +64,24 @@ const FXRatesLineChart: React.FC = () => {
               xDateFormat: "%Y-%m-%d",
               valueDecimals: 4,
             },
-            series: [{
-              name: result.data.series.name,
-              data: result.data.observations.map((obs) => [obs.date, obs.value]),
-              marker: { enabled: false },
-              type: 'line',
-              color: color
-            }],
+            series: [
+              {
+                name: result.data.series.name,
+                data: result.data.observations.map((obs) => [
+                  obs.date,
+                  obs.value,
+                ]),
+                marker: { enabled: false },
+                type: "line",
+                color: color,
+              },
+            ],
             credits: { enabled: false },
-            legend: { enabled: false }
+            legend: { enabled: false },
           };
 
           return (
-            <Box key={result.data.series.id} sx={{ width: '100%' }}>
+            <Box key={result.data.series.id} sx={{ width: "100%" }}>
               <HighchartsReact highcharts={Highcharts} options={options} />
             </Box>
           );

@@ -81,7 +81,7 @@ function CalculatorOutlet() {
         }
       }
     },
-    [isResizing]
+    [isResizing],
   );
 
   useEffect(() => {
@@ -100,70 +100,87 @@ function CalculatorOutlet() {
     setValue(data.name);
   };
 
-  const currentPanel = CALCULATORS_AND_SIMULATORS.find((item) => item.value === value)?.panel;
-  const name = CALCULATORS_AND_SIMULATORS.find((item) => item.value === value)?.name ?? 'Basic Financial Planner';
+  const currentPanel = CALCULATORS_AND_SIMULATORS.find(
+    (item) => item.value === value,
+  )?.panel;
+  const name =
+    CALCULATORS_AND_SIMULATORS.find((item) => item.value === value)?.name ??
+    "Basic Financial Planner";
 
   return (
-    <Stack direction="row" sx={{ width: '100vw', height: '100vh', overflow: 'hidden' }}>
+    <Stack
+      direction="row"
+      sx={{ width: "100vw", height: "100vh", overflow: "hidden" }}
+    >
       {/* Sidebar Container */}
       <Box
         sx={{
           width: isCollapsed ? 0 : sidebarWidth,
-          transition: isResizing ? 'none' : 'width 0.3s ease',
-          height: '100%',
-          position: 'relative',
-          backgroundColor: '#1b1c1d', // Match Semantic UI inverted menu
+          transition: isResizing ? "none" : "width 0.3s ease",
+          height: "100%",
+          position: "relative",
+          backgroundColor: "#1b1c1d", // Match Semantic UI inverted menu
           flexShrink: 0,
           zIndex: 100,
-          borderRight: isResizing ? '2px solid #00b5ad' : 'none'
+          borderRight: isResizing ? "2px solid #00b5ad" : "none",
         }}
       >
-        <Box sx={{
-          width: sidebarWidth,
-          height: '100%',
-          overflowX: 'hidden',
-          display: isCollapsed ? 'none' : 'block'
-        }}>
+        <Box
+          sx={{
+            width: sidebarWidth,
+            height: "100%",
+            overflowX: "hidden",
+            display: isCollapsed ? "none" : "block",
+          }}
+        >
           <Menu
             inverted
             vertical
             style={{
-              width: '100%',
-              height: '100%',
+              width: "100%",
+              height: "100%",
               margin: 0,
               borderRadius: 0,
-              border: 'none',
-              display: 'flex',
-              flexDirection: 'column'
+              border: "none",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
             <Box sx={{ flexShrink: 0 }}>
               <Divider />
               <Header
-                as='h3'
-                color='teal'
-                style={{ padding: '0 15px', cursor: 'pointer' }}
-                onClick={() => window.location.href = window.location.origin + window.location.pathname}
+                as="h3"
+                color="teal"
+                style={{ padding: "0 15px", cursor: "pointer" }}
+                onClick={() =>
+                  (window.location.href =
+                    window.location.origin + window.location.pathname)
+                }
               >
-                  Advanced Calculators & Simulators
+                Advanced Calculators & Simulators
               </Header>
-              <Icon name='calculator' size='huge' color='teal' style={{ display: 'block', margin: '10px auto' }} />
+              <Icon
+                name="calculator"
+                size="huge"
+                color="teal"
+                style={{ display: "block", margin: "10px auto" }}
+              />
               <Divider />
-              <Box sx={{ p: '0 15px' }}>
-                  <Search
-                    fluid
-                    input={{ fluid: true }}
-                    style={{ width: '100%' }}
-                    onSearchChange={handleSearchChange}
-                    value={searchQuery}
-                    showNoResults={false}
-                    placeholder="Search calculators..."
-                  />
+              <Box sx={{ p: "0 15px" }}>
+                <Search
+                  fluid
+                  input={{ fluid: true }}
+                  style={{ width: "100%" }}
+                  onSearchChange={handleSearchChange}
+                  value={searchQuery}
+                  showNoResults={false}
+                  placeholder="Search calculators..."
+                />
               </Box>
               <Divider />
             </Box>
 
-            <Box sx={{ flexGrow: 1, overflowY: 'auto' }}>
+            <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
               {filteredCalculators.length > 0 ? (
                 filteredCalculators.map((item) => (
                   <MenuItem
@@ -177,20 +194,37 @@ function CalculatorOutlet() {
                   </MenuItem>
                 ))
               ) : (
-                <Box sx={{ p: '10px 15px', color: 'rgba(255,255,255,0.5)' }}>
+                <Box sx={{ p: "10px 15px", color: "rgba(255,255,255,0.5)" }}>
                   No calculators found
                 </Box>
               )}
             </Box>
 
-            <Box sx={{ flexShrink: 0, p: 2, textAlign: 'center' }}>
+            <Box sx={{ flexShrink: 0, p: 2, textAlign: "center" }}>
               <Divider inverted />
-              <Stack direction="row" alignItems="center" justifyContent="center" spacing={1}>
-                <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)' }}>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="center"
+                spacing={1}
+              >
+                <Typography
+                  variant="caption"
+                  sx={{ color: "rgba(255,255,255,0.5)" }}
+                >
                   © {new Date().getFullYear()} vivekgautham
                 </Typography>
-                <a className="item" href="https://www.github.com/vivekgautham" target="_blank" rel="noopener noreferrer" style={{ color: '#00b5ad' }}>
-                  <i className="github icon link icon" style={{ margin: 0 }}></i>
+                <a
+                  className="item"
+                  href="https://www.github.com/vivekgautham"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#00b5ad" }}
+                >
+                  <i
+                    className="github icon link icon"
+                    style={{ margin: 0 }}
+                  ></i>
                 </a>
               </Stack>
             </Box>
@@ -202,14 +236,14 @@ function CalculatorOutlet() {
           <Box
             onMouseDown={startResizing}
             sx={{
-              width: '5px',
-              cursor: 'col-resize',
-              position: 'absolute',
+              width: "5px",
+              cursor: "col-resize",
+              position: "absolute",
               top: 0,
               right: 0,
               bottom: 0,
-              '&:hover': {
-                backgroundColor: 'rgba(0, 181, 173, 0.5)',
+              "&:hover": {
+                backgroundColor: "rgba(0, 181, 173, 0.5)",
               },
             }}
           />
@@ -219,20 +253,20 @@ function CalculatorOutlet() {
         <IconButton
           onClick={() => setIsCollapsed(!isCollapsed)}
           sx={{
-            position: 'absolute',
-            right: isCollapsed ? '-40px' : '5px',
-            bottom: '20px',
-            backgroundColor: '#1b1c1d',
-            color: '#00b5ad',
+            position: "absolute",
+            right: isCollapsed ? "-40px" : "5px",
+            bottom: "20px",
+            backgroundColor: "#1b1c1d",
+            color: "#00b5ad",
             zIndex: 101,
-            border: '1px solid #00b5ad',
-            '&:hover': {
-              backgroundColor: '#00b5ad',
-              color: 'white',
+            border: "1px solid #00b5ad",
+            "&:hover": {
+              backgroundColor: "#00b5ad",
+              color: "white",
             },
-            width: '30px',
-            height: '30px',
-            transition: 'all 0.3s ease'
+            width: "30px",
+            height: "30px",
+            transition: "all 0.3s ease",
           }}
           size="small"
         >
@@ -241,14 +275,17 @@ function CalculatorOutlet() {
       </Box>
 
       {/* Main Content Area */}
-      <Box sx={{
-        flexGrow: 1,
-        height: '100%',
-        overflow: 'hidden',
-        width: isCollapsed ? '100vw' : `calc(100vw - ${sidebarWidth}px)`,
-        transition: isResizing ? 'none' : 'width 0.3s ease'
-      }}>
-          {currentPanel && React.createElement(currentPanel, {name: name} as PanelProps)}
+      <Box
+        sx={{
+          flexGrow: 1,
+          height: "100%",
+          overflow: "hidden",
+          width: isCollapsed ? "100vw" : `calc(100vw - ${sidebarWidth}px)`,
+          transition: isResizing ? "none" : "width 0.3s ease",
+        }}
+      >
+        {currentPanel &&
+          React.createElement(currentPanel, { name: name } as PanelProps)}
       </Box>
     </Stack>
   );

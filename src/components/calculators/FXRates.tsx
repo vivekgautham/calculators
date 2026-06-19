@@ -11,13 +11,15 @@ import FXRatesTable from "./fxrates/FXRatesTable";
 const FXRates: React.FunctionComponent<PanelProps> = (props) => {
   return (
     <FXRatesProvider>
-      <Box sx={{
-        width: '100%',
-        p: 2,
-        height: '100vh',
-        overflowY: 'auto',
-        textAlign: 'left'
-      }}>
+      <Box
+        sx={{
+          width: "100%",
+          p: 2,
+          height: "100vh",
+          overflowY: "auto",
+          textAlign: "left",
+        }}
+      >
         <Header as="h2" textAlign="left">
           {props.name}
         </Header>

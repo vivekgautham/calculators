@@ -10,13 +10,15 @@ import FedRatesLineChart from "./fedrates/FedRatesLineChart";
 const FedRates: React.FunctionComponent<PanelProps> = (props) => {
   return (
     <FedRatesProvider>
-      <Box sx={{
-        width: '100%',
-        p: 2,
-        height: '100vh',
-        overflowY: 'auto',
-        textAlign: 'left'
-      }}>
+      <Box
+        sx={{
+          width: "100%",
+          p: 2,
+          height: "100vh",
+          overflowY: "auto",
+          textAlign: "left",
+        }}
+      >
         <Header as="h2" textAlign="left">
           {props.name}
         </Header>

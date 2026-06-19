@@ -4,9 +4,12 @@ import { useGrowthTarget } from "./GrowthTargetContext";
 
 const Inputs: React.FC = () => {
   const {
-    currentAmount, setCurrentAmount,
-    targetAmount, setTargetAmount,
-    years, setYears
+    currentAmount,
+    setCurrentAmount,
+    targetAmount,
+    setTargetAmount,
+    years,
+    setYears,
   } = useGrowthTarget();
 
   return (

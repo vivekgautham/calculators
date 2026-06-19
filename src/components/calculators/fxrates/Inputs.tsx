@@ -7,7 +7,14 @@ import { useFXRates } from "./FXRatesContext";
 import { SERIES_NAMES } from "./constants";
 
 const Inputs: React.FC = () => {
-  const { startDate, setStartDate, endDate, setEndDate, selectedSeries, setSelectedSeries } = useFXRates();
+  const {
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    selectedSeries,
+    setSelectedSeries,
+  } = useFXRates();
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -33,7 +40,11 @@ const Inputs: React.FC = () => {
             value={selectedSeries}
             onChange={(_, newValue) => setSelectedSeries(newValue)}
             renderInput={(params) => (
-              <TextField {...params} label="Select Series" placeholder="Currencies" />
+              <TextField
+                {...params}
+                label="Select Series"
+                placeholder="Currencies"
+              />
             )}
             sx={{ flexGrow: 1, minWidth: 200, maxWidth: 600 }}
           />

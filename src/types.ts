@@ -1,6 +1,3 @@
-
-
-
 export interface PanelProps {
-    name: string,
+  name: string;
 }

@@ -26,7 +26,9 @@ interface RateOfGrowthContextType {
   availableColors: string[];
 }
 
-const RateOfGrowthContext = createContext<RateOfGrowthContextType | undefined>(undefined);
+const RateOfGrowthContext = createContext<RateOfGrowthContextType | undefined>(
+  undefined,
+);
 
 export const AVAILABLE_COLORS = [
   "#008080", // Teal
@@ -41,7 +43,9 @@ export const AVAILABLE_COLORS = [
   "#2C3E50", // Midnight Blue
 ];
 
-export const RateOfGrowthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const RateOfGrowthProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [scenarios, setScenarios] = useState<Scenario[]>([
     {
       key: "init-1",
@@ -67,13 +71,19 @@ export const RateOfGrowthProvider: React.FC<{ children: ReactNode }> = ({ childr
 
   const addScenario = () => {
     // Generate a unique numeric ID for display based on current scenarios
-    const existingIds = scenarios.map(s => parseInt(s.id)).filter(id => !isNaN(id));
-    const nextNum = existingIds.length > 0 ? Math.max(...existingIds) + 1 : scenarios.length + 1;
+    const existingIds = scenarios
+      .map((s) => parseInt(s.id))
+      .filter((id) => !isNaN(id));
+    const nextNum =
+      existingIds.length > 0
+        ? Math.max(...existingIds) + 1
+        : scenarios.length + 1;
 
     // Try to find a color that isn't used yet, or just cycle
-    const usedColors = scenarios.map(s => s.color);
-    const nextColor = AVAILABLE_COLORS.find(c => !usedColors.includes(c)) ||
-                      AVAILABLE_COLORS[scenarios.length % AVAILABLE_COLORS.length];
+    const usedColors = scenarios.map((s) => s.color);
+    const nextColor =
+      AVAILABLE_COLORS.find((c) => !usedColors.includes(c)) ||
+      AVAILABLE_COLORS[scenarios.length % AVAILABLE_COLORS.length];
 
     const newScenario: Scenario = {
       key: `scenario-${Date.now()}`,
@@ -96,7 +106,7 @@ export const RateOfGrowthProvider: React.FC<{ children: ReactNode }> = ({ childr
 
   const updateScenario = (key: string, updates: Partial<Scenario>) => {
     setScenarios(
-      scenarios.map((s) => (s.key === key ? { ...s, ...updates } : s))
+      scenarios.map((s) => (s.key === key ? { ...s, ...updates } : s)),
     );
   };
 
@@ -118,7 +128,9 @@ export const RateOfGrowthProvider: React.FC<{ children: ReactNode }> = ({ childr
 export const useRateOfGrowth = () => {
   const context = useContext(RateOfGrowthContext);
   if (!context) {
-    throw new Error("useRateOfGrowth must be used within a RateOfGrowthProvider");
+    throw new Error(
+      "useRateOfGrowth must be used within a RateOfGrowthProvider",
+    );
   }
   return context;
 };

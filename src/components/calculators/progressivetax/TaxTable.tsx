@@ -21,25 +21,38 @@ const TaxTable: React.FC = () => {
       </Typography>
       <Table size="small">
         <TableHead>
-          <TableRow sx={{ backgroundColor: 'action.hover' }}>
-            <TableCell sx={{ fontWeight: 'bold' }}>Bracket Range</TableCell>
-            <TableCell sx={{ fontWeight: 'bold' }}>Rate</TableCell>
-            <TableCell align="right" sx={{ fontWeight: 'bold' }}>Taxable Amount in Bracket</TableCell>
-            <TableCell align="right" sx={{ fontWeight: 'bold' }}>Tax Paid in Bracket</TableCell>
+          <TableRow sx={{ backgroundColor: "action.hover" }}>
+            <TableCell sx={{ fontWeight: "bold" }}>Bracket Range</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>Rate</TableCell>
+            <TableCell align="right" sx={{ fontWeight: "bold" }}>
+              Taxable Amount in Bracket
+            </TableCell>
+            <TableCell align="right" sx={{ fontWeight: "bold" }}>
+              Tax Paid in Bracket
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {taxResults.map((result) => (
             <TableRow key={result.bracket.id}>
               <TableCell>
-                ${result.bracket.min.toLocaleString()} - {result.bracket.max === null ? "Above" : `$${result.bracket.max.toLocaleString()}`}
+                ${result.bracket.min.toLocaleString()} -{" "}
+                {result.bracket.max === null
+                  ? "Above"
+                  : `$${result.bracket.max.toLocaleString()}`}
               </TableCell>
               <TableCell>{result.bracket.rate}%</TableCell>
               <TableCell align="right">
-                ${result.taxableAmountInBracket.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                $
+                {result.taxableAmountInBracket.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                })}
               </TableCell>
               <TableCell align="right">
-                ${result.taxPaidInBracket.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                $
+                {result.taxPaidInBracket.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                })}
               </TableCell>
             </TableRow>
           ))}

@@ -4,8 +4,6 @@ import HighchartsReact from "highcharts-react-official";
 import { Box, Stack } from "@mui/material";
 import { useBlendedInvestment } from "./BlendedInvestmentContext";
 
-
-
 const BlendedPieCharts: React.FC = () => {
   const { investments, totalYears } = useBlendedInvestment();
 
@@ -51,13 +49,14 @@ const BlendedPieCharts: React.FC = () => {
     subtitle: {
       text: `Total: $${total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       style: {
-        fontSize: '16px',
-        fontWeight: 'bold',
-        color: '#333'
-      }
+        fontSize: "16px",
+        fontWeight: "bold",
+        color: "#333",
+      },
     },
     tooltip: {
-      pointFormat: "{series.name}: <b>${point.y:,.2f} ({point.percentage:.1f}%)</b>",
+      pointFormat:
+        "{series.name}: <b>${point.y:,.2f} ({point.percentage:.1f}%)</b>",
     },
     plotOptions: {
       pie: {
@@ -82,12 +81,30 @@ const BlendedPieCharts: React.FC = () => {
   });
 
   return (
-    <Stack direction={{ xs: "column", md: "row" }} spacing={2} sx={{ width: "100%" }}>
+    <Stack
+      direction={{ xs: "column", md: "row" }}
+      spacing={2}
+      sx={{ width: "100%" }}
+    >
       <Box sx={{ flex: 1 }}>
-        <HighchartsReact highcharts={Highcharts} options={getChartOptions("Initial Composition", initialTotal, initialData)} />
+        <HighchartsReact
+          highcharts={Highcharts}
+          options={getChartOptions(
+            "Initial Composition",
+            initialTotal,
+            initialData,
+          )}
+        />
       </Box>
       <Box sx={{ flex: 1 }}>
-        <HighchartsReact highcharts={Highcharts} options={getChartOptions(`Final Composition (Year ${totalYears})`, finalTotal, finalData)} />
+        <HighchartsReact
+          highcharts={Highcharts}
+          options={getChartOptions(
+            `Final Composition (Year ${totalYears})`,
+            finalTotal,
+            finalData,
+          )}
+        />
       </Box>
     </Stack>
   );

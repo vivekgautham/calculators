@@ -11,13 +11,15 @@ import BlendedPieCharts from "./blendedinvestment/BlendedPieCharts";
 const BlendedInvestment: React.FunctionComponent<PanelProps> = (props) => {
   return (
     <BlendedInvestmentProvider>
-      <Box sx={{
-        width: '100%',
-        p: 2,
-        height: '100vh',
-        overflowY: 'auto',
-        textAlign: 'left'
-      }}>
+      <Box
+        sx={{
+          width: "100%",
+          p: 2,
+          height: "100vh",
+          overflowY: "auto",
+          textAlign: "left",
+        }}
+      >
         <Header as="h2" textAlign="left">
           {props.name}
         </Header>

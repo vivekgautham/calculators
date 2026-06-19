@@ -29,10 +29,18 @@ const PlanTable: React.FC = () => {
       <Table aria-label="financial plan table" size="small">
         <TableHead>
           <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
-            <TableCell><strong>Year</strong></TableCell>
-            <TableCell align="right"><strong>Projected Balance</strong></TableCell>
-            <TableCell align="right"><strong>Withdrawn Amount</strong></TableCell>
-            <TableCell align="right"><strong>Remaining Balance</strong></TableCell>
+            <TableCell>
+              <strong>Year</strong>
+            </TableCell>
+            <TableCell align="right">
+              <strong>Projected Balance</strong>
+            </TableCell>
+            <TableCell align="right">
+              <strong>Withdrawn Amount</strong>
+            </TableCell>
+            <TableCell align="right">
+              <strong>Remaining Balance</strong>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -41,18 +49,26 @@ const PlanTable: React.FC = () => {
               key={row.year}
               sx={{
                 "&:last-child td, &:last-child th": { border: 0 },
-                backgroundColor: row.remainingBalance < 0 ? "#fff0f0" : "inherit"
+                backgroundColor:
+                  row.remainingBalance < 0 ? "#fff0f0" : "inherit",
               }}
             >
               <TableCell component="th" scope="row">
                 {row.year === 0 ? "Initial" : `Year ${row.year}`}
               </TableCell>
-              <TableCell align="right">${formatCurrency(row.projectedBalance)}</TableCell>
-              <TableCell align="right">${formatCurrency(row.withdrawnAmount)}</TableCell>
-              <TableCell align="right" sx={{
-                fontWeight: row.remainingBalance < 0 ? "bold" : "normal",
-                color: row.remainingBalance < 0 ? "error.main" : "inherit"
-              }}>
+              <TableCell align="right">
+                ${formatCurrency(row.projectedBalance)}
+              </TableCell>
+              <TableCell align="right">
+                ${formatCurrency(row.withdrawnAmount)}
+              </TableCell>
+              <TableCell
+                align="right"
+                sx={{
+                  fontWeight: row.remainingBalance < 0 ? "bold" : "normal",
+                  color: row.remainingBalance < 0 ? "error.main" : "inherit",
+                }}
+              >
                 ${formatCurrency(row.remainingBalance)}
               </TableCell>
             </TableRow>

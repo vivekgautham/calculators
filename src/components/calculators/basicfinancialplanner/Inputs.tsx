@@ -18,7 +18,11 @@ const Inputs: React.FC = () => {
 
   return (
     <Box sx={{ p: 1 }}>
-      <Stack direction={{ xs: "column", md: "row" }} spacing={2} sx={{ width: "100%" }}>
+      <Stack
+        direction={{ xs: "column", md: "row" }}
+        spacing={2}
+        sx={{ width: "100%" }}
+      >
         <TextField
           label="Corpus Amount"
           type="number"

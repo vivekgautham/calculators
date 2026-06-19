@@ -17,7 +17,11 @@ const GrowthTarget: React.FC<PanelProps> = ({ name }) => {
         }}
       >
         <Container maxWidth="lg">
-          <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold", color: "#1a2035" }}>
+          <Typography
+            variant="h4"
+            gutterBottom
+            sx={{ fontWeight: "bold", color: "#1a2035" }}
+          >
             {name}
           </Typography>
           <Inputs />

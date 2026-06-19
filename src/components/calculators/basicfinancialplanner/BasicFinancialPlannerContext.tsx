@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, ReactNode, useMemo } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useMemo,
+} from "react";
 
 export interface YearlyData {
   year: number;
@@ -22,9 +28,13 @@ interface BasicFinancialPlannerContextType {
   setCorpusGrowthRate: (value: number) => void;
 }
 
-const BasicFinancialPlannerContext = createContext<BasicFinancialPlannerContextType | undefined>(undefined);
+const BasicFinancialPlannerContext = createContext<
+  BasicFinancialPlannerContextType | undefined
+>(undefined);
 
-export const BasicFinancialPlannerProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const BasicFinancialPlannerProvider: React.FC<{
+  children: ReactNode;
+}> = ({ children }) => {
   const [corpusAmount, setCorpusAmount] = useState<number>(1000000);
   const [yearsToGo, setYearsToGo] = useState<number>(35);
   const [annualExpense, setAnnualExpense] = useState<number>(50000);
@@ -46,7 +56,8 @@ export const BasicFinancialPlannerProvider: React.FC<{ children: ReactNode }> = 
     let currentExpense = annualExpense;
 
     for (let year = 1; year <= yearsToGo; year++) {
-      const projectedBalance = currentRemainingBalance * (1 + corpusGrowthRate / 100);
+      const projectedBalance =
+        currentRemainingBalance * (1 + corpusGrowthRate / 100);
       const withdrawnAmount = currentExpense * (1 + inflationRate / 100);
       const remainingBalance = projectedBalance - withdrawnAmount;
 
@@ -69,7 +80,7 @@ export const BasicFinancialPlannerProvider: React.FC<{ children: ReactNode }> = 
     if (Math.abs(r - 1) < 0.0001) {
       return yearsToGo;
     }
-    return r * (1 - Math.pow(r, yearsToGo)) / (1 - r);
+    return (r * (1 - Math.pow(r, yearsToGo))) / (1 - r);
   }, [yearsToGo, inflationRate, corpusGrowthRate]);
 
   return (
@@ -97,7 +108,9 @@ export const BasicFinancialPlannerProvider: React.FC<{ children: ReactNode }> = 
 export const useBasicFinancialPlanner = () => {
   const context = useContext(BasicFinancialPlannerContext);
   if (!context) {
-    throw new Error("useBasicFinancialPlanner must be used within a BasicFinancialPlannerProvider");
+    throw new Error(
+      "useBasicFinancialPlanner must be used within a BasicFinancialPlannerProvider",
+    );
   }
   return context;
 };

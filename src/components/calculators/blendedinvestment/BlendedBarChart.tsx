@@ -72,7 +72,9 @@ const BlendedBarChart: React.FC = () => {
           },
         },
         labels: {
-          formatter: function (this: Highcharts.AxisLabelsFormatterContextObject) {
+          formatter: function (
+            this: Highcharts.AxisLabelsFormatterContextObject,
+          ) {
             const val = this.value as number;
             return "$" + formatNumber(val);
           },

@@ -16,9 +16,13 @@ interface StockAnalysisContextType {
   clearData: () => void;
 }
 
-const StockAnalysisContext = createContext<StockAnalysisContextType | undefined>(undefined);
+const StockAnalysisContext = createContext<
+  StockAnalysisContextType | undefined
+>(undefined);
 
-export const StockAnalysisProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const StockAnalysisProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [data, setDataState] = useState<StockDataPoint[]>([]);
   const [fileName, setFileName] = useState<string>("");
 
@@ -51,7 +55,9 @@ export const StockAnalysisProvider: React.FC<{ children: ReactNode }> = ({ child
 export const useStockAnalysis = () => {
   const context = useContext(StockAnalysisContext);
   if (!context) {
-    throw new Error("useStockAnalysis must be used within a StockAnalysisProvider");
+    throw new Error(
+      "useStockAnalysis must be used within a StockAnalysisProvider",
+    );
   }
   return context;
 };

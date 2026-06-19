@@ -26,7 +26,9 @@ const PlanBarChart: React.FC = () => {
   const { planData } = useBasicFinancialPlanner();
 
   const chartOptions = useMemo(() => {
-    const categories = planData.map((d) => (d.year === 0 ? "Initial" : `Yr ${d.year}`));
+    const categories = planData.map((d) =>
+      d.year === 0 ? "Initial" : `Yr ${d.year}`,
+    );
     const seriesData = planData.map((d) => ({
       y: d.remainingBalance,
       color: d.remainingBalance < 0 ? "#d32f2f" : "#2e7d32", // Material-UI Error and Success colors
@@ -53,14 +55,18 @@ const PlanBarChart: React.FC = () => {
         title: {
           text: "Remaining Balance",
         },
-        plotLines: [{
-          value: 0,
-          width: 2,
-          color: '#888',
-          zIndex: 1
-        }],
+        plotLines: [
+          {
+            value: 0,
+            width: 2,
+            color: "#888",
+            zIndex: 1,
+          },
+        ],
         labels: {
-          formatter: function (this: Highcharts.AxisLabelsFormatterContextObject) {
+          formatter: function (
+            this: Highcharts.AxisLabelsFormatterContextObject,
+          ) {
             const val = this.value as number;
             const prefix = val < 0 ? "-$" : "$";
             return prefix + formatNumber(Math.abs(val));
@@ -69,9 +75,10 @@ const PlanBarChart: React.FC = () => {
       },
       tooltip: {
         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat: '<tr><td style="color:{series.color};padding:0">Balance: </td>' +
+        pointFormat:
+          '<tr><td style="color:{series.color};padding:0">Balance: </td>' +
           '<td style="padding:0"><b>${point.y:,.0f}</b></td></tr>',
-        footerFormat: '</table>',
+        footerFormat: "</table>",
         shared: true,
         useHTML: true,
       },
@@ -82,11 +89,13 @@ const PlanBarChart: React.FC = () => {
           borderWidth: 0,
         },
       },
-      series: [{
-        name: "Remaining Balance",
-        data: seriesData,
-        showInLegend: false,
-      }],
+      series: [
+        {
+          name: "Remaining Balance",
+          data: seriesData,
+          showInLegend: false,
+        },
+      ],
       credits: {
         enabled: false,
       },

@@ -1,11 +1,8 @@
 import "./App.css";
 import CalculatorOutlet from "./components/CalculatorOutlet";
 
-
 function App() {
-  return (
-      <CalculatorOutlet />
-  );
+  return <CalculatorOutlet />;
 }
 
 export default App;

@@ -24,10 +24,16 @@ interface FXRatesContextType {
 
 const FXRatesContext = createContext<FXRatesContextType | undefined>(undefined);
 
-export const FXRatesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs().subtract(1, 'year'));
+export const FXRatesProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
+  const [startDate, setStartDate] = useState<Dayjs | null>(
+    dayjs().subtract(1, "year"),
+  );
   const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
-  const [selectedSeries, setSelectedSeries] = useState<SeriesInfo[]>([SERIES_NAMES[0]]);
+  const [selectedSeries, setSelectedSeries] = useState<SeriesInfo[]>([
+    SERIES_NAMES[0],
+  ]);
 
   return (
     <FXRatesContext.Provider

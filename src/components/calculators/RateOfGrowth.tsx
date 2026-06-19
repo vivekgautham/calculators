@@ -10,13 +10,15 @@ import GrowthLineChart from "./rateofgrowth/GrowthLineChart";
 const RateOfGrowth: React.FunctionComponent<PanelProps> = (props) => {
   return (
     <RateOfGrowthProvider>
-      <Box sx={{
-        width: '100%',
-        p: 2,
-        height: '100vh',
-        overflowY: 'auto',
-        textAlign: 'left' // Ensure content is left-aligned
-      }}>
+      <Box
+        sx={{
+          width: "100%",
+          p: 2,
+          height: "100vh",
+          overflowY: "auto",
+          textAlign: "left", // Ensure content is left-aligned
+        }}
+      >
         <Header as="h2" textAlign="left">
           {props.name}
         </Header>

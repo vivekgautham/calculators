@@ -16,14 +16,18 @@ const Inputs: React.FC = () => {
           <DatePicker
             label="Start Date"
             value={startDate}
-            onChange={(newValue: Dayjs | null) => newValue && setStartDate(newValue)}
-            slotProps={{ textField: { size: 'small', fullWidth: true } }}
+            onChange={(newValue: Dayjs | null) =>
+              newValue && setStartDate(newValue)
+            }
+            slotProps={{ textField: { size: "small", fullWidth: true } }}
           />
           <DatePicker
             label="End Date"
             value={endDate}
-            onChange={(newValue: Dayjs | null) => newValue && setEndDate(newValue)}
-            slotProps={{ textField: { size: 'small', fullWidth: true } }}
+            onChange={(newValue: Dayjs | null) =>
+              newValue && setEndDate(newValue)
+            }
+            slotProps={{ textField: { size: "small", fullWidth: true } }}
           />
         </Stack>
       </Box>

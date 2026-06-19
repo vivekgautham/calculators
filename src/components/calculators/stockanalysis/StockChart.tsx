@@ -21,9 +21,9 @@ const StockChart: React.FC = () => {
   const chartOptions = useMemo(() => {
     if (data.length === 0) return null;
 
-    const closeData = data.map(d => [d.date, d.close]);
-    const highData = data.map(d => [d.date, d.high]);
-    const lowData = data.map(d => [d.date, d.low]);
+    const closeData = data.map((d) => [d.date, d.close]);
+    const highData = data.map((d) => [d.date, d.high]);
+    const lowData = data.map((d) => [d.date, d.low]);
 
     return {
       chart: {
@@ -77,12 +77,12 @@ const StockChart: React.FC = () => {
             symbol: "circle",
             radius: 8,
             lineWidth: 2,
-            lineColor: "#B8860B"
+            lineColor: "#B8860B",
           },
           tooltip: {
-            pointFormat: "<b>High during the period: ${point.y:,.2f}</b><br/>"
+            pointFormat: "<b>High during the period: ${point.y:,.2f}</b><br/>",
           },
-          zIndex: 5
+          zIndex: 5,
         },
         {
           name: "Low during the period",
@@ -94,12 +94,12 @@ const StockChart: React.FC = () => {
             symbol: "circle",
             radius: 8,
             lineWidth: 2,
-            lineColor: "#7B0024"
+            lineColor: "#7B0024",
           },
           tooltip: {
-            pointFormat: "<b>Low during the period: ${point.y:,.2f}</b><br/>"
+            pointFormat: "<b>Low during the period: ${point.y:,.2f}</b><br/>",
           },
-          zIndex: 5
+          zIndex: 5,
         },
         {
           name: "High",
@@ -134,8 +134,17 @@ const StockChart: React.FC = () => {
 
   if (data.length === 0) {
     return (
-      <Box sx={{ p: 4, textAlign: "center", border: "1px dashed #ccc", borderRadius: 2 }}>
-        <Typography color="textSecondary">No data to display. Please upload a CSV file.</Typography>
+      <Box
+        sx={{
+          p: 4,
+          textAlign: "center",
+          border: "1px dashed #ccc",
+          borderRadius: 2,
+        }}
+      >
+        <Typography color="textSecondary">
+          No data to display. Please upload a CSV file.
+        </Typography>
       </Box>
     );
   }
@@ -146,23 +155,57 @@ const StockChart: React.FC = () => {
 
       <Stack direction={{ xs: "column", sm: "row" }} spacing={2} sx={{ mt: 2 }}>
         {maxPoint && (
-          <Box sx={{ flex: 1, p: 2, bgcolor: "rgba(255, 215, 0, 0.1)", borderRadius: 1, border: "1px solid #FFD700" }}>
+          <Box
+            sx={{
+              flex: 1,
+              p: 2,
+              bgcolor: "rgba(255, 215, 0, 0.1)",
+              borderRadius: 1,
+              border: "1px solid #FFD700",
+            }}
+          >
             <Typography variant="h6" color="primary">
               High during the period
             </Typography>
             <Typography variant="body1">
-              The high closing price of <b>${maxPoint.close.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</b> was reached on <b>{dayjs(maxPoint.date).format("MMMM D, YYYY")}</b>.
+              The high closing price of{" "}
+              <b>
+                $
+                {maxPoint.close.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </b>{" "}
+              was reached on{" "}
+              <b>{dayjs(maxPoint.date).format("MMMM D, YYYY")}</b>.
             </Typography>
           </Box>
         )}
 
         {minPoint && (
-          <Box sx={{ flex: 1, p: 2, bgcolor: "rgba(199, 0, 57, 0.1)", borderRadius: 1, border: "1px solid #C70039" }}>
+          <Box
+            sx={{
+              flex: 1,
+              p: 2,
+              bgcolor: "rgba(199, 0, 57, 0.1)",
+              borderRadius: 1,
+              border: "1px solid #C70039",
+            }}
+          >
             <Typography variant="h6" color="error">
               Low during the period
             </Typography>
             <Typography variant="body1">
-              The low closing price of <b>${minPoint.close.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</b> was reached on <b>{dayjs(minPoint.date).format("MMMM D, YYYY")}</b>.
+              The low closing price of{" "}
+              <b>
+                $
+                {minPoint.close.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </b>{" "}
+              was reached on{" "}
+              <b>{dayjs(minPoint.date).format("MMMM D, YYYY")}</b>.
             </Typography>
           </Box>
         )}

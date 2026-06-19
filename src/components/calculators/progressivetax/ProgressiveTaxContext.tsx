@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, ReactNode, useMemo } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useMemo,
+} from "react";
 
 export interface Bracket {
   id: string;
@@ -25,7 +31,9 @@ interface ProgressiveTaxContextType {
   effectiveRate: number;
 }
 
-const ProgressiveTaxContext = createContext<ProgressiveTaxContextType | undefined>(undefined);
+const ProgressiveTaxContext = createContext<
+  ProgressiveTaxContextType | undefined
+>(undefined);
 
 const DEFAULT_BRACKETS: Bracket[] = [
   { id: "1", min: 0, max: 10000, rate: 10 },
@@ -34,13 +42,17 @@ const DEFAULT_BRACKETS: Bracket[] = [
   { id: "4", min: 100000, max: null, rate: 40 },
 ];
 
-export const ProgressiveTaxProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const ProgressiveTaxProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [income, setIncome] = useState<number>(75000);
   const [brackets, setBrackets] = useState<Bracket[]>(DEFAULT_BRACKETS);
 
   const addBracket = () => {
     const lastBracket = brackets[brackets.length - 1];
-    const newMin = lastBracket ? (lastBracket.max ?? lastBracket.min + 10000) : 0;
+    const newMin = lastBracket
+      ? (lastBracket.max ?? lastBracket.min + 10000)
+      : 0;
     const newBracket: Bracket = {
       id: Date.now().toString(),
       min: newMin,
@@ -50,11 +62,14 @@ export const ProgressiveTaxProvider: React.FC<{ children: ReactNode }> = ({ chil
 
     // If the previous last bracket had max: null, we should probably give it a max
     if (lastBracket && lastBracket.max === null) {
-        const updatedBrackets = [...brackets];
-        updatedBrackets[updatedBrackets.length - 1] = { ...lastBracket, max: newMin };
-        setBrackets([...updatedBrackets, newBracket]);
+      const updatedBrackets = [...brackets];
+      updatedBrackets[updatedBrackets.length - 1] = {
+        ...lastBracket,
+        max: newMin,
+      };
+      setBrackets([...updatedBrackets, newBracket]);
     } else {
-        setBrackets([...brackets, newBracket]);
+      setBrackets([...brackets, newBracket]);
     }
   };
 
@@ -65,9 +80,7 @@ export const ProgressiveTaxProvider: React.FC<{ children: ReactNode }> = ({ chil
   };
 
   const updateBracket = (id: string, updates: Partial<Bracket>) => {
-    setBrackets(
-      brackets.map((b) => (b.id === id ? { ...b, ...updates } : b))
-    );
+    setBrackets(brackets.map((b) => (b.id === id ? { ...b, ...updates } : b)));
   };
 
   const { taxResults, totalTax, effectiveRate } = useMemo(() => {
@@ -125,7 +138,9 @@ export const ProgressiveTaxProvider: React.FC<{ children: ReactNode }> = ({ chil
 export const useProgressiveTax = () => {
   const context = useContext(ProgressiveTaxContext);
   if (!context) {
-    throw new Error("useProgressiveTax must be used within a ProgressiveTaxProvider");
+    throw new Error(
+      "useProgressiveTax must be used within a ProgressiveTaxProvider",
+    );
   }
   return context;
 };

@@ -13,17 +13,27 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
-import { useRateOfGrowth, GrowthFrequency, AVAILABLE_COLORS } from "./RateOfGrowthContext";
+import {
+  useRateOfGrowth,
+  GrowthFrequency,
+  AVAILABLE_COLORS,
+} from "./RateOfGrowthContext";
 
 const Inputs: React.FC = () => {
-  const { scenarios, addScenario, removeScenario, updateScenario } = useRateOfGrowth();
+  const { scenarios, addScenario, removeScenario, updateScenario } =
+    useRateOfGrowth();
 
   return (
     <Box sx={{ p: 1 }}>
       <Stack spacing={2}>
         {scenarios.map((scenario, index) => (
           <Box key={scenario.key}>
-            <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing={1}
+              sx={{ mb: 1 }}
+            >
               <Box
                 sx={{
                   width: 16,
@@ -33,7 +43,10 @@ const Inputs: React.FC = () => {
                   border: "1px solid rgba(0,0,0,0.1)",
                 }}
               />
-              <Typography variant="subtitle2" sx={{ fontWeight: "bold", flexGrow: 1 }}>
+              <Typography
+                variant="subtitle2"
+                sx={{ fontWeight: "bold", flexGrow: 1 }}
+              >
                 {scenario.name} (ID: {scenario.id})
               </Typography>
 
@@ -69,14 +82,18 @@ const Inputs: React.FC = () => {
               <TextField
                 label="Scenario ID"
                 value={scenario.id}
-                onChange={(e) => updateScenario(scenario.key, { id: e.target.value })}
+                onChange={(e) =>
+                  updateScenario(scenario.key, { id: e.target.value })
+                }
                 fullWidth
                 size="small"
               />
               <TextField
                 label="Scenario Name"
                 value={scenario.name}
-                onChange={(e) => updateScenario(scenario.key, { name: e.target.value })}
+                onChange={(e) =>
+                  updateScenario(scenario.key, { name: e.target.value })
+                }
                 fullWidth
                 size="small"
               />
@@ -86,7 +103,9 @@ const Inputs: React.FC = () => {
                 <Select
                   value={scenario.color}
                   label="Color"
-                  onChange={(e) => updateScenario(scenario.key, { color: e.target.value })}
+                  onChange={(e) =>
+                    updateScenario(scenario.key, { color: e.target.value })
+                  }
                 >
                   {AVAILABLE_COLORS.map((color) => (
                     <MenuItem key={color} value={color}>
@@ -111,7 +130,9 @@ const Inputs: React.FC = () => {
                 type="number"
                 value={scenario.initialAmount}
                 onChange={(e) =>
-                  updateScenario(scenario.key, { initialAmount: Number(e.target.value) })
+                  updateScenario(scenario.key, {
+                    initialAmount: Number(e.target.value),
+                  })
                 }
                 fullWidth
                 size="small"
@@ -151,7 +172,9 @@ const Inputs: React.FC = () => {
                 type="number"
                 value={scenario.timeSpan}
                 onChange={(e) =>
-                  updateScenario(scenario.key, { timeSpan: Number(e.target.value) })
+                  updateScenario(scenario.key, {
+                    timeSpan: Number(e.target.value),
+                  })
                 }
                 fullWidth
                 size="small"

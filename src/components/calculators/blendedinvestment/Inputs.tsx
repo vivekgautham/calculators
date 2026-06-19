@@ -13,7 +13,10 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
-import { useBlendedInvestment, AVAILABLE_COLORS } from "./BlendedInvestmentContext";
+import {
+  useBlendedInvestment,
+  AVAILABLE_COLORS,
+} from "./BlendedInvestmentContext";
 
 const Inputs: React.FC = () => {
   const {
@@ -51,7 +54,12 @@ const Inputs: React.FC = () => {
           <Stack spacing={2}>
             {investments.map((investment, index) => (
               <Box key={investment.key}>
-                <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  spacing={1}
+                  sx={{ mb: 1 }}
+                >
                   <Box
                     sx={{
                       width: 16,
@@ -61,7 +69,10 @@ const Inputs: React.FC = () => {
                       border: "1px solid rgba(0,0,0,0.1)",
                     }}
                   />
-                  <Typography variant="subtitle2" sx={{ fontWeight: "bold", flexGrow: 1 }}>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{ fontWeight: "bold", flexGrow: 1 }}
+                  >
                     {investment.name} (ID: {investment.id})
                   </Typography>
 
@@ -97,7 +108,9 @@ const Inputs: React.FC = () => {
                   <TextField
                     label="Name"
                     value={investment.name}
-                    onChange={(e) => updateInvestment(investment.key, { name: e.target.value })}
+                    onChange={(e) =>
+                      updateInvestment(investment.key, { name: e.target.value })
+                    }
                     fullWidth
                     size="small"
                   />
@@ -107,11 +120,19 @@ const Inputs: React.FC = () => {
                     <Select
                       value={investment.color}
                       label="Color"
-                      onChange={(e) => updateInvestment(investment.key, { color: e.target.value })}
+                      onChange={(e) =>
+                        updateInvestment(investment.key, {
+                          color: e.target.value,
+                        })
+                      }
                     >
                       {AVAILABLE_COLORS.map((color) => (
                         <MenuItem key={color} value={color}>
-                          <Stack direction="row" alignItems="center" spacing={1}>
+                          <Stack
+                            direction="row"
+                            alignItems="center"
+                            spacing={1}
+                          >
                             <Box
                               sx={{
                                 width: 14,
@@ -132,7 +153,9 @@ const Inputs: React.FC = () => {
                     type="number"
                     value={investment.amount}
                     onChange={(e) =>
-                      updateInvestment(investment.key, { amount: Number(e.target.value) })
+                      updateInvestment(investment.key, {
+                        amount: Number(e.target.value),
+                      })
                     }
                     fullWidth
                     size="small"
@@ -143,7 +166,9 @@ const Inputs: React.FC = () => {
                     type="number"
                     value={investment.rate}
                     onChange={(e) =>
-                      updateInvestment(investment.key, { rate: Number(e.target.value) })
+                      updateInvestment(investment.key, {
+                        rate: Number(e.target.value),
+                      })
                     }
                     fullWidth
                     size="small"

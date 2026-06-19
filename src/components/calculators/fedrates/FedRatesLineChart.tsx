@@ -15,7 +15,7 @@ const FedRatesLineChart: React.FC = () => {
       name: s.type,
       data: s.observations.map((obs) => [obs.date, obs.value]),
       color: AVAILABLE_COLORS[index % AVAILABLE_COLORS.length],
-      type: 'line' as const,
+      type: "line" as const,
       marker: { enabled: false },
     }));
 
@@ -48,7 +48,7 @@ const FedRatesLineChart: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
         <CircularProgress />
       </Box>
     );
@@ -57,14 +57,18 @@ const FedRatesLineChart: React.FC = () => {
   if (isError) {
     return (
       <Box sx={{ p: 2 }}>
-        <Typography color="error">Error loading Fed rates data. Please try a different date range.</Typography>
+        <Typography color="error">
+          Error loading Fed rates data. Please try a different date range.
+        </Typography>
       </Box>
     );
   }
 
   return (
     <Box sx={{ width: "100%" }}>
-      {chartOptions && <HighchartsReact highcharts={Highcharts} options={chartOptions} />}
+      {chartOptions && (
+        <HighchartsReact highcharts={Highcharts} options={chartOptions} />
+      )}
     </Box>
   );
 };
