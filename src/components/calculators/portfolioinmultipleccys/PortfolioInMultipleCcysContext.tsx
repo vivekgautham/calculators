@@ -31,17 +31,17 @@ export const PortfolioInMultipleCcysProvider: React.FC<{
       key: "ccy-1",
       id: "1",
       ccyName: "USD",
-      corpusAmount: 100000,
+      corpusAmount: 75000000,
       growthRate: 8,
-      annualIncDecRate: 2,
+      annualIncDecRate: 0,
     },
     {
       key: "ccy-2",
       id: "2",
-      ccyName: "EUR",
-      corpusAmount: 80000,
+      ccyName: "INR",
+      corpusAmount: 75000000,
       growthRate: 6,
-      annualIncDecRate: 1.5,
+      annualIncDecRate: 0,
     },
   ]);
 
@@ -60,7 +60,7 @@ export const PortfolioInMultipleCcysProvider: React.FC<{
       ccyName: `CCY-${nextNum}`,
       corpusAmount: 50000,
       growthRate: 5,
-      annualIncDecRate: 1,
+      annualIncDecRate: 0,
     };
     setCurrencies([...currencies, newCurrency]);
   };
