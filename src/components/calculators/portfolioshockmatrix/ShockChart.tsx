@@ -92,6 +92,8 @@ const ShockChart: React.FC = () => {
             label: {
               text: `Initial Corpus: $${formatNumber(initVal)}`,
               align: "left",
+              verticalAlign: "top",
+              y: -5,
               x: 10,
               style: {
                 color: "#d32f2f",
@@ -108,6 +110,8 @@ const ShockChart: React.FC = () => {
             label: {
               text: `Current Corpus: $${formatNumber(currentVal)}`,
               align: "right",
+              verticalAlign: "top",
+              y: -5,
               x: -10,
               style: {
                 color: "#1976d2",
