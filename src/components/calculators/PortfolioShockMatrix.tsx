@@ -1,6 +1,6 @@
 import React from "react";
 import { Header } from "semantic-ui-react";
-import { Paper, Box, Stack, Grid } from "@mui/material";
+import { Paper, Box, Stack } from "@mui/material";
 import { CALCULATORS_AND_SIMULATORS } from "../../config";
 import { PanelProps } from "../../types";
 import { PortfolioShockMatrixProvider } from "./portfolioshockmatrix/PortfolioShockMatrixContext";
@@ -36,19 +36,15 @@ const PortfolioShockMatrix: React.FunctionComponent<PanelProps> = (props) => {
             <Inputs />
           </Paper>
 
-          {/* Visualization and Matrix Table */}
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 12, lg: 6 }}>
-              <Paper elevation={3} sx={{ p: 2, height: "100%" }}>
-                <ShockTable />
-              </Paper>
-            </Grid>
-            <Grid size={{ xs: 12, lg: 6 }}>
-              <Paper elevation={3} sx={{ p: 2, height: "100%" }}>
-                <ShockChart />
-              </Paper>
-            </Grid>
-          </Grid>
+          {/* Visualization Chart */}
+          <Paper elevation={3} sx={{ p: 2 }}>
+            <ShockChart />
+          </Paper>
+
+          {/* Scenario Shock Matrix Table */}
+          <Paper elevation={3} sx={{ p: 2 }}>
+            <ShockTable />
+          </Paper>
         </Stack>
       </Box>
     </PortfolioShockMatrixProvider>
