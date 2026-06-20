@@ -7,6 +7,7 @@ import ProgressiveTax from "./components/calculators/ProgressiveTax";
 import BlendedInvestment from "./components/calculators/BlendedInvestment";
 import StockAnalysis from "./components/calculators/StockAnalysis";
 import PortfolioInMultipleCcys from "./components/calculators/PortfolioInMultipleCcys";
+import PortfolioShockMatrix from "./components/calculators/PortfolioShockMatrix";
 
 export const CALCULATORS_AND_SIMULATORS = [
   {
@@ -79,5 +80,13 @@ export const CALCULATORS_AND_SIMULATORS = [
     description:
       "Analyze and track investment portfolios across multiple currencies.",
     panel: PortfolioInMultipleCcys,
+  },
+  {
+    name: "Portfolio Shock Matrix",
+    value: "portfolioshockmatrix",
+    tags: ["finance", "portfolio", "risk", "simulation"],
+    description:
+      "Simulate and visualize the impact of market shocks (-40% to +40%) on your investment portfolio.",
+    panel: PortfolioShockMatrix,
   },
 ];
