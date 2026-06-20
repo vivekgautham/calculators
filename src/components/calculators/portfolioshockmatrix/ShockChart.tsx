@@ -35,14 +35,14 @@ const ShockChart: React.FC = () => {
     // Series 1: Corpus remaining (Base)
     const baseCorpusData = scenarios.map((s) => ({
       y: s.isNegativeScenario ? s.finalValue : s.initialCorpus,
-      color: s.isNegativeScenario ? "#e53935" : "#a5d6a7", // Bright Red if below corpus, Light Green if above
+      color: s.isNegativeScenario ? "#e53935" : "#2e7d32", // Bright Red if below corpus, Dark Green if above
       name: s.isNegativeScenario ? "Fund Value (Loss)" : "Base Corpus",
     }));
 
     // Series 2: Net Gain
     const gainData = scenarios.map((s) => ({
       y: s.isNegativeScenario ? 0 : s.netProfitLoss,
-      color: "#2e7d32", // Rich Dark Green for gain
+      color: "#a5d6a7", // Soft Light Green for gain
       name: "Portfolio Gain",
     }));
 
@@ -61,6 +61,7 @@ const ShockChart: React.FC = () => {
       },
       yAxis: {
         min: 0,
+        reversedStacks: false,
         title: {
           text: "Total Fund Value ($)",
         },
@@ -154,13 +155,13 @@ const ShockChart: React.FC = () => {
           name: "Base Corpus",
           data: baseCorpusData,
           showInLegend: true,
-          color: "#a5d6a7",
+          color: "#2e7d32",
         },
         {
           name: "Portfolio Gain",
           data: gainData,
           showInLegend: true,
-          color: "#2e7d32",
+          color: "#a5d6a7",
         },
       ],
       credits: {
