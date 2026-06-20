@@ -23,12 +23,14 @@ const formatNumber = (value: number): string => {
 };
 
 const ShockChart: React.FC = () => {
-  const { scenarios } = usePortfolioShockMatrix();
+  const { scenarios, initialCorpus, currentCorpus } = usePortfolioShockMatrix();
 
   const chartOptions = useMemo(() => {
     const categories = scenarios.map(
       (s) => `${s.shockPercent > 0 ? "+" : ""}${s.shockPercent}%`,
     );
+    const initVal = parseFloat(initialCorpus.toString()) || 0;
+    const currentVal = parseFloat(currentCorpus.toString()) || 0;
 
     // Series 1: Corpus remaining (Base)
     const baseCorpusData = scenarios.map((s) => ({
@@ -80,6 +82,40 @@ const ShockChart: React.FC = () => {
             return "$" + formatNumber(this.total);
           },
         },
+        plotLines: [
+          {
+            value: initVal,
+            color: "#d32f2f", // Red
+            dashStyle: "Dash",
+            width: 2,
+            zIndex: 5,
+            label: {
+              text: `Initial Corpus: $${formatNumber(initVal)}`,
+              align: "left",
+              x: 10,
+              style: {
+                color: "#d32f2f",
+                fontWeight: "bold",
+              },
+            },
+          },
+          {
+            value: currentVal,
+            color: "#1976d2", // Blue
+            dashStyle: "Dash",
+            width: 2,
+            zIndex: 5,
+            label: {
+              text: `Current Corpus: $${formatNumber(currentVal)}`,
+              align: "right",
+              x: -10,
+              style: {
+                color: "#1976d2",
+                fontWeight: "bold",
+              },
+            },
+          },
+        ],
       },
       legend: {
         enabled: true,
@@ -127,7 +163,7 @@ const ShockChart: React.FC = () => {
         enabled: false,
       },
     };
-  }, [scenarios]);
+  }, [scenarios, initialCorpus, currentCorpus]);
 
   return (
     <Box sx={{ p: 1 }}>
