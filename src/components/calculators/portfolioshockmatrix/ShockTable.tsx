@@ -40,9 +40,8 @@ const ShockTable: React.FC = () => {
       <TableContainer
         component={Paper}
         variant="outlined"
-        sx={{ maxHeight: 500 }}
       >
-        <Table stickyHeader size="small">
+        <Table size="small">
           <TableHead>
             <TableRow>
               <TableCell
