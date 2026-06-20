@@ -13,6 +13,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { CALCULATORS_AND_SIMULATORS } from "../config";
 import { PanelProps } from "../types";
+import packageJson from "../../package.json";
 
 const MIN_WIDTH = 200;
 const MAX_WIDTH = 600;
@@ -212,7 +213,8 @@ function CalculatorOutlet() {
                   variant="caption"
                   sx={{ color: "rgba(255,255,255,0.5)" }}
                 >
-                  © {new Date().getFullYear()} vivekgautham
+                  © {new Date().getFullYear()} vivekgautham • v
+                  {packageJson.version}
                 </Typography>
                 <a
                   className="item"

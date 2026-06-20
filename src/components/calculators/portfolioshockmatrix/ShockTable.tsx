@@ -37,10 +37,7 @@ const ShockTable: React.FC = () => {
       <Typography variant="subtitle1" sx={{ fontWeight: "bold", mb: 2 }}>
         Scenario Shock Matrix Table
       </Typography>
-      <TableContainer
-        component={Paper}
-        variant="outlined"
-      >
+      <TableContainer component={Paper} variant="outlined">
         <Table size="small">
           <TableHead>
             <TableRow>
