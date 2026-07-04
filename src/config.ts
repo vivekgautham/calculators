@@ -74,7 +74,7 @@ export const CALCULATORS_AND_SIMULATORS = [
     panel: StockAnalysis,
   },
   {
-    name: "Portfolio in Multiple Currencies",
+    name: "Portfolio in Currencies",
     value: "portfolioinmultipleccys",
     tags: ["finance", "portfolio", "forex"],
     description:
