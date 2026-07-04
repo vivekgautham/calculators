@@ -52,17 +52,17 @@ export const RetirementPlannerProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [currentAge, setCurrentAge] = useState<number>(30);
-  const [retirementAge, setRetirementAge] = useState<number>(65);
+  const [retirementAge, setRetirementAge] = useState<number>(45);
   const [lifeExpectancy, setLifeExpectancy] = useState<number>(90);
   const [currentNestEgg, setCurrentNestEgg] = useState<number>(0);
-  const [monthlyContribution, setMonthlyContribution] = useState<number>(1000);
+  const [monthlyContribution, setMonthlyContribution] = useState<number>(2000);
   const [contributionIncreaseRate, setContributionIncreaseRate] =
     useState<number>(3);
-  const [preRetirementReturn, setPreRetirementReturn] = useState<number>(8);
+  const [preRetirementReturn, setPreRetirementReturn] = useState<number>(10);
   const [postRetirementReturn, setPostRetirementReturn] = useState<number>(5);
   const [inflationRate, setInflationRate] = useState<number>(2.5);
   const [monthlyExpensesRetirement, setMonthlyExpensesRetirement] =
-    useState<number>(4000);
+    useState<number>(2000);
 
   const { yearlyData, retirementCorpus, depletionAge } = useMemo(() => {
     const data: RetirementYearData[] = [];
