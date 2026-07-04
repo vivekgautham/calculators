@@ -90,7 +90,7 @@ export const CALCULATORS_AND_SIMULATORS = [
     panel: PortfolioShockMatrix,
   },
   {
-    name: "Retirement Planner",
+    name: "Retirement Plan Tool",
     value: "retirementplanner",
     tags: ["finance", "planning", "retirement"],
     description:
