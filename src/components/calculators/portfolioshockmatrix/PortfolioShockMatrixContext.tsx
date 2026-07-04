@@ -42,7 +42,7 @@ export const PortfolioShockMatrixProvider: React.FC<{
     const results: ShockScenario[] = [];
 
     // Generate scenarios from -40% to +40% in 5% steps
-    for (let s = -40; s <= 40; s += 5) {
+    for (let s = -50; s <= 50; s += 5) {
       const shockRate = s / 100;
       const finalValue = current * (1 + shockRate);
       const shockAmount = finalValue - current;
