@@ -19,13 +19,13 @@ export const CALCULATORS_AND_SIMULATORS = [
       "A simple tool to plan your financial future based on corpus, expenses, and growth.",
     panel: BasicFinancialPlanner,
   },
-  {
-    name: "FX Rates",
-    value: "fxrates",
-    tags: ["finance", "forex"],
-    description: "Historical FX rates for fiat currencies.",
-    panel: FXRates,
-  },
+  // {
+  //   name: "FX Rates",
+  //   value: "fxrates",
+  //   tags: ["finance", "forex"],
+  //   description: "Historical FX rates for fiat currencies.",
+  //   panel: FXRates,
+  // },
   {
     name: "Fed Rates",
     value: "fedrates",
