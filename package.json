@@ -1,7 +1,7 @@
 {
   "name": "calculators",
   "private": true,
-  "version": "0.0.6",
+  "version": "0.0.7",
   "homepage": "https://vivekgautham.github.io/calculators",
   "type": "module",
   "scripts": {
@@ -11,7 +11,7 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,html}'",
     "preview": "vite preview",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
