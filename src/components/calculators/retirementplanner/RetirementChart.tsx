@@ -137,8 +137,8 @@ const RetirementChart: React.FC = () => {
         },
         column: {
           borderWidth: 0,
-          pointPadding: 0.1,
-          groupPadding: 0.1,
+          pointPadding: 0.02,
+          groupPadding: 0.02,
         },
       },
       series: [
