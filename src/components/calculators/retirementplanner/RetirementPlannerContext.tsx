@@ -59,8 +59,8 @@ export const RetirementPlannerProvider: React.FC<{ children: ReactNode }> = ({
   const [contributionIncreaseRate, setContributionIncreaseRate] =
     useState<number>(0);
   const [preRetirementReturn, setPreRetirementReturn] = useState<number>(10);
-  const [postRetirementReturn, setPostRetirementReturn] = useState<number>(5);
-  const [inflationRate, setInflationRate] = useState<number>(2.5);
+  const [postRetirementReturn, setPostRetirementReturn] = useState<number>(10);
+  const [inflationRate, setInflationRate] = useState<number>(4);
   const [monthlyExpensesRetirement, setMonthlyExpensesRetirement] =
     useState<number>(2000);
 
