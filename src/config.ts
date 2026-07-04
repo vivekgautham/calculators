@@ -8,6 +8,7 @@ import BlendedInvestment from "./components/calculators/BlendedInvestment";
 import StockAnalysis from "./components/calculators/StockAnalysis";
 import PortfolioInMultipleCcys from "./components/calculators/PortfolioInMultipleCcys";
 import PortfolioShockMatrix from "./components/calculators/PortfolioShockMatrix";
+import RetirementPlanner from "./components/calculators/RetirementPlanner";
 
 export const CALCULATORS_AND_SIMULATORS = [
   {
@@ -88,5 +89,13 @@ export const CALCULATORS_AND_SIMULATORS = [
     description:
       "Simulate and visualize the impact of market shocks (-40% to +40%) on your investment portfolio.",
     panel: PortfolioShockMatrix,
+  },
+  {
+    name: "Retirement Planner",
+    value: "retirementplanner",
+    tags: ["finance", "planning", "retirement"],
+    description:
+      "Plan your retirement savings accumulation and withdrawal phases, with inflation adjustment and depletion analysis.",
+    panel: RetirementPlanner,
   },
 ];
