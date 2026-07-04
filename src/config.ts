@@ -82,7 +82,7 @@ export const CALCULATORS_AND_SIMULATORS = [
     panel: PortfolioInMultipleCcys,
   },
   {
-    name: "Portfolio Shock Matrix",
+    name: "Portfolio Shock Analaysis",
     value: "portfolioshockmatrix",
     tags: ["finance", "portfolio", "risk", "simulation"],
     description:
