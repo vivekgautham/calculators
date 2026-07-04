@@ -1,4 +1,3 @@
-import FXRates from "./components/calculators/FXRates";
 import RateOfGrowth from "./components/calculators/RateOfGrowth";
 import GrowthTarget from "./components/calculators/GrowthTarget";
 import BasicFinancialPlanner from "./components/calculators/BasicFinancialPlanner";
