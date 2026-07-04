@@ -1,6 +1,6 @@
 import React from "react";
 import { Header } from "semantic-ui-react";
-import { Paper, Box, Stack } from "@mui/material";
+import { Paper, Box, Stack, Chip } from "@mui/material";
 import { CALCULATORS_AND_SIMULATORS } from "../../config";
 import { PanelProps } from "../../types";
 import { RetirementPlannerProvider } from "./retirementplanner/RetirementPlannerContext";
@@ -21,9 +21,22 @@ const RetirementPlanner: React.FC<PanelProps> = (props) => {
           textAlign: "left",
         }}
       >
-        <Header as="h2" textAlign="left" style={{ margin: 0 }}>
-          {props.name}
-        </Header>
+        <Stack direction="row" spacing={1.5} alignItems="center" sx={{ flexWrap: "wrap", mb: 1 }}>
+          <Header as="h2" textAlign="left" style={{ margin: 0 }}>
+            {props.name}
+          </Header>
+          {CALCULATORS_AND_SIMULATORS.find((item) => item.name === props.name)
+            ?.tags.map((tag) => (
+              <Chip
+                key={tag}
+                label={tag}
+                size="small"
+                variant="outlined"
+                color="primary"
+                sx={{ fontWeight: "bold" }}
+              />
+            ))}
+        </Stack>
         <Header
           as="h5"
           textAlign="left"
