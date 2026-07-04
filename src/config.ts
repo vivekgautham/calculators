@@ -44,7 +44,7 @@ export const CALCULATORS_AND_SIMULATORS = [
   {
     name: "Progressive Tax",
     value: "progressivetax",
-    tags: ["finance", "tax"],
+    tags: ["finance", "tax", "investment"],
     description:
       "Calculate progressive tax based on custom brackets and income.",
     panel: ProgressiveTax,
