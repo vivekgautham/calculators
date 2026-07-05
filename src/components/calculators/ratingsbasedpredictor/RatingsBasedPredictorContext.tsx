@@ -11,7 +11,7 @@ interface RatingsBasedPredictorContextType {
 const RatingsBasedPredictorContext = createContext<RatingsBasedPredictorContextType | undefined>(undefined);
 
 export const RatingsBasedPredictorProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [averageRating, setAverageRating] = useState<number>(4);
+  const [averageRating, setAverageRating] = useState<number>(4.2);
   const [numRatings, setNumRatings] = useState<number>(10);
 
   const trueRating = useMemo(() => {

@@ -11,26 +11,26 @@ const Inputs: React.FC = () => {
         Rating Parameters
       </Typography>
       <Stack spacing={4} sx={{ mt: 2 }}>
-        {/* Discrete Average Rating Slider */}
+        {/* Granular Average Rating Slider */}
         <Box>
           <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
             <Typography variant="body1" sx={{ fontWeight: "medium" }}>
-              Average Rating (Discrete 1-5)
+              Average Rating (1.0 - 5.0)
             </Typography>
             <Typography variant="h6" sx={{ fontWeight: "bold", color: "primary.main" }}>
-              {averageRating} ★
+              {averageRating.toFixed(1)} ★
             </Typography>
           </Stack>
           <Slider
-            min={1}
-            max={5}
-            step={1}
+            min={1.0}
+            max={5.0}
+            step={0.1}
             marks={[
-              { value: 1, label: "1★" },
-              { value: 2, label: "2★" },
-              { value: 3, label: "3★" },
-              { value: 4, label: "4★" },
-              { value: 5, label: "5★" },
+              { value: 1.0, label: "1.0★" },
+              { value: 2.0, label: "2.0★" },
+              { value: 3.0, label: "3.0★" },
+              { value: 4.0, label: "4.0★" },
+              { value: 5.0, label: "5.0★" },
             ]}
             value={averageRating}
             onChange={(_, val) => setAverageRating(val as number)}
