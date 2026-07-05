@@ -98,3 +98,5 @@ export const CALCULATORS_AND_SIMULATORS = [
     panel: RetirementPlanner,
   },
 ];
+
+export { getTagStyles } from "./utils/color";

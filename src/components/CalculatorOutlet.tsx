@@ -11,7 +11,7 @@ import {
 import { Stack, Box, IconButton, Typography } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { CALCULATORS_AND_SIMULATORS } from "../config";
+import { CALCULATORS_AND_SIMULATORS, getTagStyles } from "../config";
 import { PanelProps } from "../types";
 import packageJson from "../../package.json";
 
@@ -190,8 +190,41 @@ function CalculatorOutlet() {
                     active={value === item.value}
                     onClick={handleChange}
                     header={value === item.value}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "flex-start",
+                      padding: "12px 16px",
+                      gap: "6px"
+                    }}
                   >
-                    {item.name}
+                    <span style={{ fontWeight: value === item.value ? "bold" : "normal" }}>
+                      {item.name}
+                    </span>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+                      {item.tags.map((tag) => {
+                        const style = getTagStyles(tag);
+                        return (
+                          <span
+                            key={tag}
+                            style={{
+                              fontSize: "9px",
+                              padding: "2px 5px",
+                              borderRadius: "3px",
+                              fontWeight: "bold",
+                              textTransform: "uppercase",
+                              backgroundColor: style.backgroundColor,
+                              color: style.color,
+                              border: `1px solid ${style.borderColor}`,
+                              letterSpacing: "0.5px",
+                              lineHeight: "1",
+                            }}
+                          >
+                            {tag}
+                          </span>
+                        );
+                      })}
+                    </div>
                   </MenuItem>
                 ))
               ) : (

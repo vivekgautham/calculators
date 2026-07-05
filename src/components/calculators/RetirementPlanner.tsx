@@ -1,7 +1,7 @@
 import React from "react";
 import { Header } from "semantic-ui-react";
 import { Paper, Box, Stack, Chip } from "@mui/material";
-import { CALCULATORS_AND_SIMULATORS } from "../../config";
+import { CALCULATORS_AND_SIMULATORS, getTagStyles } from "../../config";
 import { PanelProps } from "../../types";
 import { RetirementPlannerProvider } from "./retirementplanner/RetirementPlannerContext";
 import Inputs from "./retirementplanner/Inputs";
@@ -26,16 +26,23 @@ const RetirementPlanner: React.FC<PanelProps> = (props) => {
             {props.name}
           </Header>
           {CALCULATORS_AND_SIMULATORS.find((item) => item.name === props.name)
-            ?.tags.map((tag) => (
-              <Chip
-                key={tag}
-                label={tag}
-                size="small"
-                variant="outlined"
-                color="primary"
-                sx={{ fontWeight: "bold" }}
-              />
-            ))}
+            ?.tags.map((tag) => {
+              const styles = getTagStyles(tag);
+              return (
+                <Chip
+                  key={tag}
+                  label={tag}
+                  size="small"
+                  variant="outlined"
+                  sx={{
+                    fontWeight: "bold",
+                    backgroundColor: styles.backgroundColor,
+                    color: styles.color,
+                    borderColor: styles.borderColor,
+                  }}
+                />
+              );
+            })}
         </Stack>
         <Header
           as="h5"

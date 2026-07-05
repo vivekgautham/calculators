@@ -1,9 +1,10 @@
 import React from "react";
-import { Container, Typography, Box } from "@mui/material";
+import { Container, Typography, Box, Stack, Chip } from "@mui/material";
 import { GrowthTargetProvider } from "./growthtarget/GrowthTargetContext";
 import Inputs from "./growthtarget/Inputs";
 import GrowthTable from "./growthtarget/GrowthTable";
 import { PanelProps } from "../../types";
+import { CALCULATORS_AND_SIMULATORS, getTagStyles } from "../../config";
 
 const GrowthTarget: React.FC<PanelProps> = ({ name }) => {
   return (
@@ -17,13 +18,32 @@ const GrowthTarget: React.FC<PanelProps> = ({ name }) => {
         }}
       >
         <Container maxWidth="lg">
-          <Typography
-            variant="h4"
-            gutterBottom
-            sx={{ fontWeight: "bold", color: "#1a2035" }}
-          >
-            {name}
-          </Typography>
+          <Stack direction="row" spacing={1.5} alignItems="center" sx={{ flexWrap: "wrap", mb: 2 }}>
+            <Typography
+              variant="h4"
+              sx={{ fontWeight: "bold", color: "#1a2035", margin: 0 }}
+            >
+              {name}
+            </Typography>
+            {CALCULATORS_AND_SIMULATORS.find((item) => item.name === name)
+              ?.tags.map((tag) => {
+                const styles = getTagStyles(tag);
+                return (
+                  <Chip
+                    key={tag}
+                    label={tag}
+                    size="small"
+                    variant="outlined"
+                    sx={{
+                      fontWeight: "bold",
+                      backgroundColor: styles.backgroundColor,
+                      color: styles.color,
+                      borderColor: styles.borderColor,
+                    }}
+                  />
+                );
+              })}
+          </Stack>
           <Inputs />
           <GrowthTable />
         </Container>
