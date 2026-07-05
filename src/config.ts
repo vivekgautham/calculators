@@ -8,6 +8,7 @@ import StockAnalysis from "./components/calculators/StockAnalysis";
 import PortfolioInMultipleCcys from "./components/calculators/PortfolioInMultipleCcys";
 import PortfolioShockMatrix from "./components/calculators/PortfolioShockMatrix";
 import RetirementPlanner from "./components/calculators/RetirementPlanner";
+import RatingsBasedPredictor from "./components/calculators/RatingsBasedPredictor";
 
 export const CALCULATORS_AND_SIMULATORS = [
   {
@@ -96,6 +97,14 @@ export const CALCULATORS_AND_SIMULATORS = [
     description:
       "Plan your retirement savings accumulation and withdrawal phases, with inflation adjustment and depletion analysis.",
     panel: RetirementPlanner,
+  },
+  {
+    name: "Ratings Based Predictor",
+    value: "ratingsbasedpredictor",
+    tags: ["statistics", "planning", "risk", "simulation"],
+    description:
+      "Predict your personal experience score and risk based on rating distribution, sample size, and Bayesian average estimation.",
+    panel: RatingsBasedPredictor,
   },
 ];
 
