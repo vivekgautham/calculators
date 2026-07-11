@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Icon } from "semantic-ui-react";
-import { Stack, Box, Typography, Autocomplete, TextField } from "@mui/material";
+import { Stack, Box, Typography, Autocomplete, TextField, Chip } from "@mui/material";
 import { CALCULATORS_AND_SIMULATORS, getTagStyles } from "../config";
 import { PanelProps } from "../types";
 
@@ -11,6 +11,8 @@ function CalculatorOutlet() {
       ? hash
       : "basicfinancialplanner";
   });
+
+  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -43,7 +45,7 @@ function CalculatorOutlet() {
         sx={{
           height: "56px",
           px: 3,
-          backgroundColor: "#1b1c1d", // Dark background theme
+          backgroundColor: "#1b1c1d", // Match theme
           color: "white",
           borderBottom: "1px solid rgba(255,255,255,0.1)",
           flexShrink: 0,
@@ -55,7 +57,10 @@ function CalculatorOutlet() {
           alignItems="center"
           spacing={1.5}
           sx={{ cursor: "pointer" }}
-          onClick={() => setValue("basicfinancialplanner")}
+          onClick={() => {
+            setValue("basicfinancialplanner");
+            setInputValue("");
+          }}
         >
           <Icon name="calculator" size="large" style={{ color: "#00b5ad", margin: 0 }} />
           <Typography variant="h6" sx={{ fontWeight: "bold", letterSpacing: "0.5px" }}>
@@ -78,28 +83,84 @@ function CalculatorOutlet() {
           fullWidth
           options={CALCULATORS_AND_SIMULATORS}
           getOptionLabel={(option) => option.name}
-          value={null}
+          value={currentOption}
+          inputValue={inputValue}
+          onInputChange={(_, newInputValue, reason) => {
+            if (reason === "reset" || reason === "clear") {
+              setInputValue("");
+            } else {
+              setInputValue(newInputValue);
+            }
+          }}
           onChange={(_, newValue) => {
             if (newValue) {
               setValue(newValue.value);
             }
           }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              size="small"
-              placeholder="Search or select calculator..."
-              sx={{
-                bgcolor: "white",
-                borderRadius: 1,
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": { borderColor: "#ced4da" },
-                  "&:hover fieldset": { borderColor: "#00b5ad" },
-                  "&.Mui-focused fieldset": { borderColor: "#00b5ad" },
-                },
-              }}
-            />
-          )}
+          renderInput={(params) => {
+            const { InputProps, ...restParams } = params;
+            const hasChip = currentOption && inputValue === "";
+            return (
+              <TextField
+                {...restParams}
+                size="small"
+                placeholder={hasChip ? "" : "Search or select calculator..."}
+                InputProps={{
+                  ...InputProps,
+                  startAdornment: (
+                    <>
+                      {hasChip && (
+                        <Stack direction="row" spacing={0.5} alignItems="center" sx={{ mr: 1, flexWrap: "wrap", gap: "2px" }}>
+                          <Chip
+                            label={currentOption.name}
+                            sx={{
+                              height: 24,
+                              fontWeight: "bold",
+                              backgroundColor: "#e0f2f1", // Sleek light teal background
+                              color: "#00796b",
+                              border: "1px solid #b2dfdb",
+                            }}
+                          />
+                          {currentOption.tags.map((tag) => {
+                            const style = getTagStyles(tag);
+                            return (
+                              <span
+                                key={tag}
+                                style={{
+                                  fontSize: "9px",
+                                  padding: "2px 5px",
+                                  borderRadius: "3px",
+                                  fontWeight: "bold",
+                                  textTransform: "uppercase",
+                                  backgroundColor: style.backgroundColor,
+                                  color: style.color,
+                                  border: `1px solid ${style.borderColor}`,
+                                  letterSpacing: "0.5px",
+                                  lineHeight: "1",
+                                }}
+                              >
+                                {tag}
+                              </span>
+                            );
+                          })}
+                        </Stack>
+                      )}
+                      {InputProps.startAdornment}
+                    </>
+                  ),
+                }}
+                sx={{
+                  bgcolor: "white",
+                  borderRadius: 1,
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: "#ced4da" },
+                    "&:hover fieldset": { borderColor: "#00b5ad" },
+                    "&.Mui-focused fieldset": { borderColor: "#00b5ad" },
+                  },
+                }}
+              />
+            );
+          }}
           renderOption={(props, option) => {
             const { key, ...restProps } = props as any;
             return (
