@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Icon } from "semantic-ui-react";
-import { Stack, Box, Typography, Autocomplete, TextField } from "@mui/material";
+import { Stack, Box, Typography, Autocomplete, TextField, IconButton, Tooltip } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import { CALCULATORS_AND_SIMULATORS, getTagStyles } from "../config";
 
 function CalculatorOutlet() {
@@ -105,6 +106,11 @@ function CalculatorOutlet() {
     }
   };
 
+  const handleCloseAllTabs = () => {
+    setOpenCalculators(["basicfinancialplanner"]);
+    setActiveCalculator("basicfinancialplanner");
+  };
+
   return (
     <Stack sx={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
       {/* Top Header Bar */}
@@ -154,90 +160,119 @@ function CalculatorOutlet() {
           flexShrink: 0,
         }}
       >
-        <Autocomplete
-          fullWidth
-          options={CALCULATORS_AND_SIMULATORS}
-          getOptionLabel={(option) => option.name}
-          value={null} // Keep it empty by default so it acts as an open/add field launcher
-          inputValue={inputValue}
-          onInputChange={(_, newInputValue) => {
-            setInputValue(newInputValue);
-          }}
-          onChange={(_, newValue) => {
-            if (newValue) {
-              setOpenCalculators((prev) => {
-                if (!prev.includes(newValue.value)) {
-                  return [...prev, newValue.value];
-                }
-                return prev;
-              });
-              setActiveCalculator(newValue.value);
-              setInputValue("");
-            }
-          }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              size="small"
-              placeholder="Search and open a calculator..."
-              sx={{
-                bgcolor: "white",
-                borderRadius: 1,
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": { borderColor: "#ced4da" },
-                  "&:hover fieldset": { borderColor: "#00b5ad" },
-                  "&.Mui-focused fieldset": { borderColor: "#00b5ad" },
-                },
+        <Stack direction="row" spacing={2} alignItems="center" sx={{ width: "100%" }}>
+          <Box sx={{ flexGrow: 1 }}>
+            <Autocomplete
+              fullWidth
+              options={CALCULATORS_AND_SIMULATORS}
+              getOptionLabel={(option) => option.name}
+              value={null} // Keep it empty by default so it acts as an open/add field launcher
+              inputValue={inputValue}
+              onInputChange={(_, newInputValue) => {
+                setInputValue(newInputValue);
               }}
+              onChange={(_, newValue) => {
+                if (newValue) {
+                  setOpenCalculators((prev) => {
+                    if (!prev.includes(newValue.value)) {
+                      return [...prev, newValue.value];
+                    }
+                    return prev;
+                  });
+                  setActiveCalculator(newValue.value);
+                  setInputValue("");
+                }
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  size="small"
+                  placeholder="Search and open a calculator..."
+                  sx={{
+                    bgcolor: "white",
+                    borderRadius: 1,
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": { borderColor: "#ced4da" },
+                      "&:hover fieldset": { borderColor: "#00b5ad" },
+                      "&.Mui-focused fieldset": { borderColor: "#00b5ad" },
+                    },
+                  }}
+                />
+              )}
+              renderOption={(props, option) => {
+                const { key, ...restProps } = props as any;
+                return (
+                  <Box
+                    component="li"
+                    key={option.value}
+                    {...restProps}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      p: 1.5,
+                      borderBottom: "1px solid #f0f0f0",
+                      width: "100%",
+                    }}
+                  >
+                    <Typography variant="body2" sx={{ fontWeight: "bold", color: "#1a2035", mr: 2 }}>
+                      {option.name}
+                    </Typography>
+                    <Stack direction="row" spacing={0.5} sx={{ flexWrap: "wrap", gap: "2px", alignItems: "center" }}>
+                      {option.tags.map((tag) => {
+                        const style = getTagStyles(tag);
+                        return (
+                          <span
+                            key={tag}
+                            style={{
+                              fontSize: "8px",
+                              padding: "2px 4px",
+                              borderRadius: "3px",
+                              fontWeight: "bold",
+                              textTransform: "uppercase",
+                              backgroundColor: style.backgroundColor,
+                              color: style.color,
+                              border: `1px solid ${style.borderColor}`,
+                              letterSpacing: "0.5px",
+                              lineHeight: "1",
+                            }}
+                          >
+                            {tag}
+                          </span>
+                        );
+                      })}
+                    </Stack>
+                  </Box>
+                );
+              }}
+              sx={{ width: "100%" }}
             />
-          )}
-          renderOption={(props, option) => {
-            const { key, ...restProps } = props as any;
-            return (
-              <Box
-                component="li"
-                key={option.value}
-                {...restProps}
+          </Box>
+
+          {openCalculators.length > 1 && (
+            <Tooltip title="Close all tabs" arrow>
+              <IconButton
+                color="error"
+                onClick={handleCloseAllTabs}
                 sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "flex-start",
-                  p: 1.5,
-                  borderBottom: "1px solid #f0f0f0",
+                  flexShrink: 0,
+                  border: "1px solid #ef5350",
+                  borderRadius: "6px",
+                  height: "40px", // Match search input height exactly
+                  width: "40px",
+                  backgroundColor: "transparent",
+                  "&:hover": {
+                    backgroundColor: "#ffebee",
+                    borderColor: "#d32f2f",
+                  },
                 }}
               >
-                <Typography variant="body2" sx={{ fontWeight: "bold", color: "#1a2035" }}>
-                  {option.name}
-                </Typography>
-                <Stack direction="row" spacing={0.5} sx={{ mt: 0.5, flexWrap: "wrap", gap: "2px" }}>
-                  {option.tags.map((tag) => {
-                    const style = getTagStyles(tag);
-                    return (
-                      <span
-                        key={tag}
-                        style={{
-                          fontSize: "8px",
-                          padding: "2px 4px",
-                          borderRadius: "3px",
-                          fontWeight: "bold",
-                          textTransform: "uppercase",
-                          backgroundColor: style.backgroundColor,
-                          color: style.color,
-                          border: `1px solid ${style.borderColor}`,
-                          letterSpacing: "0.5px",
-                          lineHeight: "1",
-                        }}
-                      >
-                        {tag}
-                      </span>
-                    );
-                  })}
-                </Stack>
-              </Box>
-            );
-          }}
-          sx={{ width: "100%" }}
-        />
+                <DeleteSweepIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+        </Stack>
       </Box>
 
       {/* Dynamic Browser-like Tab Bar */}
