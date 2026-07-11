@@ -1,23 +1,8 @@
-import React, { useState, useCallback, useEffect } from "react";
-import {
-  Divider,
-  Header,
-  Icon,
-  Menu,
-  MenuItem,
-  MenuItemProps,
-  Search,
-} from "semantic-ui-react";
-import { Stack, Box, IconButton, Typography } from "@mui/material";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import React, { useState, useEffect } from "react";
+import { Icon } from "semantic-ui-react";
+import { Stack, Box, Typography, Autocomplete, TextField } from "@mui/material";
 import { CALCULATORS_AND_SIMULATORS, getTagStyles } from "../config";
 import { PanelProps } from "../types";
-import packageJson from "../../package.json";
-
-const MIN_WIDTH = 200;
-const MAX_WIDTH = 600;
-const DEFAULT_WIDTH = 350;
 
 function CalculatorOutlet() {
   const [value, setValue] = useState<string | undefined>(() => {
@@ -25,26 +10,6 @@ function CalculatorOutlet() {
     return CALCULATORS_AND_SIMULATORS.some((c) => c.value === hash)
       ? hash
       : "basicfinancialplanner";
-  });
-  const [sidebarWidth, setSidebarWidth] = useState(DEFAULT_WIDTH);
-  const [isResizing, setIsResizing] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const handleSearchChange = (
-    _: React.MouseEvent<HTMLElement, MouseEvent>,
-    { value }: { value?: string },
-  ) => {
-    setSearchQuery(value ?? "");
-  };
-
-  const filteredCalculators = CALCULATORS_AND_SIMULATORS.filter((item) => {
-    const searchLower = searchQuery.toLowerCase();
-    return (
-      item.name.toLowerCase().includes(searchLower) ||
-      item.tags.some((tag) => tag.toLowerCase().includes(searchLower)) ||
-      item.description.toLowerCase().includes(searchLower)
-    );
   });
 
   useEffect(() => {
@@ -65,258 +30,132 @@ function CalculatorOutlet() {
     }
   }, [value]);
 
-  const startResizing = useCallback((_mouseDownEvent: React.MouseEvent) => {
-    setIsResizing(true);
-  }, []);
-
-  const stopResizing = useCallback(() => {
-    setIsResizing(false);
-  }, []);
-
-  const resize = useCallback(
-    (mouseMoveEvent: MouseEvent) => {
-      if (isResizing) {
-        const newWidth = mouseMoveEvent.clientX;
-        if (newWidth >= MIN_WIDTH && newWidth <= MAX_WIDTH) {
-          setSidebarWidth(newWidth);
-        }
-      }
-    },
-    [isResizing],
-  );
-
-  useEffect(() => {
-    window.addEventListener("mousemove", resize);
-    window.addEventListener("mouseup", stopResizing);
-    return () => {
-      window.removeEventListener("mousemove", resize);
-      window.removeEventListener("mouseup", stopResizing);
-    };
-  }, [resize, stopResizing]);
-
-  const handleChange = (
-    _: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-    data: MenuItemProps,
-  ) => {
-    setValue(data.name);
-  };
-
-  const currentPanel = CALCULATORS_AND_SIMULATORS.find(
-    (item) => item.value === value,
-  )?.panel;
-  const name =
-    CALCULATORS_AND_SIMULATORS.find((item) => item.value === value)?.name ??
-    "Basic Financial Planner";
+  const currentOption = CALCULATORS_AND_SIMULATORS.find((item) => item.value === value) || CALCULATORS_AND_SIMULATORS[0];
+  const currentPanel = currentOption.panel;
+  const name = currentOption.name;
 
   return (
-    <Stack
-      direction="row"
-      sx={{ width: "100vw", height: "100vh", overflow: "hidden" }}
-    >
-      {/* Sidebar Container */}
-      <Box
+    <Stack sx={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
+      {/* Top Header Bar */}
+      <Stack
+        direction="row"
+        alignItems="center"
         sx={{
-          width: isCollapsed ? 0 : sidebarWidth,
-          transition: isResizing ? "none" : "width 0.3s ease",
-          height: "100%",
-          position: "relative",
-          backgroundColor: "#1b1c1d", // Match Semantic UI inverted menu
+          height: "56px",
+          px: 3,
+          backgroundColor: "#1b1c1d", // Dark background theme
+          color: "white",
+          borderBottom: "1px solid rgba(255,255,255,0.1)",
           flexShrink: 0,
-          zIndex: 100,
-          borderRight: isResizing ? "2px solid #00b5ad" : "none",
         }}
       >
-        <Box
-          sx={{
-            width: sidebarWidth,
-            height: "100%",
-            overflowX: "hidden",
-            display: isCollapsed ? "none" : "block",
-          }}
+        {/* Logo / Title */}
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={1.5}
+          sx={{ cursor: "pointer" }}
+          onClick={() => setValue("basicfinancialplanner")}
         >
-          <Menu
-            inverted
-            vertical
-            style={{
-              width: "100%",
-              height: "100%",
-              margin: 0,
-              borderRadius: 0,
-              border: "none",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <Box sx={{ flexShrink: 0 }}>
-              <Divider />
-              <Header
-                as="h3"
-                color="teal"
-                style={{ padding: "0 15px", cursor: "pointer" }}
-                onClick={() =>
-                  (window.location.href =
-                    window.location.origin + window.location.pathname)
-                }
-              >
-                Advanced Calculators & Simulators
-              </Header>
-              <Icon
-                name="calculator"
-                size="huge"
-                color="teal"
-                style={{ display: "block", margin: "10px auto" }}
-              />
-              <Divider />
-              <Box sx={{ p: "0 15px" }}>
-                <Search
-                  fluid
-                  input={{ fluid: true }}
-                  style={{ width: "100%" }}
-                  onSearchChange={handleSearchChange}
-                  value={searchQuery}
-                  showNoResults={false}
-                  placeholder="Search calculators..."
-                />
-              </Box>
-              <Divider />
-            </Box>
+          <Icon name="calculator" size="large" style={{ color: "#00b5ad", margin: 0 }} />
+          <Typography variant="h6" sx={{ fontWeight: "bold", letterSpacing: "0.5px" }}>
+            Advanced Calculators & Simulators
+          </Typography>
+        </Stack>
+      </Stack>
 
-            <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
-              {filteredCalculators.length > 0 ? (
-                filteredCalculators.map((item) => (
-                  <MenuItem
-                    key={item.name}
-                    name={item.value}
-                    active={value === item.value}
-                    onClick={handleChange}
-                    header={value === item.value}
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "flex-start",
-                      padding: "12px 16px",
-                      gap: "6px"
-                    }}
-                  >
-                    <span style={{ fontWeight: value === item.value ? "bold" : "normal" }}>
-                      {item.name}
-                    </span>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
-                      {item.tags.map((tag) => {
-                        const style = getTagStyles(tag);
-                        return (
-                          <span
-                            key={tag}
-                            style={{
-                              fontSize: "9px",
-                              padding: "2px 5px",
-                              borderRadius: "3px",
-                              fontWeight: "bold",
-                              textTransform: "uppercase",
-                              backgroundColor: style.backgroundColor,
-                              color: style.color,
-                              border: `1px solid ${style.borderColor}`,
-                              letterSpacing: "0.5px",
-                              lineHeight: "1",
-                            }}
-                          >
-                            {tag}
-                          </span>
-                        );
-                      })}
-                    </div>
-                  </MenuItem>
-                ))
-              ) : (
-                <Box sx={{ p: "10px 15px", color: "rgba(255,255,255,0.5)" }}>
-                  No calculators found
-                </Box>
-              )}
-            </Box>
-
-            <Box sx={{ flexShrink: 0, p: 2, textAlign: "center" }}>
-              <Divider inverted />
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="center"
-                spacing={1}
+      {/* Dedicated Search Bar Row Below Title */}
+      <Box
+        sx={{
+          py: 1.5,
+          px: 3,
+          backgroundColor: "#f8f9fa", // Clean off-white sub-bar
+          borderBottom: "1px solid #e9ecef",
+          flexShrink: 0,
+        }}
+      >
+        <Autocomplete
+          fullWidth
+          options={CALCULATORS_AND_SIMULATORS}
+          getOptionLabel={(option) => option.name}
+          value={null}
+          onChange={(_, newValue) => {
+            if (newValue) {
+              setValue(newValue.value);
+            }
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              size="small"
+              placeholder="Search or select calculator..."
+              sx={{
+                bgcolor: "white",
+                borderRadius: 1,
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": { borderColor: "#ced4da" },
+                  "&:hover fieldset": { borderColor: "#00b5ad" },
+                  "&.Mui-focused fieldset": { borderColor: "#00b5ad" },
+                },
+              }}
+            />
+          )}
+          renderOption={(props, option) => {
+            const { key, ...restProps } = props as any;
+            return (
+              <Box
+                component="li"
+                key={option.value}
+                {...restProps}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  p: 1.5,
+                  borderBottom: "1px solid #f0f0f0",
+                }}
               >
-                <Typography
-                  variant="caption"
-                  sx={{ color: "rgba(255,255,255,0.5)" }}
-                >
-                  © {new Date().getFullYear()} vivekgautham • v
-                  {packageJson.version}
+                <Typography variant="body2" sx={{ fontWeight: "bold", color: "#1a2035" }}>
+                  {option.name}
                 </Typography>
-                <a
-                  className="item"
-                  href="https://www.github.com/vivekgautham"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: "#00b5ad" }}
-                >
-                  <i
-                    className="github icon link icon"
-                    style={{ margin: 0 }}
-                  ></i>
-                </a>
-              </Stack>
-            </Box>
-          </Menu>
-        </Box>
-
-        {/* Resize Handle */}
-        {!isCollapsed && (
-          <Box
-            onMouseDown={startResizing}
-            sx={{
-              width: "5px",
-              cursor: "col-resize",
-              position: "absolute",
-              top: 0,
-              right: 0,
-              bottom: 0,
-              "&:hover": {
-                backgroundColor: "rgba(0, 181, 173, 0.5)",
-              },
-            }}
-          />
-        )}
-
-        {/* Toggle Button */}
-        <IconButton
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          sx={{
-            position: "absolute",
-            right: isCollapsed ? "-40px" : "5px",
-            bottom: "20px",
-            backgroundColor: "#1b1c1d",
-            color: "#00b5ad",
-            zIndex: 101,
-            border: "1px solid #00b5ad",
-            "&:hover": {
-              backgroundColor: "#00b5ad",
-              color: "white",
-            },
-            width: "30px",
-            height: "30px",
-            transition: "all 0.3s ease",
+                <Stack direction="row" spacing={0.5} sx={{ mt: 0.5, flexWrap: "wrap", gap: "2px" }}>
+                  {option.tags.map((tag) => {
+                    const style = getTagStyles(tag);
+                    return (
+                      <span
+                        key={tag}
+                        style={{
+                          fontSize: "8px",
+                          padding: "2px 4px",
+                          borderRadius: "3px",
+                          fontWeight: "bold",
+                          textTransform: "uppercase",
+                          backgroundColor: style.backgroundColor,
+                          color: style.color,
+                          border: `1px solid ${style.borderColor}`,
+                          letterSpacing: "0.5px",
+                          lineHeight: "1",
+                        }}
+                      >
+                        {tag}
+                      </span>
+                    );
+                  })}
+                </Stack>
+              </Box>
+            );
           }}
-          size="small"
-        >
-          {isCollapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-        </IconButton>
+          sx={{ width: "100%" }}
+        />
       </Box>
 
-      {/* Main Content Area */}
+      {/* Main Content View */}
       <Box
         sx={{
           flexGrow: 1,
-          height: "100%",
+          height: "calc(100vh - 56px - 72px)", // Calculate height offset dynamically
           overflow: "hidden",
-          width: isCollapsed ? "100vw" : `calc(100vw - ${sidebarWidth}px)`,
-          transition: isResizing ? "none" : "width 0.3s ease",
+          width: "100vw",
         }}
       >
         {currentPanel &&
@@ -325,4 +164,5 @@ function CalculatorOutlet() {
     </Stack>
   );
 }
+
 export default CalculatorOutlet;
