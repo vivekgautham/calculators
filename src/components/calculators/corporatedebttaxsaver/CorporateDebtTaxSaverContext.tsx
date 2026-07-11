@@ -28,7 +28,7 @@ export const CorporateDebtTaxSaverProvider: React.FC<{ children: ReactNode }> = 
   const [debt, setDebt] = useState<number>(10000000000); // Default $10,000,000,000 (10 billion)
   const [taxRate, setTaxRate] = useState<number>(21); // Default 21% (US federal corporate rate)
   const [interestRate, setInterestRate] = useState<number>(6.5); // Default 6.5%
-  const [ebit, setEbit] = useState<number>(2000000000); // Default $2,000,000,000 EBIT (2 billion)
+  const [ebit, setEbit] = useState<number>(15000000000); // Default $15,000,000,000 EBIT (15 billion)
 
   const computedValues = useMemo(() => {
     const tRate = taxRate / 100;

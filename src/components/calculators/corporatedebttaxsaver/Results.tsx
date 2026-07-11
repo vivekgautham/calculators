@@ -20,10 +20,13 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import PercentIcon from "@mui/icons-material/Percent";
 import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { useCorporateDebtTaxSaver } from "./CorporateDebtTaxSaverContext";
 
 const Results: React.FC = () => {
   const {
+    debt,
     ebit,
     annualInterest,
     netTaxSaving,
@@ -66,8 +69,60 @@ const Results: React.FC = () => {
   return (
     <Box sx={{ mb: 3 }}>
       <Grid container spacing={3}>
-        {/* Card 1: Net Tax Saving */}
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        {/* Card 1: Tax Without Debt */}
+        <Grid size={{ xs: 12, sm: 4 }}>
+          <Card elevation={3} sx={{ height: "100%" }}>
+            <CardContent>
+              <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
+                <AccountBalanceIcon sx={{ color: "text.secondary" }} />
+                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                  Tax Without Debt
+                </Typography>
+              </Stack>
+              <Box sx={{ my: 3, textAlign: "center" }}>
+                <Typography variant="h3" component="div" sx={{ fontWeight: "bold", color: "text.primary" }}>
+                  {formatAbbreviatedCurrency(taxWithoutDebt)}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Baseline statutory corporate tax liability
+                </Typography>
+              </Box>
+              <Divider sx={{ my: 1 }} />
+              <Typography variant="caption" color="text.secondary">
+                Calculated as: {formatAbbreviatedCurrency(ebit)} (EBIT) × {taxRate}% (Tax Rate)
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Card 2: Total Net Tax Paid */}
+        <Grid size={{ xs: 12, sm: 4 }}>
+          <Card elevation={3} sx={{ height: "100%" }}>
+            <CardContent>
+              <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
+                <ReceiptLongIcon color="error" />
+                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                  Total Net Tax Paid
+                </Typography>
+              </Stack>
+              <Box sx={{ my: 3, textAlign: "center" }}>
+                <Typography variant="h3" component="div" sx={{ fontWeight: "bold", color: "error.main" }}>
+                  {formatAbbreviatedCurrency(taxWithDebt)}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Final tax bill at {formatPercent(effectiveTaxRateWithDebt)} ETR
+                </Typography>
+              </Box>
+              <Divider sx={{ my: 1 }} />
+              <Typography variant="caption" color="text.secondary">
+                Taxes without debt: {formatAbbreviatedCurrency(taxWithoutDebt)}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Card 3: Annual Net Tax Saving */}
+        <Grid size={{ xs: 12, sm: 4 }}>
           <Card elevation={3} sx={{ height: "100%" }}>
             <CardContent>
               <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
@@ -92,8 +147,34 @@ const Results: React.FC = () => {
           </Card>
         </Grid>
 
-        {/* Card 2: Effective Tax Rate */}
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        {/* Card 4: Total Interest Paid */}
+        <Grid size={{ xs: 12, sm: 4 }}>
+          <Card elevation={3} sx={{ height: "100%" }}>
+            <CardContent>
+              <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
+                <AccountBalanceWalletIcon color="warning" />
+                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                  Total Interest Paid
+                </Typography>
+              </Stack>
+              <Box sx={{ my: 3, textAlign: "center" }}>
+                <Typography variant="h3" component="div" sx={{ fontWeight: "bold", color: "warning.main" }}>
+                  {formatAbbreviatedCurrency(annualInterest)}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Annual interest expense on debt
+                </Typography>
+              </Box>
+              <Divider sx={{ my: 1 }} />
+              <Typography variant="caption" color="text.secondary">
+                Calculated as: {formatAbbreviatedCurrency(debt)} (Debt) × {interestRate}% (Interest Rate)
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Card 5: Effective Tax Rate */}
+        <Grid size={{ xs: 12, sm: 4 }}>
           <Card elevation={3} sx={{ height: "100%" }}>
             <CardContent>
               <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
@@ -123,8 +204,8 @@ const Results: React.FC = () => {
           </Card>
         </Grid>
 
-        {/* Card 3: After-Tax Cost of Debt */}
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+        {/* Card 6: After-Tax Cost of Debt */}
+        <Grid size={{ xs: 12, sm: 4 }}>
           <Card elevation={3} sx={{ height: "100%" }}>
             <CardContent>
               <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
@@ -144,32 +225,6 @@ const Results: React.FC = () => {
               <Divider sx={{ my: 1 }} />
               <Typography variant="caption" color="text.secondary">
                 Formula: {formatPercent(interestRate)} × (1 - {taxRate}%)
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Card 4: Total Net Tax Paid */}
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <Card elevation={3} sx={{ height: "100%" }}>
-            <CardContent>
-              <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
-                <ReceiptLongIcon color="error" />
-                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                  Total Net Tax Paid
-                </Typography>
-              </Stack>
-              <Box sx={{ my: 3, textAlign: "center" }}>
-                <Typography variant="h3" component="div" sx={{ fontWeight: "bold", color: "error.main" }}>
-                  {formatAbbreviatedCurrency(taxWithDebt)}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Final tax bill at {formatPercent(effectiveTaxRateWithDebt)} ETR
-                </Typography>
-              </Box>
-              <Divider sx={{ my: 1 }} />
-              <Typography variant="caption" color="text.secondary">
-                Taxes without debt: {formatAbbreviatedCurrency(taxWithoutDebt)}
               </Typography>
             </CardContent>
           </Card>

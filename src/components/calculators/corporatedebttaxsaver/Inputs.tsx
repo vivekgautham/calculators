@@ -179,9 +179,9 @@ const Inputs: React.FC = () => {
                 </Stack>
                 <Slider
                   min={0}
-                  max={10000000000}
-                  step={50000000}
-                  value={ebit > 10000000000 ? 10000000000 : ebit}
+                  max={50000000000}
+                  step={100000000}
+                  value={ebit > 50000000000 ? 50000000000 : ebit}
                   onChange={(_, val) => setEbit(val as number)}
                   valueLabelDisplay="auto"
                   valueLabelFormat={formatLargeNumber}
