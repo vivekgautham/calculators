@@ -37,11 +37,9 @@ const formatAbbreviated = (value: number): string => {
 };
 
 const parseInput = (str: string): number => {
-  // Strip commas, dollar signs, and whitespace
   const cleanStr = str.replace(/[$,\s]/g, "").trim();
   if (cleanStr === "") return 0;
 
-  // Check for abbreviations (K, M, B)
   const regex = /^([\d.]+)\s*([KMBkmb]?)$/;
   const match = cleanStr.match(regex);
   if (match) {
@@ -67,13 +65,22 @@ const Inputs: React.FC = () => {
     setInterestRate,
     ebit,
     setEbit,
+    maxDebt,
+    setMaxDebt,
+    maxEbit,
+    setMaxEbit,
   } = useCorporateDebtTaxSaver();
 
   // Local text input states to allow typing abbreviated values without cursor jumps
   const [debtInput, setDebtInput] = React.useState<string>(formatAbbreviated(debt));
   const [ebitInput, setEbitInput] = React.useState<string>(formatAbbreviated(ebit));
+  const [maxDebtInput, setMaxDebtInput] = React.useState<string>(formatAbbreviated(maxDebt));
+  const [maxEbitInput, setMaxEbitInput] = React.useState<string>(formatAbbreviated(maxEbit));
+
   const [isDebtFocused, setIsDebtFocused] = React.useState(false);
   const [isEbitFocused, setIsEbitFocused] = React.useState(false);
+  const [isMaxDebtFocused, setIsMaxDebtFocused] = React.useState(false);
+  const [isMaxEbitFocused, setIsMaxEbitFocused] = React.useState(false);
 
   // Sync state from context changes (e.g. Sliders) only when NOT currently typing in textfield
   React.useEffect(() => {
@@ -88,11 +95,23 @@ const Inputs: React.FC = () => {
     }
   }, [ebit, isEbitFocused]);
 
+  React.useEffect(() => {
+    if (!isMaxDebtFocused) {
+      setMaxDebtInput(formatAbbreviated(maxDebt));
+    }
+  }, [maxDebt, isMaxDebtFocused]);
+
+  React.useEffect(() => {
+    if (!isMaxEbitFocused) {
+      setMaxEbitInput(formatAbbreviated(maxEbit));
+    }
+  }, [maxEbit, isMaxEbitFocused]);
+
   return (
     <Box sx={{ mb: 3 }}>
       <Grid container spacing={3}>
         {/* Core Inputs Card */}
-        <Grid size={{ xs: 12, md: 7 }}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Paper elevation={3} sx={{ p: 3, height: "100%" }}>
             <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", color: "#1a2035" }}>
               Debt & Income Parameters
@@ -129,14 +148,14 @@ const Inputs: React.FC = () => {
                     InputProps={{
                       startAdornment: <InputAdornment position="start">$</InputAdornment>,
                     }}
-                    sx={{ width: 160 }}
+                    sx={{ width: 140 }}
                   />
                 </Stack>
                 <Slider
                   min={0}
-                  max={50000000000}
-                  step={100000000}
-                  value={debt > 50000000000 ? 50000000000 : debt}
+                  max={maxDebt}
+                  step={maxDebt / 500}
+                  value={debt > maxDebt ? maxDebt : debt}
                   onChange={(_, val) => setDebt(val as number)}
                   valueLabelDisplay="auto"
                   valueLabelFormat={formatLargeNumber}
@@ -174,14 +193,14 @@ const Inputs: React.FC = () => {
                     InputProps={{
                       startAdornment: <InputAdornment position="start">$</InputAdornment>,
                     }}
-                    sx={{ width: 160 }}
+                    sx={{ width: 140 }}
                   />
                 </Stack>
                 <Slider
                   min={0}
-                  max={50000000000}
-                  step={100000000}
-                  value={ebit > 50000000000 ? 50000000000 : ebit}
+                  max={maxEbit}
+                  step={maxEbit / 500}
+                  value={ebit > maxEbit ? maxEbit : ebit}
                   onChange={(_, val) => setEbit(val as number)}
                   valueLabelDisplay="auto"
                   valueLabelFormat={formatLargeNumber}
@@ -192,7 +211,7 @@ const Inputs: React.FC = () => {
         </Grid>
 
         {/* Rate Settings Card */}
-        <Grid size={{ xs: 12, md: 5 }}>
+        <Grid size={{ xs: 12, md: 3 }}>
           <Paper elevation={3} sx={{ p: 3, height: "100%" }}>
             <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", color: "#1a2035" }}>
               Rate Parameters
@@ -203,7 +222,7 @@ const Inputs: React.FC = () => {
                 <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
                   <Stack direction="row" spacing={1} alignItems="center">
                     <Typography variant="body1" sx={{ fontWeight: "medium" }}>
-                      Interest Rate on Debt
+                      Interest Rate
                     </Typography>
                     <Tooltip title="The stated annual interest rate on the debt principal.">
                       <HelpOutlineIcon fontSize="small" sx={{ color: "text.secondary", cursor: "pointer" }} />
@@ -221,7 +240,7 @@ const Inputs: React.FC = () => {
                     InputProps={{
                       endAdornment: <InputAdornment position="end">%</InputAdornment>,
                     }}
-                    sx={{ width: 100 }}
+                    sx={{ width: 85 }}
                   />
                 </Stack>
                 <Slider
@@ -239,7 +258,7 @@ const Inputs: React.FC = () => {
                 <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
                   <Stack direction="row" spacing={1} alignItems="center">
                     <Typography variant="body1" sx={{ fontWeight: "medium" }}>
-                      Marginal Corporate Tax Rate
+                      Tax Rate
                     </Typography>
                     <Tooltip title="The statutory tax rate applied to the last dollar of income (federal + state combined).">
                       <HelpOutlineIcon fontSize="small" sx={{ color: "text.secondary", cursor: "pointer" }} />
@@ -257,7 +276,7 @@ const Inputs: React.FC = () => {
                     InputProps={{
                       endAdornment: <InputAdornment position="end">%</InputAdornment>,
                     }}
-                    sx={{ width: 100 }}
+                    sx={{ width: 85 }}
                   />
                 </Stack>
                 <Slider
@@ -267,6 +286,76 @@ const Inputs: React.FC = () => {
                   value={taxRate > 60 ? 60 : taxRate}
                   onChange={(_, val) => setTaxRate(val as number)}
                   valueLabelDisplay="auto"
+                />
+              </Box>
+            </Stack>
+          </Paper>
+        </Grid>
+
+        {/* Range Settings Card */}
+        <Grid size={{ xs: 12, md: 3 }}>
+          <Paper elevation={3} sx={{ p: 3, height: "100%" }}>
+            <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", color: "#1a2035" }}>
+              Range Configuration
+            </Typography>
+            <Stack spacing={4} sx={{ mt: 2 }}>
+              {/* Max Debt Setting */}
+              <Box>
+                <Typography variant="body2" sx={{ fontWeight: "medium", mb: 1 }}>
+                  Max Debt Slider Limit
+                </Typography>
+                <TextField
+                  size="small"
+                  type="text"
+                  value={maxDebtInput}
+                  onFocus={() => setIsMaxDebtFocused(true)}
+                  onBlur={() => {
+                    setIsMaxDebtFocused(false);
+                    setMaxDebtInput(formatAbbreviated(maxDebt));
+                  }}
+                  onChange={(e) => {
+                    const valStr = e.target.value;
+                    setMaxDebtInput(valStr);
+                    const parsed = parseInput(valStr);
+                    if (!isNaN(parsed) && parsed > 0) {
+                      setMaxDebt(parsed);
+                    }
+                  }}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                  }}
+                  fullWidth
+                  helperText="Sets upper limit of Debt slider"
+                />
+              </Box>
+
+              {/* Max EBIT Setting */}
+              <Box>
+                <Typography variant="body2" sx={{ fontWeight: "medium", mb: 1 }}>
+                  Max EBIT Slider Limit
+                </Typography>
+                <TextField
+                  size="small"
+                  type="text"
+                  value={maxEbitInput}
+                  onFocus={() => setIsMaxEbitFocused(true)}
+                  onBlur={() => {
+                    setIsMaxEbitFocused(false);
+                    setMaxEbitInput(formatAbbreviated(maxEbit));
+                  }}
+                  onChange={(e) => {
+                    const valStr = e.target.value;
+                    setMaxEbitInput(valStr);
+                    const parsed = parseInput(valStr);
+                    if (!isNaN(parsed) && parsed > 0) {
+                      setMaxEbit(parsed);
+                    }
+                  }}
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                  }}
+                  fullWidth
+                  helperText="Sets upper limit of EBIT slider"
                 />
               </Box>
             </Stack>

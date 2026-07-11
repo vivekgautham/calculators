@@ -20,6 +20,10 @@ interface CorporateDebtTaxSaverContextType {
   effectiveTaxRateWithDebt: number;
   netProfitWithoutDebt: number;
   netProfitWithDebt: number;
+  maxDebt: number;
+  setMaxDebt: (val: number) => void;
+  maxEbit: number;
+  setMaxEbit: (val: number) => void;
 }
 
 const CorporateDebtTaxSaverContext = createContext<CorporateDebtTaxSaverContextType | undefined>(undefined);
@@ -29,6 +33,8 @@ export const CorporateDebtTaxSaverProvider: React.FC<{ children: ReactNode }> = 
   const [taxRate, setTaxRate] = useState<number>(21); // Default 21% (US federal corporate rate)
   const [interestRate, setInterestRate] = useState<number>(6.5); // Default 6.5%
   const [ebit, setEbit] = useState<number>(15000000000); // Default $15,000,000,000 EBIT (15 billion)
+  const [maxDebt, setMaxDebt] = useState<number>(50000000000); // Default $50B maximum debt range
+  const [maxEbit, setMaxEbit] = useState<number>(50000000000); // Default $50B maximum EBIT range
 
   const computedValues = useMemo(() => {
     const tRate = taxRate / 100;
@@ -82,6 +88,10 @@ export const CorporateDebtTaxSaverProvider: React.FC<{ children: ReactNode }> = 
         setInterestRate,
         ebit,
         setEbit,
+        maxDebt,
+        setMaxDebt,
+        maxEbit,
+        setMaxEbit,
         ...computedValues,
       }}
     >
