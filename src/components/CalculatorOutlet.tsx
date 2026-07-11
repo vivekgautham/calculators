@@ -4,6 +4,7 @@ import { Stack, Box, Typography, Autocomplete, TextField, IconButton, Tooltip } 
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import { CALCULATORS_AND_SIMULATORS, getTagStyles } from "../config";
+import packageJson from "../../package.json";
 
 function CalculatorOutlet() {
   const [activeCalculator, setActiveCalculator] = useState<string>(() => {
@@ -117,6 +118,7 @@ function CalculatorOutlet() {
       <Stack
         direction="row"
         alignItems="center"
+        justifyContent="space-between"
         sx={{
           height: "56px",
           px: 3,
@@ -147,6 +149,28 @@ function CalculatorOutlet() {
           <Typography variant="h6" sx={{ fontWeight: "bold", letterSpacing: "0.5px" }}>
             Advanced Calculators & Simulators
           </Typography>
+        </Stack>
+
+        {/* Right GitHub & Version Info */}
+        <Stack direction="row" alignItems="center" spacing={2}>
+          <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.5)", fontWeight: "medium" }}>
+            v{packageJson.version}
+          </Typography>
+          <a
+            href="https://www.github.com/vivekgautham"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: "#00b5ad",
+              display: "flex",
+              alignItems: "center",
+              transition: "color 0.2s ease",
+            }}
+            onMouseEnter={(e: any) => (e.currentTarget.style.color = "#00e5db")}
+            onMouseLeave={(e: any) => (e.currentTarget.style.color = "#00b5ad")}
+          >
+            <i className="github icon large" style={{ margin: 0 }}></i>
+          </a>
         </Stack>
       </Stack>
 
