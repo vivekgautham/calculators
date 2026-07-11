@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Icon } from "semantic-ui-react";
 import { Stack, Box, Typography, Autocomplete, TextField } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { CALCULATORS_AND_SIMULATORS, getTagStyles } from "../config";
 
 function CalculatorOutlet() {
@@ -242,17 +243,17 @@ function CalculatorOutlet() {
       {/* Dynamic Browser-like Tab Bar */}
       <Stack
         direction="row"
-        spacing={0.5}
+        spacing={1}
         sx={{
           px: 3,
-          pt: 0.8,
-          backgroundColor: "#eceff1", // Light warm grey tab bar background
-          borderBottom: "1px solid #cfd8dc",
+          py: 1.2,
+          backgroundColor: "#f8f9fa", // Match search background for design cohesion
+          borderBottom: "1px solid #e9ecef",
           flexShrink: 0,
           overflowX: "auto",
           whiteSpace: "nowrap",
           "&::-webkit-scrollbar": { height: 4 },
-          "&::-webkit-scrollbar-thumb": { backgroundColor: "#b0bec5", borderRadius: 2 },
+          "&::-webkit-scrollbar-thumb": { backgroundColor: "#ced4da", borderRadius: 2 },
         }}
       >
         {openCalculators.map((val) => {
@@ -268,49 +269,61 @@ function CalculatorOutlet() {
               spacing={1}
               onClick={() => setActiveCalculator(val)}
               sx={{
-                px: 2,
+                px: 2.2,
                 py: 0.8,
-                borderRadius: "6px 6px 0 0",
-                backgroundColor: isActive ? "white" : "rgba(255, 255, 255, 0.45)",
+                borderRadius: "20px", // Rounded pill styling
+                background: isActive
+                  ? "linear-gradient(135deg, #00b5ad 0%, #008f89 100%)"
+                  : "white",
                 border: "1px solid",
-                borderColor: isActive ? "#cfd8dc" : "transparent",
-                borderBottomColor: isActive ? "white" : "#cfd8dc",
+                borderColor: isActive ? "transparent" : "#dee2e6",
                 cursor: "pointer",
                 userSelect: "none",
-                fontWeight: isActive ? "bold" : "normal",
-                color: isActive ? "#00b5ad" : "text.secondary",
-                transition: "all 0.15s ease",
+                fontWeight: isActive ? 600 : 500,
+                color: isActive ? "white" : "#495057",
+                transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
                 mr: 0.5,
-                boxShadow: isActive ? "0px -2px 4px rgba(0,0,0,0.03)" : "none",
+                boxShadow: isActive ? "0px 4px 10px rgba(0, 181, 173, 0.25)" : "0px 2px 4px rgba(0,0,0,0.02)",
                 "&:hover": {
-                  backgroundColor: isActive ? "white" : "rgba(255, 255, 255, 0.75)",
-                  color: isActive ? "#00b5ad" : "text.primary",
+                  background: isActive
+                    ? "linear-gradient(135deg, #00c7be 0%, #009d97 100%)"
+                    : "#f1f3f5",
+                  borderColor: isActive ? "transparent" : "#ced4da",
+                  transform: isActive ? "translateY(-1px)" : "none",
+                  boxShadow: isActive ? "0px 6px 12px rgba(0, 181, 173, 0.3)" : "0px 3px 6px rgba(0,0,0,0.04)",
+                },
+                "&:active": {
+                  transform: "translateY(0px)",
                 },
               }}
             >
-              <Icon
-                name="calculator"
-                style={{
-                  color: isActive ? "#00b5ad" : "rgba(0,0,0,0.4)",
-                  margin: 0,
-                  fontSize: "12px",
+              <Typography
+                variant="body2"
+                sx={{
+                  fontWeight: "inherit",
+                  fontSize: "13px",
+                  letterSpacing: "0.2px",
                 }}
-              />
-              <Typography variant="body2" sx={{ fontWeight: "inherit", fontSize: "13px" }}>
+              >
                 {calc.name}
               </Typography>
               {openCalculators.length > 1 && (
-                <Icon
-                  name="close"
+                <CloseIcon
                   onClick={(e: React.MouseEvent) => handleCloseTab(val, e)}
-                  style={{
-                    marginLeft: 8,
-                    fontSize: "10px",
-                    color: "rgba(0,0,0,0.3)",
-                    transition: "color 0.1s ease",
+                  sx={{
+                    marginLeft: 1,
+                    fontSize: "14px",
+                    color: isActive ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.4)",
+                    transition: "all 0.2s ease",
+                    cursor: "pointer",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    "&:hover": {
+                      color: isActive ? "#ffcdd2" : "#d32f2f",
+                      transform: "rotate(90deg)",
+                    },
                   }}
-                  onMouseEnter={(e: any) => (e.target.style.color = "#d32f2f")}
-                  onMouseLeave={(e: any) => (e.target.style.color = "rgba(0,0,0,0.3)")}
                 />
               )}
             </Stack>
