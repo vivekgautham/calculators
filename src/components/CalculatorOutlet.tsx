@@ -156,21 +156,23 @@ function CalculatorOutlet() {
           <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.5)", fontWeight: "medium" }}>
             v{packageJson.version}
           </Typography>
-          <a
+          <Box
+            component="a"
             href="https://www.github.com/vivekgautham"
             target="_blank"
             rel="noopener noreferrer"
-            style={{
+            sx={{
               color: "#00b5ad",
               display: "flex",
               alignItems: "center",
               transition: "color 0.2s ease",
+              "&:hover": {
+                color: "#00e5db",
+              },
             }}
-            onMouseEnter={(e: any) => (e.currentTarget.style.color = "#00e5db")}
-            onMouseLeave={(e: any) => (e.currentTarget.style.color = "#00b5ad")}
           >
             <i className="github icon large" style={{ margin: 0 }}></i>
-          </a>
+          </Box>
         </Stack>
       </Stack>
 
@@ -224,7 +226,7 @@ function CalculatorOutlet() {
                 />
               )}
               renderOption={(props, option) => {
-                const { key, ...restProps } = props as any;
+                const { key: _key, ...restProps } = props as React.HTMLAttributes<HTMLLIElement> & { key?: React.Key };
                 return (
                   <Box
                     component="li"
@@ -398,6 +400,10 @@ function CalculatorOutlet() {
           overflow: "hidden",
           width: "100vw",
           position: "relative",
+          // Force panels to 100% height instead of 100vh so their internal scrollbars fit the parent viewport
+          "& > div > div": {
+            height: "100% !important",
+          },
         }}
       >
         {CALCULATORS_AND_SIMULATORS.map((item) => {
