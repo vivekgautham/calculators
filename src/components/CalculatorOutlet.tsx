@@ -226,12 +226,13 @@ function CalculatorOutlet() {
                 />
               )}
               renderOption={(props, option) => {
-                const { key: _key, ...restProps } = props as React.HTMLAttributes<HTMLLIElement> & { key?: React.Key };
+                const restProps = { ...props };
+                delete (restProps as Record<string, unknown>).key;
                 return (
                   <Box
                     component="li"
-                    key={option.value}
                     {...restProps}
+                    key={option.value}
                     sx={{
                       display: "flex",
                       flexDirection: "row",
