@@ -7,10 +7,17 @@ export enum GrowthFrequency {
   ANNUALLY = "Annually",
 }
 
+export enum AmountUnit {
+  MILLION = "M",
+  BILLION = "B",
+  TRILLION = "T",
+}
+
 export interface Scenario {
   key: string;
   name: string;
   initialAmount: number;
+  unit: AmountUnit;
   rate: number;
   color: string;
 }
@@ -52,6 +59,7 @@ export const RateOfGrowthProvider: React.FC<{ children: ReactNode }> = ({
       key: "init-1",
       name: "Scenario 1",
       initialAmount: 1000000,
+      unit: AmountUnit.MILLION,
       rate: 5,
       color: AVAILABLE_COLORS[0],
     },
@@ -59,6 +67,7 @@ export const RateOfGrowthProvider: React.FC<{ children: ReactNode }> = ({
       key: "init-2",
       name: "Scenario 2",
       initialAmount: 1000000,
+      unit: AmountUnit.MILLION,
       rate: 6,
       color: AVAILABLE_COLORS[1],
     },
@@ -85,6 +94,7 @@ export const RateOfGrowthProvider: React.FC<{ children: ReactNode }> = ({
       key: `scenario-${Date.now()}`,
       name: `Scenario ${nextNum}`,
       initialAmount: 1000000,
+      unit: AmountUnit.MILLION,
       rate: 5,
       color: nextColor,
     };

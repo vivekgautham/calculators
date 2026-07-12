@@ -12,6 +12,9 @@ import {
   Divider,
   Slider,
   Paper,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
@@ -19,6 +22,7 @@ import {
   useRateOfGrowth,
   GrowthFrequency,
   AVAILABLE_COLORS,
+  AmountUnit,
 } from "./RateOfGrowthContext";
 
 const formatLargeAmount = (value: number): string => {
@@ -194,22 +198,84 @@ const Inputs: React.FC = () => {
                     </Select>
                   </FormControl>
 
-                  {/* Initial Amount Slider */}
+                  {/* Initial Amount Unit-controlled Slider */}
                   <Box sx={{ width: "100%", px: 1 }}>
-                    <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: -0.5 }}>
-                      Initial Amount: {formatLargeAmount(scenario.initialAmount)}
-                    </Typography>
+                    <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: -0.5 }}>
+                      <Typography variant="caption" color="text.secondary" display="block">
+                        Initial Amount: {formatLargeAmount(scenario.initialAmount)}
+                      </Typography>
+                      <RadioGroup
+                        row
+                        value={scenario.unit}
+                        onChange={(e) => {
+                          const newUnit = e.target.value as AmountUnit;
+                          // Recalculate raw initialAmount to fit the selected unit's base scale to prevent jumps
+                          const currentVal =
+                            scenario.unit === AmountUnit.TRILLION
+                              ? scenario.initialAmount / 1e12
+                              : scenario.unit === AmountUnit.BILLION
+                              ? scenario.initialAmount / 1e9
+                              : scenario.initialAmount / 1e6;
+
+                          const targetMultiplier =
+                            newUnit === AmountUnit.TRILLION
+                              ? 1e12
+                              : newUnit === AmountUnit.BILLION
+                              ? 1e9
+                              : 1e6;
+
+                          let targetVal = currentVal;
+                          const targetMax = newUnit === AmountUnit.TRILLION ? 50 : 1000;
+                          if (targetVal > targetMax) {
+                            targetVal = targetMax;
+                          }
+
+                          updateScenario(scenario.key, {
+                            unit: newUnit,
+                            initialAmount: targetVal * targetMultiplier,
+                          });
+                        }}
+                        sx={{
+                          "& .MuiFormControlLabel-label": { fontSize: "11px" },
+                          ml: 2,
+                        }}
+                      >
+                        <FormControlLabel value={AmountUnit.MILLION} control={<Radio size="small" sx={{ p: 0.2 }} />} label="M" />
+                        <FormControlLabel value={AmountUnit.BILLION} control={<Radio size="small" sx={{ p: 0.2 }} />} label="B" />
+                        <FormControlLabel value={AmountUnit.TRILLION} control={<Radio size="small" sx={{ p: 0.2 }} />} label="T" />
+                      </RadioGroup>
+                    </Stack>
                     <Slider
                       min={0}
-                      max={50000000000000} // 50T
-                      step={1000000} // 1M
-                      value={scenario.initialAmount}
-                      onChange={(_, val) =>
-                        updateScenario(scenario.key, { initialAmount: val as number })
+                      max={scenario.unit === AmountUnit.TRILLION ? 50 : 1000}
+                      step={scenario.unit === AmountUnit.TRILLION ? 0.1 : 1}
+                      value={
+                        scenario.unit === AmountUnit.TRILLION
+                          ? scenario.initialAmount / 1e12
+                          : scenario.unit === AmountUnit.BILLION
+                          ? scenario.initialAmount / 1e9
+                          : scenario.initialAmount / 1e6
                       }
+                      onChange={(_, val) => {
+                        const multiplier =
+                          scenario.unit === AmountUnit.TRILLION
+                            ? 1e12
+                            : scenario.unit === AmountUnit.BILLION
+                            ? 1e9
+                            : 1e6;
+                        updateScenario(scenario.key, { initialAmount: (val as number) * multiplier });
+                      }}
                       size="small"
                       valueLabelDisplay="auto"
-                      valueLabelFormat={formatLargeAmount}
+                      valueLabelFormat={(val) => {
+                        const labelVal =
+                          scenario.unit === AmountUnit.TRILLION
+                            ? val * 1e12
+                            : scenario.unit === AmountUnit.BILLION
+                            ? val * 1e9
+                            : val * 1e6;
+                        return formatLargeAmount(labelVal);
+                      }}
                     />
                   </Box>
 
