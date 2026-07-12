@@ -215,14 +215,18 @@ const Inputs: React.FC = () => {
                               ? scenario.initialAmount / 1e12
                               : scenario.unit === AmountUnit.BILLION
                               ? scenario.initialAmount / 1e9
-                              : scenario.initialAmount / 1e6;
+                              : scenario.unit === AmountUnit.MILLION
+                              ? scenario.initialAmount / 1e6
+                              : scenario.initialAmount / 1e3;
 
                           const targetMultiplier =
                             newUnit === AmountUnit.TRILLION
                               ? 1e12
                               : newUnit === AmountUnit.BILLION
                               ? 1e9
-                              : 1e6;
+                              : newUnit === AmountUnit.MILLION
+                              ? 1e6
+                              : 1e3;
 
                           let targetVal = currentVal;
                           const targetMax = newUnit === AmountUnit.TRILLION ? 50 : 1000;
@@ -240,6 +244,7 @@ const Inputs: React.FC = () => {
                           ml: 2,
                         }}
                       >
+                        <FormControlLabel value={AmountUnit.THOUSAND} control={<Radio size="small" sx={{ p: 0.2 }} />} label="K" />
                         <FormControlLabel value={AmountUnit.MILLION} control={<Radio size="small" sx={{ p: 0.2 }} />} label="M" />
                         <FormControlLabel value={AmountUnit.BILLION} control={<Radio size="small" sx={{ p: 0.2 }} />} label="B" />
                         <FormControlLabel value={AmountUnit.TRILLION} control={<Radio size="small" sx={{ p: 0.2 }} />} label="T" />
@@ -254,7 +259,9 @@ const Inputs: React.FC = () => {
                           ? scenario.initialAmount / 1e12
                           : scenario.unit === AmountUnit.BILLION
                           ? scenario.initialAmount / 1e9
-                          : scenario.initialAmount / 1e6
+                          : scenario.unit === AmountUnit.MILLION
+                          ? scenario.initialAmount / 1e6
+                          : scenario.initialAmount / 1e3
                       }
                       onChange={(_, val) => {
                         const multiplier =
@@ -262,7 +269,9 @@ const Inputs: React.FC = () => {
                             ? 1e12
                             : scenario.unit === AmountUnit.BILLION
                             ? 1e9
-                            : 1e6;
+                            : scenario.unit === AmountUnit.MILLION
+                            ? 1e6
+                            : 1e3;
                         updateScenario(scenario.key, { initialAmount: (val as number) * multiplier });
                       }}
                       size="small"
@@ -273,7 +282,9 @@ const Inputs: React.FC = () => {
                             ? val * 1e12
                             : scenario.unit === AmountUnit.BILLION
                             ? val * 1e9
-                            : val * 1e6;
+                            : scenario.unit === AmountUnit.MILLION
+                            ? val * 1e6
+                            : val * 1e3;
                         return formatLargeAmount(labelVal);
                       }}
                     />
