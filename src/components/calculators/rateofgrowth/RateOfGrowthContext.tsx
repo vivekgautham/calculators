@@ -8,6 +8,7 @@ export enum GrowthFrequency {
 }
 
 export enum AmountUnit {
+  THOUSAND = "K",
   MILLION = "M",
   BILLION = "B",
   TRILLION = "T",
