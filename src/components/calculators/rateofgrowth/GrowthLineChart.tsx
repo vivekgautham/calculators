@@ -9,10 +9,12 @@ const formatNumber = (value: number): string => {
   const sign = value < 0 ? "-" : "";
 
   let formatted = absoluteValue.toString();
-  if (absoluteValue >= 1000000000) {
-    formatted = (absoluteValue / 1000000000).toFixed(1) + "B";
+  if (absoluteValue >= 1000000000000) {
+    formatted = (absoluteValue / 1000000000000).toFixed(2) + "T";
+  } else if (absoluteValue >= 1000000000) {
+    formatted = (absoluteValue / 1000000000).toFixed(2) + "B";
   } else if (absoluteValue >= 1000000) {
-    formatted = (absoluteValue / 1000000).toFixed(1) + "M";
+    formatted = (absoluteValue / 1000000).toFixed(2) + "M";
   } else if (absoluteValue >= 1000) {
     formatted = (absoluteValue / 1000).toFixed(1) + "K";
   } else {
@@ -23,7 +25,7 @@ const formatNumber = (value: number): string => {
 };
 
 const GrowthLineChart: React.FC = () => {
-  const { scenarios } = useRateOfGrowth();
+  const { scenarios, timeSpan, frequency } = useRateOfGrowth();
 
   const chartOptions = useMemo(() => {
     const series = scenarios.map((scenario) => {
@@ -31,7 +33,7 @@ const GrowthLineChart: React.FC = () => {
       const r = scenario.rate / 100;
 
       let periodsPerYear = 1;
-      switch (scenario.frequency) {
+      switch (frequency) {
         case GrowthFrequency.DAILY:
           periodsPerYear = 365;
           break;
@@ -47,7 +49,7 @@ const GrowthLineChart: React.FC = () => {
           break;
       }
 
-      const totalPeriods = Math.floor(scenario.timeSpan * periodsPerYear);
+      const totalPeriods = Math.floor(timeSpan * periodsPerYear);
       const ratePerPeriod = r / periodsPerYear;
 
       for (let i = 0; i <= totalPeriods; i++) {
@@ -122,7 +124,7 @@ const GrowthLineChart: React.FC = () => {
         enabled: true,
       },
     };
-  }, [scenarios]);
+  }, [scenarios, timeSpan, frequency]);
 
   return (
     <Box sx={{ width: "100%" }}>

@@ -9,12 +9,9 @@ export enum GrowthFrequency {
 
 export interface Scenario {
   key: string;
-  id: string;
   name: string;
   initialAmount: number;
-  frequency: GrowthFrequency;
   rate: number;
-  timeSpan: number;
   color: string;
 }
 
@@ -24,6 +21,10 @@ interface RateOfGrowthContextType {
   removeScenario: (key: string) => void;
   updateScenario: (key: string, updates: Partial<Scenario>) => void;
   availableColors: string[];
+  timeSpan: number;
+  setTimeSpan: (val: number) => void;
+  frequency: GrowthFrequency;
+  setFrequency: (val: GrowthFrequency) => void;
 }
 
 const RateOfGrowthContext = createContext<RateOfGrowthContextType | undefined>(
@@ -49,35 +50,30 @@ export const RateOfGrowthProvider: React.FC<{ children: ReactNode }> = ({
   const [scenarios, setScenarios] = useState<Scenario[]>([
     {
       key: "init-1",
-      id: "1",
       name: "Scenario 1",
-      initialAmount: 1000,
-      frequency: GrowthFrequency.ANNUALLY,
+      initialAmount: 1000000,
       rate: 5,
-      timeSpan: 10,
       color: AVAILABLE_COLORS[0],
     },
     {
       key: "init-2",
-      id: "2",
       name: "Scenario 2",
-      initialAmount: 1000,
-      frequency: GrowthFrequency.ANNUALLY,
+      initialAmount: 1000000,
       rate: 6,
-      timeSpan: 10,
       color: AVAILABLE_COLORS[1],
     },
   ]);
 
+  const [timeSpan, setTimeSpan] = useState<number>(10); // Default 10 years
+  const [frequency, setFrequency] = useState<GrowthFrequency>(GrowthFrequency.ANNUALLY); // Default Annually
+
   const addScenario = () => {
-    // Generate a unique numeric ID for display based on current scenarios
-    const existingIds = scenarios
-      .map((s) => parseInt(s.id))
-      .filter((id) => !isNaN(id));
-    const nextNum =
-      existingIds.length > 0
-        ? Math.max(...existingIds) + 1
-        : scenarios.length + 1;
+    // Generate a unique number for name based on current scenarios
+    const existingNames = scenarios.map((s) => s.name);
+    let nextNum = scenarios.length + 1;
+    while (existingNames.includes(`Scenario ${nextNum}`)) {
+      nextNum++;
+    }
 
     // Try to find a color that isn't used yet, or just cycle
     const usedColors = scenarios.map((s) => s.color);
@@ -87,12 +83,9 @@ export const RateOfGrowthProvider: React.FC<{ children: ReactNode }> = ({
 
     const newScenario: Scenario = {
       key: `scenario-${Date.now()}`,
-      id: nextNum.toString(),
       name: `Scenario ${nextNum}`,
-      initialAmount: 1000,
-      frequency: GrowthFrequency.ANNUALLY,
+      initialAmount: 1000000,
       rate: 5,
-      timeSpan: 10,
       color: nextColor,
     };
     setScenarios([...scenarios, newScenario]);
@@ -118,6 +111,10 @@ export const RateOfGrowthProvider: React.FC<{ children: ReactNode }> = ({
         removeScenario,
         updateScenario,
         availableColors: AVAILABLE_COLORS,
+        timeSpan,
+        setTimeSpan,
+        frequency,
+        setFrequency,
       }}
     >
       {children}
