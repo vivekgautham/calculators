@@ -24,11 +24,11 @@ interface SavingsPowerContextType {
 const SavingsPowerContext = createContext<SavingsPowerContextType | undefined>(undefined);
 
 export const SavingsPowerProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [salary, setSalary] = useState<number>(100000);
-  const [taxRate, setTaxRate] = useState<number>(27);
-  const [spendingA, setSpendingA] = useState<number>(40000);
-  const [spendingB, setSpendingB] = useState<number>(50000);
-  const [spendingC, setSpendingC] = useState<number>(73000); // Defaults to takeHome
+  const [salary, setSalary] = useState<number>(300000);
+  const [taxRate, setTaxRate] = useState<number>(37);
+  const [spendingA, setSpendingA] = useState<number>(100000);
+  const [spendingB, setSpendingB] = useState<number>(120000);
+  const [spendingC, setSpendingC] = useState<number>(189000); // Defaults to takeHome (300k base * 0.63)
 
   // Computed values
   const takeHome = salary * (1 - taxRate / 100);
