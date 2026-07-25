@@ -11,6 +11,7 @@ import RetirementPlanner from "./components/calculators/RetirementPlanner";
 import RatingsBasedPredictor from "./components/calculators/RatingsBasedPredictor";
 import CorporateDebtTaxSaver from "./components/calculators/CorporateDebtTaxSaver";
 import SlabStructure from "./components/calculators/SlabStructure";
+import SavingsPower from "./components/calculators/SavingsPower";
 
 export const CALCULATORS_AND_SIMULATORS = [
   {
@@ -123,6 +124,14 @@ export const CALCULATORS_AND_SIMULATORS = [
     description:
       "Calculate GST and fee slab structures for currency exchange & services, with interactive charts from ₹1 Lakh to ₹20 Lakh.",
     panel: SlabStructure,
+  },
+  {
+    name: "Savings Power Comparison",
+    value: "savingspower",
+    tags: ["finance", "planning", "investment"],
+    description:
+      "Compare the compounding power of savings and calculate the pre-tax salary equivalence of after-tax savings differences.",
+    panel: SavingsPower,
   },
 ];
 
