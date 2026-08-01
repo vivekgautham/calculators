@@ -12,6 +12,7 @@ import RatingsBasedPredictor from "./components/calculators/RatingsBasedPredicto
 import CorporateDebtTaxSaver from "./components/calculators/CorporateDebtTaxSaver";
 import SlabStructure from "./components/calculators/SlabStructure";
 import SavingsPower from "./components/calculators/SavingsPower";
+import PopulationGrowth from "./components/calculators/PopulationGrowth";
 
 export const CALCULATORS_AND_SIMULATORS = [
   {
@@ -132,6 +133,14 @@ export const CALCULATORS_AND_SIMULATORS = [
     description:
       "Compare the compounding power of savings and calculate the pre-tax salary equivalence of after-tax savings differences.",
     panel: SavingsPower,
+  },
+  {
+    name: "Population Growth Simulator",
+    value: "populationgrowth",
+    tags: ["demographics", "planning"],
+    description:
+      "Simulate demographic trends, fertility rates, life expectancy, and net migration to analyze cohort aging dynamics.",
+    panel: PopulationGrowth,
   },
 ];
 
