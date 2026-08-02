@@ -186,6 +186,8 @@ export const OrderBookProvider: React.FC<{ children: React.ReactNode }> = ({
 
       const newTrades: Trade[] = [];
 
+      let computedNextBids: Order[] = [];
+
       setBids((prevBids) => {
         setAsks((prevAsks) => {
           let currentBids = [...prevBids];
@@ -203,6 +205,7 @@ export const OrderBookProvider: React.FC<{ children: React.ReactNode }> = ({
                 }
               }
               if (availableQty < inputOrder.qty) {
+                computedNextBids = currentBids;
                 return currentAsks;
               }
             }
@@ -275,6 +278,7 @@ export const OrderBookProvider: React.FC<{ children: React.ReactNode }> = ({
                 }
               }
               if (availableQty < inputOrder.qty) {
+                computedNextBids = currentBids;
                 return currentAsks;
               }
             }
@@ -364,11 +368,11 @@ export const OrderBookProvider: React.FC<{ children: React.ReactNode }> = ({
             ]);
           }
 
-          setBids(currentBids);
+          computedNextBids = currentBids;
           return currentAsks;
         });
 
-        return prevBids;
+        return computedNextBids;
       });
 
       const avgPrice = filledQty > 0 ? totalCost / filledQty : 0;

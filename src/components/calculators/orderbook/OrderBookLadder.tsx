@@ -56,8 +56,8 @@ export const OrderBookLadder: React.FC<{
       };
     });
 
-    // We want asks displayed descending from top (highest price at top, lowest ask near spread)
-    return levels.slice(0, 12).reverse();
+    // Display asks descending from highest price at top down to lowest ask near spread
+    return levels.reverse();
   }, [asks]);
 
   const aggregatedBids = useMemo(() => {
@@ -89,7 +89,7 @@ export const OrderBookLadder: React.FC<{
       };
     });
 
-    return levels.slice(0, 12);
+    return levels;
   }, [bids]);
 
   const bestBid = aggregatedBids.length > 0 ? aggregatedBids[0].price : null;

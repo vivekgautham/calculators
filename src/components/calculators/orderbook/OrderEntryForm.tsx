@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Paper,
   Box,
@@ -25,7 +25,7 @@ export const OrderEntryForm: React.FC = () => {
 
   const [side, setSide] = useState<"BUY" | "SELL">("BUY");
   const [orderType, setOrderType] = useState<"LIMIT" | "MARKET">("LIMIT");
-  const [price, setPrice] = useState<string>("200.00");
+  const [price, setPrice] = useState<string>("99.50");
   const [qty, setQty] = useState<string>("100");
   const [timeInForce, setTimeInForce] = useState<"GTC" | "IOC" | "FOK">("GTC");
   const [traderName, setTraderName] = useState<string>("User_Trader");
@@ -33,17 +33,6 @@ export const OrderEntryForm: React.FC = () => {
     type: "success" | "info" | "warning";
     message: string;
   } | null>(null);
-
-  // Sync price when best bid/ask or reference price changes if not user modified
-  useEffect(() => {
-    if (side === "BUY" && asks.length > 0) {
-      setPrice(asks[0].price.toFixed(2));
-    } else if (side === "SELL" && bids.length > 0) {
-      setPrice(bids[0].price.toFixed(2));
-    } else if (lastTradedPrice !== null) {
-      setPrice(lastTradedPrice.toFixed(2));
-    }
-  }, [side, bids, asks, lastTradedPrice]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -139,7 +128,13 @@ export const OrderEntryForm: React.FC = () => {
       <ToggleButtonGroup
         value={side}
         exclusive
-        onChange={(_, newSide) => newSide && setSide(newSide)}
+        onChange={(_, newSide) => {
+          if (newSide) {
+            setSide(newSide);
+            if (newSide === "BUY" && bestBid) setPrice(bestBid.toFixed(2));
+            if (newSide === "SELL" && bestAsk) setPrice(bestAsk.toFixed(2));
+          }
+        }}
         fullWidth
         sx={{ mb: 2 }}
       >
