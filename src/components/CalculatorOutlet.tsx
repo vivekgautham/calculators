@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Icon } from "semantic-ui-react";
-import { Stack, Box, Typography, Autocomplete, TextField, IconButton, Tooltip } from "@mui/material";
+import {
+  Stack,
+  Box,
+  Typography,
+  Autocomplete,
+  TextField,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import { CALCULATORS_AND_SIMULATORS, getTagStyles } from "../config";
@@ -24,9 +32,11 @@ function CalculatorOutlet() {
     const params = new URLSearchParams(window.location.search);
     const openParam = params.get("open");
     if (openParam) {
-      const split = openParam.split(",").filter((val) =>
-        CALCULATORS_AND_SIMULATORS.some((c) => c.value === val)
-      );
+      const split = openParam
+        .split(",")
+        .filter((val) =>
+          CALCULATORS_AND_SIMULATORS.some((c) => c.value === val),
+        );
       if (split.length > 0) {
         return split;
       }
@@ -50,22 +60,34 @@ function CalculatorOutlet() {
       let newOpen = openCalculators;
       let changed = false;
 
-      if (active && CALCULATORS_AND_SIMULATORS.some((c) => c.value === active) && active !== activeCalculator) {
+      if (
+        active &&
+        CALCULATORS_AND_SIMULATORS.some((c) => c.value === active) &&
+        active !== activeCalculator
+      ) {
         newActive = active;
         changed = true;
       } else {
         const hash = window.location.hash.replace("#", "");
-        if (CALCULATORS_AND_SIMULATORS.some((c) => c.value === hash) && hash !== activeCalculator) {
+        if (
+          CALCULATORS_AND_SIMULATORS.some((c) => c.value === hash) &&
+          hash !== activeCalculator
+        ) {
           newActive = hash;
           changed = true;
         }
       }
 
       if (openParam) {
-        const split = openParam.split(",").filter((val) =>
-          CALCULATORS_AND_SIMULATORS.some((c) => c.value === val)
-        );
-        if (split.length > 0 && JSON.stringify(split) !== JSON.stringify(openCalculators)) {
+        const split = openParam
+          .split(",")
+          .filter((val) =>
+            CALCULATORS_AND_SIMULATORS.some((c) => c.value === val),
+          );
+        if (
+          split.length > 0 &&
+          JSON.stringify(split) !== JSON.stringify(openCalculators)
+        ) {
           newOpen = split;
           changed = true;
         }
@@ -145,15 +167,25 @@ function CalculatorOutlet() {
             setInputValue("");
           }}
         >
-          <Icon name="calculator" size="large" style={{ color: "#00b5ad", margin: 0 }} />
-          <Typography variant="h6" sx={{ fontWeight: "bold", letterSpacing: "0.5px" }}>
+          <Icon
+            name="calculator"
+            size="large"
+            style={{ color: "#00b5ad", margin: 0 }}
+          />
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: "bold", letterSpacing: "0.5px" }}
+          >
             Advanced Calculators & Simulators
           </Typography>
         </Stack>
 
         {/* Right GitHub & Version Info */}
         <Stack direction="row" alignItems="center" spacing={2}>
-          <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.5)", fontWeight: "medium" }}>
+          <Typography
+            variant="caption"
+            sx={{ color: "rgba(255,255,255,0.5)", fontWeight: "medium" }}
+          >
             v{packageJson.version}
           </Typography>
           <Box
@@ -186,7 +218,12 @@ function CalculatorOutlet() {
           flexShrink: 0,
         }}
       >
-        <Stack direction="row" spacing={2} alignItems="center" sx={{ width: "100%" }}>
+        <Stack
+          direction="row"
+          spacing={2}
+          alignItems="center"
+          sx={{ width: "100%" }}
+        >
           <Box sx={{ flexGrow: 1 }}>
             <Autocomplete
               fullWidth
@@ -243,10 +280,21 @@ function CalculatorOutlet() {
                       width: "100%",
                     }}
                   >
-                    <Typography variant="body2" sx={{ fontWeight: "bold", color: "#1a2035", mr: 2 }}>
+                    <Typography
+                      variant="body2"
+                      sx={{ fontWeight: "bold", color: "#1a2035", mr: 2 }}
+                    >
                       {option.name}
                     </Typography>
-                    <Stack direction="row" spacing={0.5} sx={{ flexWrap: "wrap", gap: "2px", alignItems: "center" }}>
+                    <Stack
+                      direction="row"
+                      spacing={0.5}
+                      sx={{
+                        flexWrap: "wrap",
+                        gap: "2px",
+                        alignItems: "center",
+                      }}
+                    >
                       {option.tags.map((tag) => {
                         const style = getTagStyles(tag);
                         return (
@@ -315,7 +363,10 @@ function CalculatorOutlet() {
           overflowX: "auto",
           whiteSpace: "nowrap",
           "&::-webkit-scrollbar": { height: 4 },
-          "&::-webkit-scrollbar-thumb": { backgroundColor: "#ced4da", borderRadius: 2 },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "#ced4da",
+            borderRadius: 2,
+          },
         }}
       >
         {openCalculators.map((val) => {
@@ -345,14 +396,18 @@ function CalculatorOutlet() {
                 color: isActive ? "white" : "#495057",
                 transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
                 mr: 0.5,
-                boxShadow: isActive ? "0px 4px 10px rgba(0, 181, 173, 0.25)" : "0px 2px 4px rgba(0,0,0,0.02)",
+                boxShadow: isActive
+                  ? "0px 4px 10px rgba(0, 181, 173, 0.25)"
+                  : "0px 2px 4px rgba(0,0,0,0.02)",
                 "&:hover": {
                   background: isActive
                     ? "linear-gradient(135deg, #00c7be 0%, #009d97 100%)"
                     : "#f1f3f5",
                   borderColor: isActive ? "transparent" : "#ced4da",
                   transform: isActive ? "translateY(-1px)" : "none",
-                  boxShadow: isActive ? "0px 6px 12px rgba(0, 181, 173, 0.3)" : "0px 3px 6px rgba(0,0,0,0.04)",
+                  boxShadow: isActive
+                    ? "0px 6px 12px rgba(0, 181, 173, 0.3)"
+                    : "0px 3px 6px rgba(0,0,0,0.04)",
                 },
                 "&:active": {
                   transform: "translateY(0px)",
@@ -375,7 +430,9 @@ function CalculatorOutlet() {
                   sx={{
                     marginLeft: 1,
                     fontSize: "14px",
-                    color: isActive ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.4)",
+                    color: isActive
+                      ? "rgba(255,255,255,0.7)"
+                      : "rgba(0,0,0,0.4)",
                     transition: "all 0.2s ease",
                     cursor: "pointer",
                     display: "inline-flex",

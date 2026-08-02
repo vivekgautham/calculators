@@ -1,16 +1,16 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 export interface SlabConfig {
-  tier1Max: number;       // ₹100,000 (1 Lakh)
-  tier1Rate: number;      // 0.18%
-  tier1MinGst: number;    // ₹45
-  tier1MaxGst: number;    // ₹180
-  tier2Max: number;       // ₹1,000,000 (10 Lakh)
-  tier2BaseGst: number;   // ₹180
-  tier2Rate: number;      // 0.09%
-  tier3BaseGst: number;   // ₹990
-  tier3Rate: number;      // 0.018%
-  maxGstCap: number;      // ₹60,000 (optional cap, 0 if disabled)
+  tier1Max: number; // ₹100,000 (1 Lakh)
+  tier1Rate: number; // 0.18%
+  tier1MinGst: number; // ₹45
+  tier1MaxGst: number; // ₹180
+  tier2Max: number; // ₹1,000,000 (10 Lakh)
+  tier2BaseGst: number; // ₹180
+  tier2Rate: number; // 0.09%
+  tier3BaseGst: number; // ₹990
+  tier3Rate: number; // 0.018%
+  maxGstCap: number; // ₹60,000 (optional cap, 0 if disabled)
 }
 
 export interface CalculationResult {
@@ -42,16 +42,16 @@ interface SlabStructureContextType {
 }
 
 export const DEFAULT_CONFIG: SlabConfig = {
-  tier1Max: 100000,       // ₹1 Lakh
-  tier1Rate: 0.18,        // 0.18%
-  tier1MinGst: 45,        // ₹45
-  tier1MaxGst: 180,       // ₹180
-  tier2Max: 1000000,      // ₹10 Lakh
-  tier2BaseGst: 180,      // ₹180
-  tier2Rate: 0.09,        // 0.09%
-  tier3BaseGst: 990,      // ₹990
-  tier3Rate: 0.018,       // 0.018%
-  maxGstCap: 60000,       // ₹60,000 max cap
+  tier1Max: 100000, // ₹1 Lakh
+  tier1Rate: 0.18, // 0.18%
+  tier1MinGst: 45, // ₹45
+  tier1MaxGst: 180, // ₹180
+  tier2Max: 1000000, // ₹10 Lakh
+  tier2BaseGst: 180, // ₹180
+  tier2Rate: 0.09, // 0.09%
+  tier3BaseGst: 990, // ₹990
+  tier3Rate: 0.018, // 0.018%
+  maxGstCap: 60000, // ₹60,000 max cap
 };
 
 export const formatINR = (val: number): string => {
@@ -64,7 +64,10 @@ export const formatINR = (val: number): string => {
   return `₹${Math.round(val).toLocaleString("en-IN")}`;
 };
 
-export const calculateGST = (amount: number, config: SlabConfig): CalculationResult => {
+export const calculateGST = (
+  amount: number,
+  config: SlabConfig,
+): CalculationResult => {
   let gst = 0;
   let marginalRate = 0;
   let tierName = "";
@@ -76,7 +79,10 @@ export const calculateGST = (amount: number, config: SlabConfig): CalculationRes
     const calculated = (amount * config.tier1Rate) / 100;
 
     // Apply min/max GST bounds
-    gst = Math.min(Math.max(calculated, config.tier1MinGst), config.tier1MaxGst);
+    gst = Math.min(
+      Math.max(calculated, config.tier1MinGst),
+      config.tier1MaxGst,
+    );
 
     if (calculated < config.tier1MinGst) {
       breakdown = `Calculated 0.18% of ₹${amount.toLocaleString("en-IN")} = ₹${calculated.toFixed(2)}, adjusted to Minimum GST threshold of ₹${config.tier1MinGst}.`;
@@ -111,12 +117,16 @@ export const calculateGST = (amount: number, config: SlabConfig): CalculationRes
   return { gst, effectiveRate, marginalRate, tierName, breakdown };
 };
 
-const SlabStructureContext = createContext<SlabStructureContextType | undefined>(undefined);
+const SlabStructureContext = createContext<
+  SlabStructureContextType | undefined
+>(undefined);
 
-export const SlabStructureProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const SlabStructureProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [config, setConfig] = useState<SlabConfig>(DEFAULT_CONFIG);
   const [selectedAmount, setSelectedAmount] = useState<number>(500000); // ₹5 Lakh default
-  const [chartMinAmount, setChartMinAmount] = useState<number>(100000);  // ₹1 Lakh
+  const [chartMinAmount, setChartMinAmount] = useState<number>(100000); // ₹1 Lakh
   const [chartMaxAmount, setChartMaxAmount] = useState<number>(2000000); // ₹20 Lakh
 
   const updateConfig = (updates: Partial<SlabConfig>) => {
@@ -140,8 +150,10 @@ export const SlabStructureProvider: React.FC<{ children: ReactNode }> = ({ child
     for (let i = 0; i <= steps; i++) {
       thresholdSet.add(Math.round(min + i * stepSize));
     }
-    if (config.tier1Max >= min && config.tier1Max <= max) thresholdSet.add(config.tier1Max);
-    if (config.tier2Max >= min && config.tier2Max <= max) thresholdSet.add(config.tier2Max);
+    if (config.tier1Max >= min && config.tier1Max <= max)
+      thresholdSet.add(config.tier1Max);
+    if (config.tier2Max >= min && config.tier2Max <= max)
+      thresholdSet.add(config.tier2Max);
 
     const sortedAmounts = Array.from(thresholdSet).sort((a, b) => a - b);
 
@@ -181,7 +193,9 @@ export const SlabStructureProvider: React.FC<{ children: ReactNode }> = ({ child
 export const useSlabStructure = () => {
   const context = useContext(SlabStructureContext);
   if (!context) {
-    throw new Error("useSlabStructure must be used within a SlabStructureProvider");
+    throw new Error(
+      "useSlabStructure must be used within a SlabStructureProvider",
+    );
   }
   return context;
 };

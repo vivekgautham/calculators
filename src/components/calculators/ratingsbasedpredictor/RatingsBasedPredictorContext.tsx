@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, ReactNode, useMemo } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useMemo,
+} from "react";
 
 interface RatingsBasedPredictorContextType {
   averageRating: number;
@@ -8,9 +14,13 @@ interface RatingsBasedPredictorContextType {
   trueRating: number;
 }
 
-const RatingsBasedPredictorContext = createContext<RatingsBasedPredictorContextType | undefined>(undefined);
+const RatingsBasedPredictorContext = createContext<
+  RatingsBasedPredictorContextType | undefined
+>(undefined);
 
-export const RatingsBasedPredictorProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const RatingsBasedPredictorProvider: React.FC<{
+  children: ReactNode;
+}> = ({ children }) => {
   const [averageRating, setAverageRating] = useState<number>(4.2);
   const [numRatings, setNumRatings] = useState<number>(10);
 
@@ -38,7 +48,9 @@ export const RatingsBasedPredictorProvider: React.FC<{ children: ReactNode }> = 
 export const useRatingsBasedPredictor = () => {
   const context = useContext(RatingsBasedPredictorContext);
   if (!context) {
-    throw new Error("useRatingsBasedPredictor must be used within a RatingsBasedPredictorProvider");
+    throw new Error(
+      "useRatingsBasedPredictor must be used within a RatingsBasedPredictorProvider",
+    );
   }
   return context;
 };

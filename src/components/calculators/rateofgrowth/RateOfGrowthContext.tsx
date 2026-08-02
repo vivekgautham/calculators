@@ -75,7 +75,9 @@ export const RateOfGrowthProvider: React.FC<{ children: ReactNode }> = ({
   ]);
 
   const [timeSpan, setTimeSpan] = useState<number>(10); // Default 10 years
-  const [frequency, setFrequency] = useState<GrowthFrequency>(GrowthFrequency.ANNUALLY); // Default Annually
+  const [frequency, setFrequency] = useState<GrowthFrequency>(
+    GrowthFrequency.ANNUALLY,
+  ); // Default Annually
 
   const addScenario = () => {
     // Generate a unique number for name based on current scenarios

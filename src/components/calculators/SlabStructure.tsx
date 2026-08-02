@@ -26,7 +26,12 @@ const SlabStructure: React.FunctionComponent<PanelProps> = (props) => {
         }}
       >
         {/* Header Block with Color-coded Tags */}
-        <Stack direction="row" spacing={1.5} alignItems="center" sx={{ flexWrap: "wrap", mb: 1 }}>
+        <Stack
+          direction="row"
+          spacing={1.5}
+          alignItems="center"
+          sx={{ flexWrap: "wrap", mb: 1 }}
+        >
           <Header as="h2" textAlign="left" style={{ margin: 0 }}>
             {props.name || "Slab Structure"}
           </Header>
@@ -48,7 +53,11 @@ const SlabStructure: React.FunctionComponent<PanelProps> = (props) => {
             );
           })}
         </Stack>
-        <Header as="h5" textAlign="left" style={{ marginTop: 8, color: "#666" }}>
+        <Header
+          as="h5"
+          textAlign="left"
+          style={{ marginTop: 8, color: "#666" }}
+        >
           {calculatorMeta?.description ||
             "Calculate GST and fee slab structures for transactions with interactive charts from ₹1 Lakh to ₹20 Lakh."}
         </Header>

@@ -39,7 +39,9 @@ const SlabChart: React.FC = () => {
           style: { fontWeight: "bold" },
         },
         labels: {
-          formatter: function (this: Highcharts.AxisLabelsFormatterContextObject) {
+          formatter: function (
+            this: Highcharts.AxisLabelsFormatterContextObject,
+          ) {
             return formatINR(this.value as number);
           },
         },
@@ -86,7 +88,9 @@ const SlabChart: React.FC = () => {
             style: { color: "#00b5ad", fontWeight: "bold" },
           },
           labels: {
-            formatter: function (this: Highcharts.AxisLabelsFormatterContextObject) {
+            formatter: function (
+              this: Highcharts.AxisLabelsFormatterContextObject,
+            ) {
               return "₹" + (this.value as number).toLocaleString("en-IN");
             },
             style: { color: "#00b5ad" },

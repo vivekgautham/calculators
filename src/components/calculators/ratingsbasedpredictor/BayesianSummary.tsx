@@ -7,12 +7,20 @@ const BayesianSummary: React.FC = () => {
 
   return (
     <Paper elevation={3} sx={{ p: 3 }}>
-      <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", color: "#1a2035" }}>
+      <Typography
+        variant="h6"
+        gutterBottom
+        sx={{ fontWeight: "bold", color: "#1a2035" }}
+      >
         True Rating Estimate
       </Typography>
 
       <Box sx={{ my: 3, textAlign: "center" }}>
-        <Typography variant="h2" component="div" sx={{ fontWeight: "bold", color: "primary.main" }}>
+        <Typography
+          variant="h2"
+          component="div"
+          sx={{ fontWeight: "bold", color: "primary.main" }}
+        >
           {trueRating.toFixed(2)} ★
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
@@ -55,9 +63,15 @@ const BayesianSummary: React.FC = () => {
         </Stack>
       </Stack>
 
-      <Alert severity="info" sx={{ mt: 3, border: "1px solid #b3e5fc", backgroundColor: "#e1f5fe" }}>
-        <strong>Smoothing Rule:</strong> The True Rating Estimate is calculated by adding 5 virtual ratings (one of each: 1★, 2★, 3★, 4★, and 5★).
-        This prevents small sample sizes from yielding extreme ratings (like a 5.0 with only 1 reviewer). As reviewer count increases, the impact of these 5 virtual ratings diminishes.
+      <Alert
+        severity="info"
+        sx={{ mt: 3, border: "1px solid #b3e5fc", backgroundColor: "#e1f5fe" }}
+      >
+        <strong>Smoothing Rule:</strong> The True Rating Estimate is calculated
+        by adding 5 virtual ratings (one of each: 1★, 2★, 3★, 4★, and 5★). This
+        prevents small sample sizes from yielding extreme ratings (like a 5.0
+        with only 1 reviewer). As reviewer count increases, the impact of these
+        5 virtual ratings diminishes.
       </Alert>
     </Paper>
   );

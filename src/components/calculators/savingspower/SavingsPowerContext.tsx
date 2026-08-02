@@ -21,9 +21,13 @@ interface SavingsPowerContextType {
   preTaxEquivalentAB: number;
 }
 
-const SavingsPowerContext = createContext<SavingsPowerContextType | undefined>(undefined);
+const SavingsPowerContext = createContext<SavingsPowerContextType | undefined>(
+  undefined,
+);
 
-export const SavingsPowerProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const SavingsPowerProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [salary, setSalary] = useState<number>(300000);
   const [taxRate, setTaxRate] = useState<number>(37);
   const [spendingA, setSpendingA] = useState<number>(100000);
@@ -77,7 +81,9 @@ export const SavingsPowerProvider: React.FC<{ children: ReactNode }> = ({ childr
 export const useSavingsPower = () => {
   const context = useContext(SavingsPowerContext);
   if (!context) {
-    throw new Error("useSavingsPower must be used within a SavingsPowerProvider");
+    throw new Error(
+      "useSavingsPower must be used within a SavingsPowerProvider",
+    );
   }
   return context;
 };

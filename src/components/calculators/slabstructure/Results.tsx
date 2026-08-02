@@ -12,7 +12,17 @@ const Results: React.FC = () => {
 
   return (
     <Stack spacing={2}>
-      <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr", md: "repeat(4, 1fr)" }, gap: 2 }}>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: {
+            xs: "1fr",
+            sm: "1fr 1fr",
+            md: "repeat(4, 1fr)",
+          },
+          gap: 2,
+        }}
+      >
         {/* Total GST Payable */}
         <Paper
           elevation={2}
@@ -23,14 +33,29 @@ const Results: React.FC = () => {
             color: "#ffffff",
           }}
         >
-          <Box display="flex" justifyContent="space-between" alignItems="center">
-            <Typography variant="caption" sx={{ textTransform: "uppercase", letterSpacing: "0.5px", opacity: 0.9 }}>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography
+              variant="caption"
+              sx={{
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+                opacity: 0.9,
+              }}
+            >
               Total GST Payable
             </Typography>
             <ReceiptIcon />
           </Box>
           <Typography variant="h4" sx={{ fontWeight: "bold", my: 1 }}>
-            ₹{result.gst.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            ₹
+            {result.gst.toLocaleString("en-IN", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
           </Typography>
           <Typography variant="caption" sx={{ opacity: 0.85 }}>
             on transaction of {formatINR(selectedAmount)}
@@ -47,8 +72,19 @@ const Results: React.FC = () => {
             color: "#ffffff",
           }}
         >
-          <Box display="flex" justifyContent="space-between" alignItems="center">
-            <Typography variant="caption" sx={{ textTransform: "uppercase", letterSpacing: "0.5px", opacity: 0.9 }}>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography
+              variant="caption"
+              sx={{
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+                opacity: 0.9,
+              }}
+            >
               Effective GST Rate
             </Typography>
             <PercentIcon />
@@ -71,13 +107,33 @@ const Results: React.FC = () => {
             color: "#ffffff",
           }}
         >
-          <Box display="flex" justifyContent="space-between" alignItems="center">
-            <Typography variant="caption" sx={{ textTransform: "uppercase", letterSpacing: "0.5px", opacity: 0.9 }}>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography
+              variant="caption"
+              sx={{
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+                opacity: 0.9,
+              }}
+            >
               Applicable Slab Tier
             </Typography>
             <LayersIcon />
           </Box>
-          <Typography variant="h6" sx={{ fontWeight: "bold", my: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: "bold",
+              my: 1,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
             {result.tierName.split(":")[0]}
           </Typography>
           <Typography variant="caption" sx={{ opacity: 0.85 }}>
@@ -95,8 +151,19 @@ const Results: React.FC = () => {
             color: "#ffffff",
           }}
         >
-          <Box display="flex" justifyContent="space-between" alignItems="center">
-            <Typography variant="caption" sx={{ textTransform: "uppercase", letterSpacing: "0.5px", opacity: 0.9 }}>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography
+              variant="caption"
+              sx={{
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+                opacity: 0.9,
+              }}
+            >
               Marginal Tax Rate
             </Typography>
             <InfoOutlinedIcon />
@@ -111,7 +178,11 @@ const Results: React.FC = () => {
       </Box>
 
       {/* Formula Breakdown Alert */}
-      <Alert severity="info" icon={<InfoOutlinedIcon />} sx={{ borderRadius: 2 }}>
+      <Alert
+        severity="info"
+        icon={<InfoOutlinedIcon />}
+        sx={{ borderRadius: 2 }}
+      >
         <Typography variant="subtitle2" sx={{ fontWeight: "bold", mb: 0.5 }}>
           Calculation Breakdown ({result.tierName}):
         </Typography>

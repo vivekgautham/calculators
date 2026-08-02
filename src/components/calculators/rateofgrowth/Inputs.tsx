@@ -61,13 +61,29 @@ const Inputs: React.FC = () => {
       <Stack spacing={3}>
         {/* Global Controls Panel */}
         <Paper variant="outlined" sx={{ p: 2, bgcolor: "#f8f9fa" }}>
-          <Typography variant="subtitle2" sx={{ fontWeight: "bold", mb: 2, color: "#1a2035", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+          <Typography
+            variant="subtitle2"
+            sx={{
+              fontWeight: "bold",
+              mb: 2,
+              color: "#1a2035",
+              textTransform: "uppercase",
+              letterSpacing: "0.5px",
+            }}
+          >
             Global Calculation Settings
           </Typography>
-          <Stack direction={{ xs: "column", md: "row" }} spacing={4} alignItems="center">
+          <Stack
+            direction={{ xs: "column", md: "row" }}
+            spacing={4}
+            alignItems="center"
+          >
             {/* Time (Y) Slider */}
             <Box sx={{ flexGrow: 1, width: "100%", px: 1 }}>
-              <Typography variant="body2" sx={{ fontWeight: "bold", mb: 1, color: "text.primary" }}>
+              <Typography
+                variant="body2"
+                sx={{ fontWeight: "bold", mb: 1, color: "text.primary" }}
+              >
                 Time Span: {timeSpan} {timeSpan === 1 ? "Year" : "Years"}
               </Typography>
               <Slider
@@ -82,12 +98,17 @@ const Inputs: React.FC = () => {
             </Box>
 
             {/* Compounding Frequency Selection */}
-            <FormControl sx={{ minWidth: 220, width: { xs: "100%", md: "auto" } }} size="small">
+            <FormControl
+              sx={{ minWidth: 220, width: { xs: "100%", md: "auto" } }}
+              size="small"
+            >
               <InputLabel>Compounding Frequency</InputLabel>
               <Select
                 value={frequency}
                 label="Compounding Frequency"
-                onChange={(e) => setFrequency(e.target.value as GrowthFrequency)}
+                onChange={(e) =>
+                  setFrequency(e.target.value as GrowthFrequency)
+                }
               >
                 {Object.values(GrowthFrequency).map((freq) => (
                   <MenuItem key={freq} value={freq}>
@@ -103,7 +124,16 @@ const Inputs: React.FC = () => {
 
         {/* Scenarios Parameters List */}
         <Box>
-          <Typography variant="subtitle2" sx={{ fontWeight: "bold", mb: 2, color: "#1a2035", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+          <Typography
+            variant="subtitle2"
+            sx={{
+              fontWeight: "bold",
+              mb: 2,
+              color: "#1a2035",
+              textTransform: "uppercase",
+              letterSpacing: "0.5px",
+            }}
+          >
             Scenario Parameters
           </Typography>
           <Stack spacing={3}>
@@ -182,7 +212,11 @@ const Inputs: React.FC = () => {
                     >
                       {AVAILABLE_COLORS.map((color) => (
                         <MenuItem key={color} value={color}>
-                          <Stack direction="row" alignItems="center" spacing={1}>
+                          <Stack
+                            direction="row"
+                            alignItems="center"
+                            spacing={1}
+                          >
                             <Box
                               sx={{
                                 width: 14,
@@ -200,9 +234,19 @@ const Inputs: React.FC = () => {
 
                   {/* Initial Amount Unit-controlled Slider */}
                   <Box sx={{ width: "100%", px: 1 }}>
-                    <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: -0.5 }}>
-                      <Typography variant="caption" color="text.secondary" display="block">
-                        Initial Amount: {formatLargeAmount(scenario.initialAmount)}
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      sx={{ mb: -0.5 }}
+                    >
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        display="block"
+                      >
+                        Initial Amount:{" "}
+                        {formatLargeAmount(scenario.initialAmount)}
                       </Typography>
                       <RadioGroup
                         row
@@ -214,22 +258,23 @@ const Inputs: React.FC = () => {
                             scenario.unit === AmountUnit.TRILLION
                               ? scenario.initialAmount / 1e12
                               : scenario.unit === AmountUnit.BILLION
-                              ? scenario.initialAmount / 1e9
-                              : scenario.unit === AmountUnit.MILLION
-                              ? scenario.initialAmount / 1e6
-                              : scenario.initialAmount / 1e3;
+                                ? scenario.initialAmount / 1e9
+                                : scenario.unit === AmountUnit.MILLION
+                                  ? scenario.initialAmount / 1e6
+                                  : scenario.initialAmount / 1e3;
 
                           const targetMultiplier =
                             newUnit === AmountUnit.TRILLION
                               ? 1e12
                               : newUnit === AmountUnit.BILLION
-                              ? 1e9
-                              : newUnit === AmountUnit.MILLION
-                              ? 1e6
-                              : 1e3;
+                                ? 1e9
+                                : newUnit === AmountUnit.MILLION
+                                  ? 1e6
+                                  : 1e3;
 
                           let targetVal = currentVal;
-                          const targetMax = newUnit === AmountUnit.TRILLION ? 50 : 1000;
+                          const targetMax =
+                            newUnit === AmountUnit.TRILLION ? 50 : 1000;
                           if (targetVal > targetMax) {
                             targetVal = targetMax;
                           }
@@ -244,10 +289,26 @@ const Inputs: React.FC = () => {
                           ml: 2,
                         }}
                       >
-                        <FormControlLabel value={AmountUnit.THOUSAND} control={<Radio size="small" sx={{ p: 0.2 }} />} label="K" />
-                        <FormControlLabel value={AmountUnit.MILLION} control={<Radio size="small" sx={{ p: 0.2 }} />} label="M" />
-                        <FormControlLabel value={AmountUnit.BILLION} control={<Radio size="small" sx={{ p: 0.2 }} />} label="B" />
-                        <FormControlLabel value={AmountUnit.TRILLION} control={<Radio size="small" sx={{ p: 0.2 }} />} label="T" />
+                        <FormControlLabel
+                          value={AmountUnit.THOUSAND}
+                          control={<Radio size="small" sx={{ p: 0.2 }} />}
+                          label="K"
+                        />
+                        <FormControlLabel
+                          value={AmountUnit.MILLION}
+                          control={<Radio size="small" sx={{ p: 0.2 }} />}
+                          label="M"
+                        />
+                        <FormControlLabel
+                          value={AmountUnit.BILLION}
+                          control={<Radio size="small" sx={{ p: 0.2 }} />}
+                          label="B"
+                        />
+                        <FormControlLabel
+                          value={AmountUnit.TRILLION}
+                          control={<Radio size="small" sx={{ p: 0.2 }} />}
+                          label="T"
+                        />
                       </RadioGroup>
                     </Stack>
                     <Slider
@@ -258,21 +319,23 @@ const Inputs: React.FC = () => {
                         scenario.unit === AmountUnit.TRILLION
                           ? scenario.initialAmount / 1e12
                           : scenario.unit === AmountUnit.BILLION
-                          ? scenario.initialAmount / 1e9
-                          : scenario.unit === AmountUnit.MILLION
-                          ? scenario.initialAmount / 1e6
-                          : scenario.initialAmount / 1e3
+                            ? scenario.initialAmount / 1e9
+                            : scenario.unit === AmountUnit.MILLION
+                              ? scenario.initialAmount / 1e6
+                              : scenario.initialAmount / 1e3
                       }
                       onChange={(_, val) => {
                         const multiplier =
                           scenario.unit === AmountUnit.TRILLION
                             ? 1e12
                             : scenario.unit === AmountUnit.BILLION
-                            ? 1e9
-                            : scenario.unit === AmountUnit.MILLION
-                            ? 1e6
-                            : 1e3;
-                        updateScenario(scenario.key, { initialAmount: (val as number) * multiplier });
+                              ? 1e9
+                              : scenario.unit === AmountUnit.MILLION
+                                ? 1e6
+                                : 1e3;
+                        updateScenario(scenario.key, {
+                          initialAmount: (val as number) * multiplier,
+                        });
                       }}
                       size="small"
                       valueLabelDisplay="auto"
@@ -281,10 +344,10 @@ const Inputs: React.FC = () => {
                           scenario.unit === AmountUnit.TRILLION
                             ? val * 1e12
                             : scenario.unit === AmountUnit.BILLION
-                            ? val * 1e9
-                            : scenario.unit === AmountUnit.MILLION
-                            ? val * 1e6
-                            : val * 1e3;
+                              ? val * 1e9
+                              : scenario.unit === AmountUnit.MILLION
+                                ? val * 1e6
+                                : val * 1e3;
                         return formatLargeAmount(labelVal);
                       }}
                     />
@@ -292,7 +355,12 @@ const Inputs: React.FC = () => {
 
                   {/* Rate (%) Slider */}
                   <Box sx={{ width: "100%", px: 1 }}>
-                    <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: -0.5 }}>
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      display="block"
+                      sx={{ mb: -0.5 }}
+                    >
                       Rate: {scenario.rate.toFixed(1)}%
                     </Typography>
                     <Slider

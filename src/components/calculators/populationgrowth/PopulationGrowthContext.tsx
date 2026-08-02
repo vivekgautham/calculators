@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, ReactNode, useMemo } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useMemo,
+} from "react";
 
 export interface CohortYearData {
   year: number;
@@ -16,7 +22,10 @@ export type CountryPreset = CountryDemographic;
 
 export const PRESETS: Record<string, CountryPreset> = COUNTRIES_DEMOGRAPHICS;
 
-export const getCountryLabel = (presetKey: string, fallback: string): string => {
+export const getCountryLabel = (
+  presetKey: string,
+  fallback: string,
+): string => {
   const country = COUNTRIES_DEMOGRAPHICS[presetKey];
   return country ? country.name : fallback;
 };
@@ -60,9 +69,13 @@ interface PopulationGrowthContextType {
   projectionB: CohortYearData[];
 }
 
-const PopulationGrowthContext = createContext<PopulationGrowthContextType | undefined>(undefined);
+const PopulationGrowthContext = createContext<
+  PopulationGrowthContextType | undefined
+>(undefined);
 
-export const PopulationGrowthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const PopulationGrowthProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [timeHorizon, setTimeHorizon] = useState<number>(100);
   const [timelineYear, setTimelineYear] = useState<number>(0);
 
@@ -89,7 +102,10 @@ export const PopulationGrowthProvider: React.FC<{ children: ReactNode }> = ({ ch
   });
 
   // Simulation helper
-  const runSimulation = (config: ScenarioState, years: number): CohortYearData[] => {
+  const runSimulation = (
+    config: ScenarioState,
+    years: number,
+  ): CohortYearData[] => {
     const data: CohortYearData[] = [];
 
     let Y = config.initialPopulation * config.youthRatio;
@@ -125,7 +141,12 @@ export const PopulationGrowthProvider: React.FC<{ children: ReactNode }> = ({ ch
 
       // 4. Update Cohorts
       Y = Y + births - youthToWorking - youthDeaths;
-      W = W + youthToWorking + config.netMigration - workingToElderly - workingDeaths;
+      W =
+        W +
+        youthToWorking +
+        config.netMigration -
+        workingToElderly -
+        workingDeaths;
       E = E + workingToElderly - elderlyDeaths;
 
       // Clamp to zero to prevent negative populations
@@ -134,7 +155,8 @@ export const PopulationGrowthProvider: React.FC<{ children: ReactNode }> = ({ ch
       E = Math.max(0, E);
       total = Y + W + E;
 
-      const growthRate = prevTotal > 0 ? ((total - prevTotal) / prevTotal) * 100 : 0;
+      const growthRate =
+        prevTotal > 0 ? ((total - prevTotal) / prevTotal) * 100 : 0;
       const oldAgeDependency = W > 0 ? (E / W) * 100 : 0;
 
       data.push({
@@ -151,8 +173,14 @@ export const PopulationGrowthProvider: React.FC<{ children: ReactNode }> = ({ ch
     return data;
   };
 
-  const projectionA = useMemo(() => runSimulation(scenarioA, timeHorizon), [scenarioA, timeHorizon]);
-  const projectionB = useMemo(() => runSimulation(scenarioB, timeHorizon), [scenarioB, timeHorizon]);
+  const projectionA = useMemo(
+    () => runSimulation(scenarioA, timeHorizon),
+    [scenarioA, timeHorizon],
+  );
+  const projectionB = useMemo(
+    () => runSimulation(scenarioB, timeHorizon),
+    [scenarioB, timeHorizon],
+  );
 
   return (
     <PopulationGrowthContext.Provider
@@ -177,7 +205,9 @@ export const PopulationGrowthProvider: React.FC<{ children: ReactNode }> = ({ ch
 export const usePopulationGrowth = () => {
   const context = useContext(PopulationGrowthContext);
   if (!context) {
-    throw new Error("usePopulationGrowth must be used within a PopulationGrowthProvider");
+    throw new Error(
+      "usePopulationGrowth must be used within a PopulationGrowthProvider",
+    );
   }
   return context;
 };

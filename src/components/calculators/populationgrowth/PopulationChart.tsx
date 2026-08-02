@@ -2,10 +2,15 @@ import React, { useMemo } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { Paper, Box } from "@mui/material";
-import { usePopulationGrowth, getCountryLabel, getFlagEmoji } from "./PopulationGrowthContext";
+import {
+  usePopulationGrowth,
+  getCountryLabel,
+  getFlagEmoji,
+} from "./PopulationGrowthContext";
 
 const PopulationChart: React.FC = () => {
-  const { projectionA, projectionB, scenarioA, scenarioB, timeHorizon } = usePopulationGrowth();
+  const { projectionA, projectionB, scenarioA, scenarioB, timeHorizon } =
+    usePopulationGrowth();
 
   const nameA = `${getFlagEmoji(scenarioA.presetKey)} ${getCountryLabel(scenarioA.presetKey, "Scenario A")}`;
   const nameB = `${getFlagEmoji(scenarioB.presetKey)} ${getCountryLabel(scenarioB.presetKey, "Scenario B")}`;
@@ -54,7 +59,9 @@ const PopulationChart: React.FC = () => {
           style: { fontWeight: "bold" },
         },
         labels: {
-          formatter: function (this: Highcharts.AxisLabelsFormatterContextObject) {
+          formatter: function (
+            this: Highcharts.AxisLabelsFormatterContextObject,
+          ) {
             const val = this.value as number;
             return val >= 1000000000
               ? `${(val / 1000000000).toFixed(1)}B`
@@ -78,9 +85,10 @@ const PopulationChart: React.FC = () => {
           let html = `<div style="padding: 4px;"><b>${yearStr}</b><br/>`;
           points.forEach((p) => {
             const val = p.y || 0;
-            const formattedVal = val >= 1000000000
-              ? `${(val / 1000000000).toFixed(2)}B`
-              : `${(val / 1000000).toFixed(2)}M`;
+            const formattedVal =
+              val >= 1000000000
+                ? `${(val / 1000000000).toFixed(2)}B`
+                : `${(val / 1000000).toFixed(2)}M`;
             html += `<span style="color:${p.series.color}">\u25CF</span> ${p.series.name}: <b>${formattedVal}</b><br/>`;
           });
           html += `</div>`;

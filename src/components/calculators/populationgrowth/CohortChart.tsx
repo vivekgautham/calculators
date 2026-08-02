@@ -3,7 +3,11 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { Paper, Box, Slider, Typography, Stack } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import { usePopulationGrowth, getCountryLabel, getFlagEmoji } from "./PopulationGrowthContext";
+import {
+  usePopulationGrowth,
+  getCountryLabel,
+  getFlagEmoji,
+} from "./PopulationGrowthContext";
 
 const CohortChart: React.FC = () => {
   const {
@@ -139,7 +143,8 @@ const CohortChart: React.FC = () => {
               valueLabelFormat={(val) => `Year ${val}`}
             />
             <Typography variant="caption" color="text.secondary">
-              Drag the timeline scrubber to visualize how the age structures shift from young pyramids to aging dependency stacks.
+              Drag the timeline scrubber to visualize how the age structures
+              shift from young pyramids to aging dependency stacks.
             </Typography>
           </Stack>
         </Box>

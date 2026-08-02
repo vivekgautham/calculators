@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, ReactNode, useMemo } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useMemo,
+} from "react";
 
 interface CorporateDebtTaxSaverContextType {
   debt: number;
@@ -26,9 +32,13 @@ interface CorporateDebtTaxSaverContextType {
   setMaxEbit: (val: number) => void;
 }
 
-const CorporateDebtTaxSaverContext = createContext<CorporateDebtTaxSaverContextType | undefined>(undefined);
+const CorporateDebtTaxSaverContext = createContext<
+  CorporateDebtTaxSaverContextType | undefined
+>(undefined);
 
-export const CorporateDebtTaxSaverProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const CorporateDebtTaxSaverProvider: React.FC<{
+  children: ReactNode;
+}> = ({ children }) => {
   const [debt, setDebt] = useState<number>(10000000000); // Default $10,000,000,000 (10 billion)
   const [taxRate, setTaxRate] = useState<number>(21); // Default 21% (US federal corporate rate)
   const [interestRate, setInterestRate] = useState<number>(6.5); // Default 6.5%
@@ -61,7 +71,8 @@ export const CorporateDebtTaxSaverProvider: React.FC<{ children: ReactNode }> = 
     const afterTaxCostOfDebt = interestRate * (1 - tRate);
 
     // 6. Effective Tax Rates relative to EBIT (Operating Income)
-    const effectiveTaxRateWithoutDebt = ebit > 0 ? (taxWithoutDebt / ebit) * 100 : 0;
+    const effectiveTaxRateWithoutDebt =
+      ebit > 0 ? (taxWithoutDebt / ebit) * 100 : 0;
     const effectiveTaxRateWithDebt = ebit > 0 ? (taxWithDebt / ebit) * 100 : 0;
 
     return {
@@ -103,7 +114,9 @@ export const CorporateDebtTaxSaverProvider: React.FC<{ children: ReactNode }> = 
 export const useCorporateDebtTaxSaver = () => {
   const context = useContext(CorporateDebtTaxSaverContext);
   if (!context) {
-    throw new Error("useCorporateDebtTaxSaver must be used within a CorporateDebtTaxSaverProvider");
+    throw new Error(
+      "useCorporateDebtTaxSaver must be used within a CorporateDebtTaxSaverProvider",
+    );
   }
   return context;
 };

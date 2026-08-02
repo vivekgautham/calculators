@@ -13,8 +13,17 @@ import CorporateDebtTaxSaver from "./components/calculators/CorporateDebtTaxSave
 import SlabStructure from "./components/calculators/SlabStructure";
 import SavingsPower from "./components/calculators/SavingsPower";
 import PopulationGrowth from "./components/calculators/PopulationGrowth";
+import OrderBook from "./components/calculators/OrderBook";
 
 export const CALCULATORS_AND_SIMULATORS = [
+  {
+    name: "Order Book Simulator",
+    value: "orderbook",
+    tags: ["finance", "trading", "simulation", "microstructure"],
+    description:
+      "Simulate a limit order book (LOB) with price-time priority matching engine, bid/ask depth visualization, market orders, auto-trader bots, and live price history execution charts.",
+    panel: OrderBook,
+  },
   {
     name: "Basic Financial Planner",
     value: "basicfinancialplanner",

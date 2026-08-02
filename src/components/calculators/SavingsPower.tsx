@@ -9,7 +9,8 @@ import Results from "./savingspower/Results";
 
 const SavingsPower: React.FunctionComponent<PanelProps> = (props) => {
   const calculatorMeta = CALCULATORS_AND_SIMULATORS.find(
-    (item: { name: string; value: string }) => item.name === props.name || item.value === "savingspower",
+    (item: { name: string; value: string }) =>
+      item.name === props.name || item.value === "savingspower",
   );
 
   return (
@@ -24,7 +25,12 @@ const SavingsPower: React.FunctionComponent<PanelProps> = (props) => {
         }}
       >
         {/* Header Block with Color-coded Tags */}
-        <Stack direction="row" spacing={1.5} alignItems="center" sx={{ flexWrap: "wrap", mb: 1 }}>
+        <Stack
+          direction="row"
+          spacing={1.5}
+          alignItems="center"
+          sx={{ flexWrap: "wrap", mb: 1 }}
+        >
           <Header as="h2" textAlign="left" style={{ margin: 0 }}>
             {props.name || "Savings Power Comparison"}
           </Header>
@@ -46,7 +52,11 @@ const SavingsPower: React.FunctionComponent<PanelProps> = (props) => {
             );
           })}
         </Stack>
-        <Header as="h5" textAlign="left" style={{ marginTop: 8, color: "#666" }}>
+        <Header
+          as="h5"
+          textAlign="left"
+          style={{ marginTop: 8, color: "#666" }}
+        >
           {calculatorMeta?.description ||
             "Compare the compounding power of savings and calculate the pre-tax salary equivalence of after-tax savings differences."}
         </Header>

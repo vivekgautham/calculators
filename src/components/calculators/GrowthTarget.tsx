@@ -18,31 +18,37 @@ const GrowthTarget: React.FC<PanelProps> = ({ name }) => {
         }}
       >
         <Container maxWidth="lg">
-          <Stack direction="row" spacing={1.5} alignItems="center" sx={{ flexWrap: "wrap", mb: 2 }}>
+          <Stack
+            direction="row"
+            spacing={1.5}
+            alignItems="center"
+            sx={{ flexWrap: "wrap", mb: 2 }}
+          >
             <Typography
               variant="h4"
               sx={{ fontWeight: "bold", color: "#1a2035", margin: 0 }}
             >
               {name}
             </Typography>
-            {CALCULATORS_AND_SIMULATORS.find((item) => item.name === name)
-              ?.tags.map((tag) => {
-                const styles = getTagStyles(tag);
-                return (
-                  <Chip
-                    key={tag}
-                    label={tag}
-                    size="small"
-                    variant="outlined"
-                    sx={{
-                      fontWeight: "bold",
-                      backgroundColor: styles.backgroundColor,
-                      color: styles.color,
-                      borderColor: styles.borderColor,
-                    }}
-                  />
-                );
-              })}
+            {CALCULATORS_AND_SIMULATORS.find(
+              (item) => item.name === name,
+            )?.tags.map((tag) => {
+              const styles = getTagStyles(tag);
+              return (
+                <Chip
+                  key={tag}
+                  label={tag}
+                  size="small"
+                  variant="outlined"
+                  sx={{
+                    fontWeight: "bold",
+                    backgroundColor: styles.backgroundColor,
+                    color: styles.color,
+                    borderColor: styles.borderColor,
+                  }}
+                />
+              );
+            })}
           </Stack>
           <Inputs />
           <GrowthTable />

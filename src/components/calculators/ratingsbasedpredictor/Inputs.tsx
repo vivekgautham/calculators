@@ -1,23 +1,43 @@
 import React from "react";
-import { TextField, Stack, Paper, Typography, Slider, Box } from "@mui/material";
+import {
+  TextField,
+  Stack,
+  Paper,
+  Typography,
+  Slider,
+  Box,
+} from "@mui/material";
 import { useRatingsBasedPredictor } from "./RatingsBasedPredictorContext";
 
 const Inputs: React.FC = () => {
-  const { averageRating, setAverageRating, numRatings, setNumRatings } = useRatingsBasedPredictor();
+  const { averageRating, setAverageRating, numRatings, setNumRatings } =
+    useRatingsBasedPredictor();
 
   return (
     <Paper elevation={3} sx={{ p: 3 }}>
-      <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", color: "#1a2035" }}>
+      <Typography
+        variant="h6"
+        gutterBottom
+        sx={{ fontWeight: "bold", color: "#1a2035" }}
+      >
         Rating Parameters
       </Typography>
       <Stack spacing={4} sx={{ mt: 2 }}>
         {/* Granular Average Rating Slider */}
         <Box>
-          <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{ mb: 1 }}
+          >
             <Typography variant="body1" sx={{ fontWeight: "medium" }}>
               Average Rating (1.0 - 5.0)
             </Typography>
-            <Typography variant="h6" sx={{ fontWeight: "bold", color: "primary.main" }}>
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: "bold", color: "primary.main" }}
+            >
               {averageRating.toFixed(1)} ★
             </Typography>
           </Stack>
@@ -41,7 +61,12 @@ const Inputs: React.FC = () => {
 
         {/* Number of Reviewers (Raters) */}
         <Box>
-          <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{ mb: 1 }}
+          >
             <Typography variant="body1" sx={{ fontWeight: "medium" }}>
               Number of Reviewers (Raters)
             </Typography>

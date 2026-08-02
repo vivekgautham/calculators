@@ -28,7 +28,7 @@ export const COUNTRIES_DEMOGRAPHICS: Record<string, CountryDemographic> = {
     fertility: 2.1,
     lifeExpectancy: 75,
     netMigration: 0,
-    youthRatio: 0.20,
+    youthRatio: 0.2,
     workingRatio: 0.65,
     elderlyRatio: 0.15,
   },

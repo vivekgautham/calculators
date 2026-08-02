@@ -20,28 +20,34 @@ const StockAnalysis: React.FunctionComponent<PanelProps> = (props) => {
           textAlign: "left",
         }}
       >
-        <Stack direction="row" spacing={1.5} alignItems="center" sx={{ flexWrap: "wrap", mb: 1 }}>
+        <Stack
+          direction="row"
+          spacing={1.5}
+          alignItems="center"
+          sx={{ flexWrap: "wrap", mb: 1 }}
+        >
           <Header as="h2" textAlign="left" style={{ margin: 0 }}>
             {props.name}
           </Header>
-          {CALCULATORS_AND_SIMULATORS.find((item) => item.name === props.name)
-            ?.tags.map((tag) => {
-              const styles = getTagStyles(tag);
-              return (
-                <Chip
-                  key={tag}
-                  label={tag}
-                  size="small"
-                  variant="outlined"
-                  sx={{
-                    fontWeight: "bold",
-                    backgroundColor: styles.backgroundColor,
-                    color: styles.color,
-                    borderColor: styles.borderColor,
-                  }}
-                />
-              );
-            })}
+          {CALCULATORS_AND_SIMULATORS.find(
+            (item) => item.name === props.name,
+          )?.tags.map((tag) => {
+            const styles = getTagStyles(tag);
+            return (
+              <Chip
+                key={tag}
+                label={tag}
+                size="small"
+                variant="outlined"
+                sx={{
+                  fontWeight: "bold",
+                  backgroundColor: styles.backgroundColor,
+                  color: styles.color,
+                  borderColor: styles.borderColor,
+                }}
+              />
+            );
+          })}
         </Stack>
         <Header as="h5" textAlign="left">
           {

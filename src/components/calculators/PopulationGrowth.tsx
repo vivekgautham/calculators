@@ -11,7 +11,8 @@ import CohortChart from "./populationgrowth/CohortChart";
 
 const PopulationGrowth: React.FunctionComponent<PanelProps> = (props) => {
   const calculatorMeta = CALCULATORS_AND_SIMULATORS.find(
-    (item: { name: string; value: string }) => item.name === props.name || item.value === "populationgrowth",
+    (item: { name: string; value: string }) =>
+      item.name === props.name || item.value === "populationgrowth",
   );
 
   return (
@@ -26,7 +27,12 @@ const PopulationGrowth: React.FunctionComponent<PanelProps> = (props) => {
         }}
       >
         {/* Header Block with Color-coded Tags */}
-        <Stack direction="row" spacing={1.5} alignItems="center" sx={{ flexWrap: "wrap", mb: 1 }}>
+        <Stack
+          direction="row"
+          spacing={1.5}
+          alignItems="center"
+          sx={{ flexWrap: "wrap", mb: 1 }}
+        >
           <Header as="h2" textAlign="left" style={{ margin: 0 }}>
             {props.name || "Population Growth & Fertility Simulator"}
           </Header>
@@ -48,7 +54,11 @@ const PopulationGrowth: React.FunctionComponent<PanelProps> = (props) => {
             );
           })}
         </Stack>
-        <Header as="h5" textAlign="left" style={{ marginTop: 8, color: "#666" }}>
+        <Header
+          as="h5"
+          textAlign="left"
+          style={{ marginTop: 8, color: "#666" }}
+        >
           {calculatorMeta?.description ||
             "Simulate demographic trends, fertility rates, life expectancy, and net migration to analyze cohort aging dynamics."}
         </Header>

@@ -72,10 +72,18 @@ const Inputs: React.FC = () => {
   } = useCorporateDebtTaxSaver();
 
   // Local text input states to allow typing abbreviated values without cursor jumps
-  const [debtInput, setDebtInput] = React.useState<string>(formatAbbreviated(debt));
-  const [ebitInput, setEbitInput] = React.useState<string>(formatAbbreviated(ebit));
-  const [maxDebtInput, setMaxDebtInput] = React.useState<string>(formatAbbreviated(maxDebt));
-  const [maxEbitInput, setMaxEbitInput] = React.useState<string>(formatAbbreviated(maxEbit));
+  const [debtInput, setDebtInput] = React.useState<string>(
+    formatAbbreviated(debt),
+  );
+  const [ebitInput, setEbitInput] = React.useState<string>(
+    formatAbbreviated(ebit),
+  );
+  const [maxDebtInput, setMaxDebtInput] = React.useState<string>(
+    formatAbbreviated(maxDebt),
+  );
+  const [maxEbitInput, setMaxEbitInput] = React.useState<string>(
+    formatAbbreviated(maxEbit),
+  );
 
   const [isDebtFocused, setIsDebtFocused] = React.useState(false);
   const [isEbitFocused, setIsEbitFocused] = React.useState(false);
@@ -113,19 +121,31 @@ const Inputs: React.FC = () => {
         {/* Core Inputs Card */}
         <Grid size={{ xs: 12, md: 6 }}>
           <Paper elevation={3} sx={{ p: 3, height: "100%" }}>
-            <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", color: "#1a2035" }}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ fontWeight: "bold", color: "#1a2035" }}
+            >
               Debt & Income Parameters
             </Typography>
             <Stack spacing={4} sx={{ mt: 2 }}>
               {/* Total Debt Slider & Input */}
               <Box>
-                <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  sx={{ mb: 1 }}
+                >
                   <Stack direction="row" spacing={1} alignItems="center">
                     <Typography variant="body1" sx={{ fontWeight: "medium" }}>
                       Total Corporate Debt
                     </Typography>
                     <Tooltip title="The total principal amount of outstanding debt/loans. Supports abbreviations like M or B (e.g. 10B).">
-                      <HelpOutlineIcon fontSize="small" sx={{ color: "text.secondary", cursor: "pointer" }} />
+                      <HelpOutlineIcon
+                        fontSize="small"
+                        sx={{ color: "text.secondary", cursor: "pointer" }}
+                      />
                     </Tooltip>
                   </Stack>
                   <TextField
@@ -146,7 +166,9 @@ const Inputs: React.FC = () => {
                       }
                     }}
                     InputProps={{
-                      startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                      startAdornment: (
+                        <InputAdornment position="start">$</InputAdornment>
+                      ),
                     }}
                     sx={{ width: 140 }}
                   />
@@ -164,13 +186,21 @@ const Inputs: React.FC = () => {
 
               {/* EBIT Slider & Input */}
               <Box>
-                <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  sx={{ mb: 1 }}
+                >
                   <Stack direction="row" spacing={1} alignItems="center">
                     <Typography variant="body1" sx={{ fontWeight: "medium" }}>
                       Earnings Before Interest & Taxes (EBIT)
                     </Typography>
                     <Tooltip title="Annual operating profit of the corporation before deducting interest and taxes. Supports abbreviations like M or B (e.g. 2B).">
-                      <HelpOutlineIcon fontSize="small" sx={{ color: "text.secondary", cursor: "pointer" }} />
+                      <HelpOutlineIcon
+                        fontSize="small"
+                        sx={{ color: "text.secondary", cursor: "pointer" }}
+                      />
                     </Tooltip>
                   </Stack>
                   <TextField
@@ -191,7 +221,9 @@ const Inputs: React.FC = () => {
                       }
                     }}
                     InputProps={{
-                      startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                      startAdornment: (
+                        <InputAdornment position="start">$</InputAdornment>
+                      ),
                     }}
                     sx={{ width: 140 }}
                   />
@@ -213,19 +245,31 @@ const Inputs: React.FC = () => {
         {/* Rate Settings Card */}
         <Grid size={{ xs: 12, md: 3 }}>
           <Paper elevation={3} sx={{ p: 3, height: "100%" }}>
-            <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", color: "#1a2035" }}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ fontWeight: "bold", color: "#1a2035" }}
+            >
               Rate Parameters
             </Typography>
             <Stack spacing={4} sx={{ mt: 2 }}>
               {/* Interest Rate */}
               <Box>
-                <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  sx={{ mb: 1 }}
+                >
                   <Stack direction="row" spacing={1} alignItems="center">
                     <Typography variant="body1" sx={{ fontWeight: "medium" }}>
                       Interest Rate
                     </Typography>
                     <Tooltip title="The stated annual interest rate on the debt principal.">
-                      <HelpOutlineIcon fontSize="small" sx={{ color: "text.secondary", cursor: "pointer" }} />
+                      <HelpOutlineIcon
+                        fontSize="small"
+                        sx={{ color: "text.secondary", cursor: "pointer" }}
+                      />
                     </Tooltip>
                   </Stack>
                   <TextField
@@ -235,10 +279,13 @@ const Inputs: React.FC = () => {
                     value={interestRate}
                     onChange={(e) => {
                       const val = parseFloat(e.target.value);
-                      if (!isNaN(val) && val >= 0 && val <= 100) setInterestRate(val);
+                      if (!isNaN(val) && val >= 0 && val <= 100)
+                        setInterestRate(val);
                     }}
                     InputProps={{
-                      endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                      endAdornment: (
+                        <InputAdornment position="end">%</InputAdornment>
+                      ),
                     }}
                     sx={{ width: 85 }}
                   />
@@ -255,13 +302,21 @@ const Inputs: React.FC = () => {
 
               {/* Marginal Tax Rate */}
               <Box>
-                <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  sx={{ mb: 1 }}
+                >
                   <Stack direction="row" spacing={1} alignItems="center">
                     <Typography variant="body1" sx={{ fontWeight: "medium" }}>
                       Tax Rate
                     </Typography>
                     <Tooltip title="The statutory tax rate applied to the last dollar of income (federal + state combined).">
-                      <HelpOutlineIcon fontSize="small" sx={{ color: "text.secondary", cursor: "pointer" }} />
+                      <HelpOutlineIcon
+                        fontSize="small"
+                        sx={{ color: "text.secondary", cursor: "pointer" }}
+                      />
                     </Tooltip>
                   </Stack>
                   <TextField
@@ -271,10 +326,13 @@ const Inputs: React.FC = () => {
                     value={taxRate}
                     onChange={(e) => {
                       const val = parseFloat(e.target.value);
-                      if (!isNaN(val) && val >= 0 && val <= 100) setTaxRate(val);
+                      if (!isNaN(val) && val >= 0 && val <= 100)
+                        setTaxRate(val);
                     }}
                     InputProps={{
-                      endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                      endAdornment: (
+                        <InputAdornment position="end">%</InputAdornment>
+                      ),
                     }}
                     sx={{ width: 85 }}
                   />
@@ -295,13 +353,20 @@ const Inputs: React.FC = () => {
         {/* Range Settings Card */}
         <Grid size={{ xs: 12, md: 3 }}>
           <Paper elevation={3} sx={{ p: 3, height: "100%" }}>
-            <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", color: "#1a2035" }}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{ fontWeight: "bold", color: "#1a2035" }}
+            >
               Range Configuration
             </Typography>
             <Stack spacing={4} sx={{ mt: 2 }}>
               {/* Max Debt Setting */}
               <Box>
-                <Typography variant="body2" sx={{ fontWeight: "medium", mb: 1 }}>
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: "medium", mb: 1 }}
+                >
                   Max Debt Slider Limit
                 </Typography>
                 <TextField
@@ -322,7 +387,9 @@ const Inputs: React.FC = () => {
                     }
                   }}
                   InputProps={{
-                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                    startAdornment: (
+                      <InputAdornment position="start">$</InputAdornment>
+                    ),
                   }}
                   fullWidth
                   helperText="Sets upper limit of Debt slider"
@@ -331,7 +398,10 @@ const Inputs: React.FC = () => {
 
               {/* Max EBIT Setting */}
               <Box>
-                <Typography variant="body2" sx={{ fontWeight: "medium", mb: 1 }}>
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: "medium", mb: 1 }}
+                >
                   Max EBIT Slider Limit
                 </Typography>
                 <TextField
@@ -352,7 +422,9 @@ const Inputs: React.FC = () => {
                     }
                   }}
                   InputProps={{
-                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                    startAdornment: (
+                      <InputAdornment position="start">$</InputAdornment>
+                    ),
                   }}
                   fullWidth
                   helperText="Sets upper limit of EBIT slider"
