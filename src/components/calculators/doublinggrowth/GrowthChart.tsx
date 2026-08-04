@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect, useRef } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { Paper, Box } from "@mui/material";
@@ -11,10 +11,18 @@ export const GrowthChart: React.FC = () => {
     scaleType,
     timeUnit,
     growthFactor,
+    currentSimStep,
   } = useDoublingGrowth();
 
+  const chartRef = useRef<Highcharts.Chart | null>(null);
+  const prevStepRef = useRef<number>(currentSimStep);
+
+  const categories = useMemo(
+    () => fullTimeSeries.map((d) => `t = ${d.time}`),
+    [fullTimeSeries],
+  );
+
   const chartOptions = useMemo(() => {
-    const categories = fullTimeSeries.map((d) => `t = ${d.time}`);
     const dataPoints = visibleTimeSeries.map((d) => d.value);
 
     return {
@@ -125,7 +133,26 @@ export const GrowthChart: React.FC = () => {
       ],
       credits: { enabled: false },
     };
-  }, [visibleTimeSeries, fullTimeSeries, scaleType, timeUnit, growthFactor]);
+  }, [categories, scaleType, timeUnit, growthFactor]);
+
+  // Highcharts Live Streaming via addPoint API
+  useEffect(() => {
+    const chart = chartRef.current;
+    if (!chart || !chart.series || !chart.series[0]) return;
+
+    const series = chart.series[0];
+    const prevStep = prevStepRef.current;
+
+    if (currentSimStep === prevStep + 1 && visibleTimeSeries.length > 0) {
+      const lastPoint = visibleTimeSeries[visibleTimeSeries.length - 1];
+      series.addPoint(lastPoint.value, true, false, { duration: 300 });
+    } else if (currentSimStep !== prevStep) {
+      const dataPoints = visibleTimeSeries.map((d) => d.value);
+      series.setData(dataPoints, true);
+    }
+
+    prevStepRef.current = currentSimStep;
+  }, [currentSimStep, visibleTimeSeries]);
 
   return (
     <Paper
@@ -139,7 +166,13 @@ export const GrowthChart: React.FC = () => {
       }}
     >
       <Box sx={{ width: "100%", height: "100%" }}>
-        <HighchartsReact highcharts={Highcharts} options={chartOptions} />
+        <HighchartsReact
+          highcharts={Highcharts}
+          options={chartOptions}
+          callback={(chart: Highcharts.Chart) => {
+            chartRef.current = chart;
+          }}
+        />
       </Box>
     </Paper>
   );
