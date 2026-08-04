@@ -3,22 +3,21 @@ import { Header } from "semantic-ui-react";
 import { Box, Stack, Chip, Grid } from "@mui/material";
 import { CALCULATORS_AND_SIMULATORS, getTagStyles } from "../../config";
 import { PanelProps } from "../../types";
-import { OrderBookProvider } from "./orderbook/OrderBookContext";
-import MarketMetrics from "./orderbook/MarketMetrics";
-import OrderEntryForm from "./orderbook/OrderEntryForm";
-import OrderBookLadder from "./orderbook/OrderBookLadder";
-import PriceHistoryChart from "./orderbook/PriceHistoryChart";
-import TradeLog from "./orderbook/TradeLog";
-import ActiveOrdersList from "./orderbook/ActiveOrdersList";
+import { DoublingGrowthProvider } from "./doublinggrowth/DoublingGrowthContext";
+import Inputs from "./doublinggrowth/Inputs";
+import LiveSimulationControl from "./doublinggrowth/LiveSimulationControl";
+import ResultsSummary from "./doublinggrowth/ResultsSummary";
+import GrowthChart from "./doublinggrowth/GrowthChart";
+import GrowthTable from "./doublinggrowth/GrowthTable";
 
-const OrderBook: React.FunctionComponent<PanelProps> = (props) => {
+const DoublingGrowth: React.FunctionComponent<PanelProps> = (props) => {
   const calculatorMeta = CALCULATORS_AND_SIMULATORS.find(
     (item: { name: string; value: string }) =>
-      item.name === props.name || item.value === "orderbook",
+      item.name === props.name || item.value === "doublinggrowth",
   );
 
   return (
-    <OrderBookProvider>
+    <DoublingGrowthProvider>
       <Box
         sx={{
           width: "100%",
@@ -37,7 +36,7 @@ const OrderBook: React.FunctionComponent<PanelProps> = (props) => {
           sx={{ flexWrap: "wrap", mb: 1 }}
         >
           <Header as="h2" textAlign="left" style={{ margin: 0 }}>
-            {props.name || "Limit Order Book & Matching Simulator"}
+            {props.name || "Exponential Doubling Growth Simulator"}
           </Header>
           {calculatorMeta?.tags.map((tag: string) => {
             const styles = getTagStyles(tag);
@@ -63,44 +62,28 @@ const OrderBook: React.FunctionComponent<PanelProps> = (props) => {
           style={{ marginTop: 8, color: "#666" }}
         >
           {calculatorMeta?.description ||
-            "Simulate a limit order book (LOB) with price-time priority matching engine, market orders, and live price history execution charts."}
+            "Start with an initial number, double (or compound) it at every unit of time, and visualize its exponential growth curve over time on linear and log scale plots."}
         </Header>
 
         {/* Content Modules */}
         <Stack spacing={3} sx={{ mt: 3, pb: 4 }}>
-          {/* Top Ticker & Metrics Bar */}
-          <MarketMetrics />
+          <Inputs />
+          <LiveSimulationControl />
+          <ResultsSummary />
 
-          {/* Top Row: Order Entry Desk & DOM Level 2 Depth Ladder */}
-          <Grid container spacing={2.5}>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <OrderEntryForm />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <OrderBookLadder />
-            </Grid>
-          </Grid>
-
-          {/* Full-width Price Execution Chart */}
+          {/* Full-width Live Growth Chart */}
           <Grid container spacing={2.5}>
             <Grid size={{ xs: 12 }}>
-              <PriceHistoryChart />
+              <GrowthChart />
             </Grid>
-          </Grid>
-
-          {/* Bottom Grid: Trade Executions & Open Orders */}
-          <Grid container spacing={2.5}>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TradeLog />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <ActiveOrdersList />
+            <Grid size={{ xs: 12 }}>
+              <GrowthTable />
             </Grid>
           </Grid>
         </Stack>
       </Box>
-    </OrderBookProvider>
+    </DoublingGrowthProvider>
   );
 };
 
-export default OrderBook;
+export default DoublingGrowth;

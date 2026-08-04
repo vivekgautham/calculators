@@ -18,7 +18,7 @@ export const PriceHistoryChart: React.FC = () => {
         spacingRight: 15,
         spacingTop: 15,
         spacingBottom: 15,
-        backgroundColor: "#1e293b",
+        backgroundColor: "#ffffff",
         height: 520,
       },
       title: {
@@ -26,39 +26,41 @@ export const PriceHistoryChart: React.FC = () => {
         style: {
           fontWeight: "bold",
           fontSize: "15px",
-          color: "#f8fafc",
+          color: "#1e293b",
         },
       },
       subtitle: {
         text: "Real-time Last Traded Price (LTP) and Trade Volume",
         style: {
-          color: "#94a3b8",
+          color: "#64748b",
           fontSize: "12px",
         },
       },
       xAxis: {
         categories: categories.length > 0 ? categories : ["Start"],
-        labels: { style: { color: "#cbd5e1" } },
+        labels: { style: { color: "#475569" } },
         crosshair: true,
       },
       yAxis: [
         {
           title: { text: "Price ($)", style: { color: "#00b5ad" } },
           labels: { style: { color: "#00b5ad" } },
-          gridLineColor: "#334155",
+          gridLineColor: "#f1f5f9",
           opposite: false,
         },
         {
-          title: { text: "Volume", style: { color: "#ffd54f" } },
-          labels: { style: { color: "#ffd54f" } },
+          title: { text: "Volume", style: { color: "#d97706" } },
+          labels: { style: { color: "#d97706" } },
           gridLineColor: "transparent",
           opposite: true,
         },
       ],
       tooltip: {
         shared: true,
-        backgroundColor: "#0f172a",
-        style: { color: "#f8fafc" },
+        backgroundColor: "#ffffff",
+        borderColor: "#cbd5e1",
+        borderWidth: 1,
+        style: { color: "#1e293b" },
       },
       series: [
         {
@@ -73,7 +75,7 @@ export const PriceHistoryChart: React.FC = () => {
           name: "Traded Volume",
           type: "column",
           data: volumeData,
-          color: "rgba(255, 213, 79, 0.4)",
+          color: "rgba(217, 119, 6, 0.35)",
           yAxis: 1,
         },
       ],
@@ -84,7 +86,13 @@ export const PriceHistoryChart: React.FC = () => {
   return (
     <Paper
       elevation={3}
-      sx={{ p: 2, borderRadius: 2, bgcolor: "#1e293b", height: "100%" }}
+      sx={{
+        p: 2,
+        borderRadius: 2,
+        bgcolor: "#ffffff",
+        height: "100%",
+        border: "1px solid #e2e8f0",
+      }}
     >
       <Box sx={{ width: "100%", height: "100%" }}>
         <HighchartsReact highcharts={Highcharts} options={chartOptions} />

@@ -56,7 +56,6 @@ export const OrderBookLadder: React.FC<{
       };
     });
 
-    // Display asks descending from highest price at top down to lowest ask near spread
     return levels.reverse();
   }, [asks]);
 
@@ -109,8 +108,9 @@ export const OrderBookLadder: React.FC<{
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        bgcolor: "#0f172a",
-        color: "#f8fafc",
+        bgcolor: "#ffffff",
+        color: "#1e293b",
+        border: "1px solid #e2e8f0",
       }}
     >
       <Stack
@@ -119,16 +119,17 @@ export const OrderBookLadder: React.FC<{
         alignItems="center"
         sx={{ mb: 1.5 }}
       >
-        <Typography variant="h6" sx={{ fontWeight: "bold", color: "#f8fafc" }}>
+        <Typography variant="h6" sx={{ fontWeight: "bold", color: "#1e293b" }}>
           Order Book (DOM Level 2)
         </Typography>
         <Chip
           label={`Spread: ${spread !== null ? `$${spread.toFixed(2)}` : "—"}`}
           size="small"
           sx={{
-            bgcolor: "rgba(255,255,255,0.1)",
-            color: "#f1f5f9",
+            bgcolor: "#f1f5f9",
+            color: "#334155",
             fontWeight: "bold",
+            border: "1px solid #cbd5e1",
           }}
         />
       </Stack>
@@ -139,10 +140,10 @@ export const OrderBookLadder: React.FC<{
             <TableRow
               sx={{
                 "& th": {
-                  bgcolor: "#1e293b",
-                  color: "#94a3b8",
+                  bgcolor: "#f8fafc",
+                  color: "#475569",
                   fontWeight: "bold",
-                  border: 0,
+                  borderBottom: "1px solid #e2e8f0",
                 },
               }}
             >
@@ -161,44 +162,34 @@ export const OrderBookLadder: React.FC<{
                 sx={{
                   cursor: "pointer",
                   position: "relative",
-                  "&:hover": { bgcolor: "rgba(239, 68, 68, 0.2)" },
-                  background: `linear-gradient(to left, rgba(239, 68, 68, 0.25) ${level.depthPct}%, transparent ${level.depthPct}%)`,
+                  "&:hover": { bgcolor: "#fef2f2" },
+                  background: `linear-gradient(to left, rgba(239, 68, 68, 0.12) ${level.depthPct}%, transparent ${level.depthPct}%)`,
                 }}
               >
                 <TableCell
                   sx={{
-                    color: "#ef4444",
+                    color: "#dc2626",
                     fontWeight: "bold",
-                    border: 0,
                     py: 0.6,
                   }}
                 >
                   ${level.price.toFixed(2)}
                 </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{ color: "#f8fafc", border: 0, py: 0.6 }}
-                >
+                <TableCell align="right" sx={{ color: "#1e293b", py: 0.6 }}>
                   {level.qty.toLocaleString()}
                 </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{ color: "#94a3b8", border: 0, py: 0.6 }}
-                >
+                <TableCell align="right" sx={{ color: "#64748b", py: 0.6 }}>
                   {level.cumulativeQty.toLocaleString()}
                 </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{ color: "#64748b", border: 0, py: 0.6 }}
-                >
+                <TableCell align="right" sx={{ color: "#94a3b8", py: 0.6 }}>
                   {level.ordersCount}
                 </TableCell>
               </TableRow>
             ))}
 
             {/* SPREAD / MID PRICE BAR */}
-            <TableRow sx={{ bgcolor: "#1e293b" }}>
-              <TableCell colSpan={4} align="center" sx={{ py: 1, border: 0 }}>
+            <TableRow sx={{ bgcolor: "#f1f5f9" }}>
+              <TableCell colSpan={4} align="center" sx={{ py: 1 }}>
                 <Stack
                   direction="row"
                   justifyContent="center"
@@ -207,7 +198,7 @@ export const OrderBookLadder: React.FC<{
                 >
                   <Typography
                     variant="body2"
-                    sx={{ color: "#94a3b8", fontWeight: "bold" }}
+                    sx={{ color: "#475569", fontWeight: "bold" }}
                   >
                     MID: $
                     {bestBid && bestAsk
@@ -216,7 +207,7 @@ export const OrderBookLadder: React.FC<{
                   </Typography>
                   <Typography
                     variant="body2"
-                    sx={{ color: "#e2e8f0", fontWeight: "bold" }}
+                    sx={{ color: "#0f172a", fontWeight: "bold" }}
                   >
                     LTP: $
                     {lastTradedPrice !== null
@@ -235,36 +226,26 @@ export const OrderBookLadder: React.FC<{
                 sx={{
                   cursor: "pointer",
                   position: "relative",
-                  "&:hover": { bgcolor: "rgba(34, 197, 94, 0.2)" },
-                  background: `linear-gradient(to left, rgba(34, 197, 94, 0.25) ${level.depthPct}%, transparent ${level.depthPct}%)`,
+                  "&:hover": { bgcolor: "#f0fdf4" },
+                  background: `linear-gradient(to left, rgba(34, 197, 94, 0.12) ${level.depthPct}%, transparent ${level.depthPct}%)`,
                 }}
               >
                 <TableCell
                   sx={{
-                    color: "#22c55e",
+                    color: "#16a34a",
                     fontWeight: "bold",
-                    border: 0,
                     py: 0.6,
                   }}
                 >
                   ${level.price.toFixed(2)}
                 </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{ color: "#f8fafc", border: 0, py: 0.6 }}
-                >
+                <TableCell align="right" sx={{ color: "#1e293b", py: 0.6 }}>
                   {level.qty.toLocaleString()}
                 </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{ color: "#94a3b8", border: 0, py: 0.6 }}
-                >
+                <TableCell align="right" sx={{ color: "#64748b", py: 0.6 }}>
                   {level.cumulativeQty.toLocaleString()}
                 </TableCell>
-                <TableCell
-                  align="right"
-                  sx={{ color: "#64748b", border: 0, py: 0.6 }}
-                >
+                <TableCell align="right" sx={{ color: "#94a3b8", py: 0.6 }}>
                   {level.ordersCount}
                 </TableCell>
               </TableRow>

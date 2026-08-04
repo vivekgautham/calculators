@@ -14,8 +14,17 @@ import SlabStructure from "./components/calculators/SlabStructure";
 import SavingsPower from "./components/calculators/SavingsPower";
 import PopulationGrowth from "./components/calculators/PopulationGrowth";
 import OrderBook from "./components/calculators/OrderBook";
+import DoublingGrowth from "./components/calculators/DoublingGrowth";
 
 export const CALCULATORS_AND_SIMULATORS = [
+  {
+    name: "Doubling Growth Simulator",
+    value: "doublinggrowth",
+    tags: ["math", "simulation", "exponential", "growth"],
+    description:
+      "Start with a number, double (or compound) it at every unit of time, and plot its exponential growth trajectory on linear & log scale charts.",
+    panel: DoublingGrowth,
+  },
   {
     name: "Order Book Simulator",
     value: "orderbook",

@@ -66,7 +66,13 @@ const MarketMetrics: React.FC = () => {
   return (
     <Paper
       elevation={3}
-      sx={{ p: 2.5, borderRadius: 2, bgcolor: "#1a2035", color: "white" }}
+      sx={{
+        p: 2.5,
+        borderRadius: 2,
+        bgcolor: "#ffffff",
+        color: "#1e293b",
+        border: "1px solid #e2e8f0",
+      }}
     >
       {/* Top Controls Row */}
       <Stack
@@ -75,7 +81,7 @@ const MarketMetrics: React.FC = () => {
         alignItems="center"
         sx={{ mb: 2 }}
       >
-        <Typography variant="h6" sx={{ fontWeight: "bold", color: "#f8fafc" }}>
+        <Typography variant="h6" sx={{ fontWeight: "bold", color: "#1e293b" }}>
           Order Book Ticker Stats
         </Typography>
 
@@ -100,22 +106,20 @@ const MarketMetrics: React.FC = () => {
           <Box
             sx={{
               p: 1.5,
-              bgcolor: "rgba(255,255,255,0.05)",
+              bgcolor: "#f8fafc",
               borderRadius: 1.5,
-              borderLeft: `4px solid ${isUp ? "#00e676" : "#ff5252"}`,
+              border: "1px solid #e2e8f0",
+              borderLeft: `4px solid ${isUp ? "#2e7d32" : "#d32f2f"}`,
             }}
           >
-            <Typography
-              variant="caption"
-              sx={{ color: "rgba(255,255,255,0.6)" }}
-            >
+            <Typography variant="caption" sx={{ color: "#64748b" }}>
               Last Traded Price (LTP)
             </Typography>
             <Typography
               variant="h4"
               sx={{
                 fontWeight: "bold",
-                color: isUp ? "#00e676" : "#ff5252",
+                color: isUp ? "#2e7d32" : "#d32f2f",
                 my: 0.5,
               }}
             >
@@ -123,7 +127,7 @@ const MarketMetrics: React.FC = () => {
             </Typography>
             <Typography
               variant="body2"
-              sx={{ fontWeight: "bold", color: isUp ? "#00e676" : "#ff5252" }}
+              sx={{ fontWeight: "bold", color: isUp ? "#2e7d32" : "#d32f2f" }}
             >
               {isUp ? "▲" : "▼"} {Math.abs(priceDiff).toFixed(2)} (
               {isUp ? "+" : ""}
@@ -137,23 +141,21 @@ const MarketMetrics: React.FC = () => {
           <Box
             sx={{
               p: 1.5,
-              bgcolor: "rgba(255,255,255,0.05)",
+              bgcolor: "#f8fafc",
               borderRadius: 1.5,
+              border: "1px solid #e2e8f0",
             }}
           >
-            <Typography
-              variant="caption"
-              sx={{ color: "rgba(255,255,255,0.6)" }}
-            >
+            <Typography variant="caption" sx={{ color: "#64748b" }}>
               Bid-Ask Spread
             </Typography>
             <Typography
               variant="h5"
-              sx={{ fontWeight: "bold", color: "#ffd54f", my: 0.5 }}
+              sx={{ fontWeight: "bold", color: "#d97706", my: 0.5 }}
             >
               ${spread !== null ? spread.toFixed(2) : "—"}
             </Typography>
-            <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.7)" }}>
+            <Typography variant="body2" sx={{ color: "#64748b" }}>
               Spread: <b>{spreadBps !== null ? `${spreadBps} bps` : "—"}</b> |
               Mid: <b>${midPrice ? midPrice.toFixed(2) : "—"}</b>
             </Typography>
@@ -165,23 +167,21 @@ const MarketMetrics: React.FC = () => {
           <Box
             sx={{
               p: 1.5,
-              bgcolor: "rgba(255,255,255,0.05)",
+              bgcolor: "#f8fafc",
               borderRadius: 1.5,
+              border: "1px solid #e2e8f0",
             }}
           >
-            <Typography
-              variant="caption"
-              sx={{ color: "rgba(255,255,255,0.6)" }}
-            >
+            <Typography variant="caption" sx={{ color: "#64748b" }}>
               VWAP & Day Range
             </Typography>
             <Typography
               variant="h5"
-              sx={{ fontWeight: "bold", color: "#81d4fa", my: 0.5 }}
+              sx={{ fontWeight: "bold", color: "#0284c7", my: 0.5 }}
             >
               ${vwap !== null ? vwap.toFixed(2) : "—"}
             </Typography>
-            <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.7)" }}>
+            <Typography variant="body2" sx={{ color: "#64748b" }}>
               Low: <b>${lowPrice !== null ? lowPrice.toFixed(2) : "—"}</b> |
               High: <b>${highPrice !== null ? highPrice.toFixed(2) : "—"}</b>
             </Typography>
@@ -193,8 +193,9 @@ const MarketMetrics: React.FC = () => {
           <Box
             sx={{
               p: 1.5,
-              bgcolor: "rgba(255,255,255,0.05)",
+              bgcolor: "#f8fafc",
               borderRadius: 1.5,
+              border: "1px solid #e2e8f0",
             }}
           >
             <Stack
@@ -202,15 +203,12 @@ const MarketMetrics: React.FC = () => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Typography
-                variant="caption"
-                sx={{ color: "rgba(255,255,255,0.6)" }}
-              >
+              <Typography variant="caption" sx={{ color: "#64748b" }}>
                 Order Imbalance (Bids / Asks)
               </Typography>
               <Typography
                 variant="caption"
-                sx={{ color: "#00e676", fontWeight: "bold" }}
+                sx={{ color: "#2e7d32", fontWeight: "bold" }}
               >
                 Vol: {totalVolume.toLocaleString()}
               </Typography>
@@ -222,13 +220,13 @@ const MarketMetrics: React.FC = () => {
             >
               <Typography
                 variant="body2"
-                sx={{ color: "#00e676", fontWeight: "bold" }}
+                sx={{ color: "#2e7d32", fontWeight: "bold" }}
               >
                 Bids {bidRatio.toFixed(0)}%
               </Typography>
               <Typography
                 variant="body2"
-                sx={{ color: "#ff5252", fontWeight: "bold" }}
+                sx={{ color: "#d32f2f", fontWeight: "bold" }}
               >
                 Asks {(100 - bidRatio).toFixed(0)}%
               </Typography>
@@ -239,9 +237,9 @@ const MarketMetrics: React.FC = () => {
               sx={{
                 height: 8,
                 borderRadius: 4,
-                bgcolor: "#ff5252",
+                bgcolor: "#fee2e2",
                 "& .MuiLinearProgress-bar": {
-                  bgcolor: "#00e676",
+                  bgcolor: "#2e7d32",
                 },
               }}
             />
