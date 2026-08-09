@@ -6,6 +6,30 @@ import React, {
   useMemo,
 } from "react";
 
+export type AmountScale = "thousands" | "millions" | "billions";
+
+export const getScaleMultiplier = (scale: AmountScale): number => {
+  switch (scale) {
+    case "thousands":
+      return 1000;
+    case "millions":
+      return 1000000;
+    case "billions":
+      return 1000000000;
+  }
+};
+
+export const getScaleSuffix = (scale: AmountScale): string => {
+  switch (scale) {
+    case "thousands":
+      return "K";
+    case "millions":
+      return "M";
+    case "billions":
+      return "B";
+  }
+};
+
 export interface ShockScenario {
   shockPercent: number;
   initialCorpus: number;
@@ -18,10 +42,12 @@ export interface ShockScenario {
 }
 
 interface PortfolioShockMatrixContextType {
-  initialCorpus: number | string;
-  currentCorpus: number | string;
-  setInitialCorpus: (amount: number | string) => void;
-  setCurrentCorpus: (amount: number | string) => void;
+  initialCorpus: number;
+  currentCorpus: number;
+  setInitialCorpus: (amount: number) => void;
+  setCurrentCorpus: (amount: number) => void;
+  amountScale: AmountScale;
+  setAmountScale: (scale: AmountScale) => void;
   scenarios: ShockScenario[];
 }
 
@@ -32,16 +58,17 @@ const PortfolioShockMatrixContext = createContext<
 export const PortfolioShockMatrixProvider: React.FC<{
   children: ReactNode;
 }> = ({ children }) => {
-  const [initialCorpus, setInitialCorpus] = useState<number | string>(75000); // 75k default
-  const [currentCorpus, setCurrentCorpus] = useState<number | string>(85000); // 85k default
+  const [initialCorpus, setInitialCorpus] = useState<number>(75000); // 75k default
+  const [currentCorpus, setCurrentCorpus] = useState<number>(85000); // 85k default
+  const [amountScale, setAmountScale] = useState<AmountScale>("thousands");
 
   const scenarios = useMemo(() => {
-    const init = parseFloat(initialCorpus.toString()) || 0;
-    const current = parseFloat(currentCorpus.toString()) || 0;
+    const init = Number(initialCorpus) || 0;
+    const current = Number(currentCorpus) || 0;
 
     const results: ShockScenario[] = [];
 
-    // Generate scenarios from -40% to +40% in 5% steps
+    // Generate scenarios from -50% to +50% in 5% steps
     for (let s = -50; s <= 50; s += 5) {
       const shockRate = s / 100;
       const finalValue = current * (1 + shockRate);
@@ -72,6 +99,8 @@ export const PortfolioShockMatrixProvider: React.FC<{
         currentCorpus,
         setInitialCorpus,
         setCurrentCorpus,
+        amountScale,
+        setAmountScale,
         scenarios,
       }}
     >
