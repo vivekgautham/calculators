@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Icon } from "semantic-ui-react";
 import {
   Stack,
@@ -49,6 +49,13 @@ function CalculatorOutlet() {
   });
 
   const [inputValue, setInputValue] = useState("");
+
+  // Alphabetically sort all calculator options
+  const sortedCalculators = useMemo(() => {
+    return [...CALCULATORS_AND_SIMULATORS].sort((a, b) =>
+      a.name.localeCompare(b.name),
+    );
+  }, []);
 
   useEffect(() => {
     const handleUrlChange = () => {
@@ -218,243 +225,264 @@ function CalculatorOutlet() {
           flexShrink: 0,
         }}
       >
+        <Autocomplete
+          fullWidth
+          options={sortedCalculators}
+          getOptionLabel={(option) => option.name}
+          filterOptions={(options, { inputValue: query }) => {
+            const q = query.toLowerCase().trim();
+            if (!q) return options;
+
+            return options.filter((opt) => {
+              const nameMatch = opt.name.toLowerCase().includes(q);
+              const descMatch = opt.description.toLowerCase().includes(q);
+              const tagMatch = opt.tags.some((tag) =>
+                tag.toLowerCase().includes(q),
+              );
+              return nameMatch || descMatch || tagMatch;
+            });
+          }}
+          value={null} // Keep it empty by default so it acts as an open/add field launcher
+          inputValue={inputValue}
+          onInputChange={(_, newInputValue) => {
+            setInputValue(newInputValue);
+          }}
+          onChange={(_, newValue) => {
+            if (newValue) {
+              setOpenCalculators((prev) => {
+                if (!prev.includes(newValue.value)) {
+                  return [...prev, newValue.value];
+                }
+                return prev;
+              });
+              setActiveCalculator(newValue.value);
+              setInputValue("");
+            }
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              size="small"
+              placeholder="Search by title or tags (e.g., 'trading', 'tax', 'accounting')..."
+              sx={{
+                bgcolor: "white",
+                borderRadius: 1,
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": { borderColor: "#ced4da" },
+                  "&:hover fieldset": { borderColor: "#00b5ad" },
+                  "&.Mui-focused fieldset": { borderColor: "#00b5ad" },
+                },
+              }}
+            />
+          )}
+          renderOption={(props, option) => {
+            const restProps = { ...props };
+            delete (restProps as Record<string, unknown>).key;
+            return (
+              <Box
+                component="li"
+                {...restProps}
+                key={option.value}
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  p: 1.5,
+                  borderBottom: "1px solid #f0f0f0",
+                  width: "100%",
+                }}
+              >
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: "bold", color: "#1a2035", mr: 2 }}
+                >
+                  {option.name}
+                </Typography>
+                <Stack
+                  direction="row"
+                  spacing={0.5}
+                  sx={{
+                    flexWrap: "wrap",
+                    gap: "2px",
+                    alignItems: "center",
+                  }}
+                >
+                  {option.tags.map((tag) => {
+                    const style = getTagStyles(tag);
+                    return (
+                      <span
+                        key={tag}
+                        style={{
+                          fontSize: "8px",
+                          padding: "2px 4px",
+                          borderRadius: "3px",
+                          fontWeight: "bold",
+                          textTransform: "uppercase",
+                          backgroundColor: style.backgroundColor,
+                          color: style.color,
+                          border: `1px solid ${style.borderColor}`,
+                          letterSpacing: "0.5px",
+                          lineHeight: "1",
+                        }}
+                      >
+                        {tag}
+                      </span>
+                    );
+                  })}
+                </Stack>
+              </Box>
+            );
+          }}
+          sx={{ width: "100%" }}
+        />
+      </Box>
+
+      {/* Dynamic Browser-like Tab Bar Row */}
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{
+          px: 3,
+          py: 1,
+          backgroundColor: "#f8f9fa",
+          borderBottom: "1px solid #e9ecef",
+          flexShrink: 0,
+        }}
+      >
+        {/* Scrollable Tabs Stack */}
         <Stack
           direction="row"
-          spacing={2}
+          spacing={1}
           alignItems="center"
-          sx={{ width: "100%" }}
+          sx={{
+            overflowX: "auto",
+            whiteSpace: "nowrap",
+            flexGrow: 1,
+            py: 0.2,
+            "&::-webkit-scrollbar": { height: 4 },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "#ced4da",
+              borderRadius: 2,
+            },
+          }}
         >
-          <Box sx={{ flexGrow: 1 }}>
-            <Autocomplete
-              fullWidth
-              options={CALCULATORS_AND_SIMULATORS}
-              getOptionLabel={(option) => option.name}
-              value={null} // Keep it empty by default so it acts as an open/add field launcher
-              inputValue={inputValue}
-              onInputChange={(_, newInputValue) => {
-                setInputValue(newInputValue);
-              }}
-              onChange={(_, newValue) => {
-                if (newValue) {
-                  setOpenCalculators((prev) => {
-                    if (!prev.includes(newValue.value)) {
-                      return [...prev, newValue.value];
-                    }
-                    return prev;
-                  });
-                  setActiveCalculator(newValue.value);
-                  setInputValue("");
-                }
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  size="small"
-                  placeholder="Search and open a calculator..."
-                  sx={{
-                    bgcolor: "white",
-                    borderRadius: 1,
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": { borderColor: "#ced4da" },
-                      "&:hover fieldset": { borderColor: "#00b5ad" },
-                      "&.Mui-focused fieldset": { borderColor: "#00b5ad" },
-                    },
-                  }}
-                />
-              )}
-              renderOption={(props, option) => {
-                const restProps = { ...props };
-                delete (restProps as Record<string, unknown>).key;
-                return (
-                  <Box
-                    component="li"
-                    {...restProps}
-                    key={option.value}
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      p: 1.5,
-                      borderBottom: "1px solid #f0f0f0",
-                      width: "100%",
-                    }}
-                  >
-                    <Typography
-                      variant="body2"
-                      sx={{ fontWeight: "bold", color: "#1a2035", mr: 2 }}
-                    >
-                      {option.name}
-                    </Typography>
-                    <Stack
-                      direction="row"
-                      spacing={0.5}
-                      sx={{
-                        flexWrap: "wrap",
-                        gap: "2px",
-                        alignItems: "center",
-                      }}
-                    >
-                      {option.tags.map((tag) => {
-                        const style = getTagStyles(tag);
-                        return (
-                          <span
-                            key={tag}
-                            style={{
-                              fontSize: "8px",
-                              padding: "2px 4px",
-                              borderRadius: "3px",
-                              fontWeight: "bold",
-                              textTransform: "uppercase",
-                              backgroundColor: style.backgroundColor,
-                              color: style.color,
-                              border: `1px solid ${style.borderColor}`,
-                              letterSpacing: "0.5px",
-                              lineHeight: "1",
-                            }}
-                          >
-                            {tag}
-                          </span>
-                        );
-                      })}
-                    </Stack>
-                  </Box>
-                );
-              }}
-              sx={{ width: "100%" }}
-            />
-          </Box>
+          {openCalculators.map((val) => {
+            const calc = CALCULATORS_AND_SIMULATORS.find(
+              (c) => c.value === val,
+            );
+            if (!calc) return null;
+            const isActive = val === activeCalculator;
 
-          {openCalculators.length > 1 && (
-            <Tooltip title="Close all tabs" arrow>
-              <IconButton
-                color="error"
-                onClick={handleCloseAllTabs}
+            return (
+              <Stack
+                key={val}
+                direction="row"
+                alignItems="center"
+                spacing={1}
+                onClick={() => setActiveCalculator(val)}
                 sx={{
-                  flexShrink: 0,
-                  border: "1px solid #ef5350",
-                  borderRadius: "6px",
-                  height: "40px", // Match search input height exactly
-                  width: "40px",
-                  backgroundColor: "transparent",
+                  px: 2.2,
+                  py: 0.8,
+                  borderRadius: "20px", // Rounded pill styling
+                  background: isActive
+                    ? "linear-gradient(135deg, #00b5ad 0%, #008f89 100%)"
+                    : "white",
+                  border: "1px solid",
+                  borderColor: isActive ? "transparent" : "#dee2e6",
+                  cursor: "pointer",
+                  userSelect: "none",
+                  fontWeight: isActive ? 600 : 500,
+                  color: isActive ? "white" : "#495057",
+                  transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+                  mr: 0.5,
+                  boxShadow: isActive
+                    ? "0px 4px 10px rgba(0, 181, 173, 0.25)"
+                    : "0px 2px 4px rgba(0,0,0,0.02)",
                   "&:hover": {
-                    backgroundColor: "#ffebee",
-                    borderColor: "#d32f2f",
+                    background: isActive
+                      ? "linear-gradient(135deg, #00c7be 0%, #009d97 100%)"
+                      : "#f1f3f5",
+                    borderColor: isActive ? "transparent" : "#ced4da",
+                    transform: isActive ? "translateY(-1px)" : "none",
+                    boxShadow: isActive
+                      ? "0px 6px 12px rgba(0, 181, 173, 0.3)"
+                      : "0px 3px 6px rgba(0,0,0,0.04)",
+                  },
+                  "&:active": {
+                    transform: "translateY(0px)",
                   },
                 }}
               >
-                <DeleteSweepIcon />
-              </IconButton>
-            </Tooltip>
-          )}
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontWeight: "inherit",
+                    fontSize: "13px",
+                    letterSpacing: "0.2px",
+                  }}
+                >
+                  {calc.name}
+                </Typography>
+                {openCalculators.length > 1 && (
+                  <CloseIcon
+                    onClick={(e: React.MouseEvent) => handleCloseTab(val, e)}
+                    sx={{
+                      marginLeft: 1,
+                      fontSize: "14px",
+                      color: isActive
+                        ? "rgba(255,255,255,0.7)"
+                        : "rgba(0,0,0,0.4)",
+                      transition: "all 0.2s ease",
+                      cursor: "pointer",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      "&:hover": {
+                        color: isActive ? "#ffcdd2" : "#d32f2f",
+                        transform: "rotate(90deg)",
+                      },
+                    }}
+                  />
+                )}
+              </Stack>
+            );
+          })}
         </Stack>
-      </Box>
 
-      {/* Dynamic Browser-like Tab Bar */}
-      <Stack
-        direction="row"
-        spacing={1}
-        sx={{
-          px: 3,
-          py: 1.2,
-          backgroundColor: "#f8f9fa", // Match search background for design cohesion
-          borderBottom: "1px solid #e9ecef",
-          flexShrink: 0,
-          overflowX: "auto",
-          whiteSpace: "nowrap",
-          "&::-webkit-scrollbar": { height: 4 },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "#ced4da",
-            borderRadius: 2,
-          },
-        }}
-      >
-        {openCalculators.map((val) => {
-          const calc = CALCULATORS_AND_SIMULATORS.find((c) => c.value === val);
-          if (!calc) return null;
-          const isActive = val === activeCalculator;
-
-          return (
-            <Stack
-              key={val}
-              direction="row"
-              alignItems="center"
-              spacing={1}
-              onClick={() => setActiveCalculator(val)}
+        {/* Delete All Open Tabs Icon Button on the Same Row as Tabs */}
+        {openCalculators.length > 1 && (
+          <Tooltip title="Close all tabs" arrow>
+            <IconButton
+              color="error"
+              onClick={handleCloseAllTabs}
+              size="small"
               sx={{
-                px: 2.2,
-                py: 0.8,
-                borderRadius: "20px", // Rounded pill styling
-                background: isActive
-                  ? "linear-gradient(135deg, #00b5ad 0%, #008f89 100%)"
-                  : "white",
-                border: "1px solid",
-                borderColor: isActive ? "transparent" : "#dee2e6",
-                cursor: "pointer",
-                userSelect: "none",
-                fontWeight: isActive ? 600 : 500,
-                color: isActive ? "white" : "#495057",
-                transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-                mr: 0.5,
-                boxShadow: isActive
-                  ? "0px 4px 10px rgba(0, 181, 173, 0.25)"
-                  : "0px 2px 4px rgba(0,0,0,0.02)",
+                ml: 1.5,
+                flexShrink: 0,
+                border: "1px solid #ef5350",
+                borderRadius: "6px",
+                height: "32px",
+                width: "32px",
+                backgroundColor: "transparent",
                 "&:hover": {
-                  background: isActive
-                    ? "linear-gradient(135deg, #00c7be 0%, #009d97 100%)"
-                    : "#f1f3f5",
-                  borderColor: isActive ? "transparent" : "#ced4da",
-                  transform: isActive ? "translateY(-1px)" : "none",
-                  boxShadow: isActive
-                    ? "0px 6px 12px rgba(0, 181, 173, 0.3)"
-                    : "0px 3px 6px rgba(0,0,0,0.04)",
-                },
-                "&:active": {
-                  transform: "translateY(0px)",
+                  backgroundColor: "#ffebee",
+                  borderColor: "#d32f2f",
                 },
               }}
             >
-              <Typography
-                variant="body2"
-                sx={{
-                  fontWeight: "inherit",
-                  fontSize: "13px",
-                  letterSpacing: "0.2px",
-                }}
-              >
-                {calc.name}
-              </Typography>
-              {openCalculators.length > 1 && (
-                <CloseIcon
-                  onClick={(e: React.MouseEvent) => handleCloseTab(val, e)}
-                  sx={{
-                    marginLeft: 1,
-                    fontSize: "14px",
-                    color: isActive
-                      ? "rgba(255,255,255,0.7)"
-                      : "rgba(0,0,0,0.4)",
-                    transition: "all 0.2s ease",
-                    cursor: "pointer",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    "&:hover": {
-                      color: isActive ? "#ffcdd2" : "#d32f2f",
-                      transform: "rotate(90deg)",
-                    },
-                  }}
-                />
-              )}
-            </Stack>
-          );
-        })}
+              <DeleteSweepIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        )}
       </Stack>
 
       {/* Main Content View Container (Preserves states using display: none) */}
       <Box
         sx={{
           flexGrow: 1,
-          height: "calc(100vh - 56px - 72px - 44px)", // Offsets for title bar, search bar, and tab bar
+          height: "calc(100vh - 56px - 64px - 44px)", // Offsets for title bar, search bar, and tab bar
           overflow: "hidden",
           width: "100vw",
           position: "relative",
