@@ -2,7 +2,11 @@ import React, { useMemo, useEffect, useRef } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { Paper, Box } from "@mui/material";
-import { useDoublingGrowth, formatLargeNumber } from "./DoublingGrowthContext";
+import {
+  useDoublingGrowth,
+  formatLargeNumber,
+  formatAbbreviatedNumber,
+} from "./DoublingGrowthContext";
 
 export const GrowthChart: React.FC = () => {
   const {
@@ -73,7 +77,7 @@ export const GrowthChart: React.FC = () => {
           formatter: function (
             this: Highcharts.AxisLabelsFormatterContextObject,
           ) {
-            return formatLargeNumber(this.value as number);
+            return formatAbbreviatedNumber(this.value as number);
           },
         },
         gridLineColor: "#f1f5f9",

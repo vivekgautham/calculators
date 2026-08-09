@@ -112,6 +112,24 @@ export const formatLargeNumber = (num: number): string => {
   return num.toLocaleString(undefined, { maximumFractionDigits: 2 });
 };
 
+export const formatAbbreviatedNumber = (num: number): string => {
+  if (!isFinite(num)) return "∞";
+  if (num === 0) return "0";
+  const abs = Math.abs(num);
+
+  if (abs >= 1e24) return num.toExponential(2);
+  if (abs >= 1e21) return `${(num / 1e21).toFixed(1)} Sp`;
+  if (abs >= 1e18) return `${(num / 1e18).toFixed(1)} Qi`;
+  if (abs >= 1e15) return `${(num / 1e15).toFixed(1)} Qa`;
+  if (abs >= 1e12) return `${(num / 1e12).toFixed(1)} Tn`;
+  if (abs >= 1e9) return `${(num / 1e9).toFixed(1)} Bn`;
+  if (abs >= 1e6) return `${(num / 1e6).toFixed(1)} MM`;
+  if (abs >= 1e3) return `${(num / 1e3).toFixed(1)} K`;
+  if (abs < 0.001) return num.toExponential(2);
+
+  return num.toLocaleString(undefined, { maximumFractionDigits: 1 });
+};
+
 interface DoublingGrowthContextType {
   initialValue: number;
   setInitialValue: (val: number) => void;
