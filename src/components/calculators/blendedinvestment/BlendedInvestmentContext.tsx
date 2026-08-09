@@ -1,11 +1,35 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
+export type AmountScale = "thousands" | "millions" | "billions";
+
+export const getScaleMultiplier = (scale: AmountScale): number => {
+  switch (scale) {
+    case "thousands":
+      return 1000;
+    case "millions":
+      return 1000000;
+    case "billions":
+      return 1000000000;
+  }
+};
+
+export const getScaleSuffix = (scale: AmountScale): string => {
+  switch (scale) {
+    case "thousands":
+      return "K";
+    case "millions":
+      return "M";
+    case "billions":
+      return "B";
+  }
+};
+
 export interface Investment {
   key: string;
   id: string;
   name: string;
-  amount: number;
-  rate: number;
+  amount: number; // Stored in base currency dollars ($)
+  rate: number; // Percentage e.g. 9 for 9%
   color: string;
 }
 
@@ -13,6 +37,8 @@ interface BlendedInvestmentContextType {
   investments: Investment[];
   totalYears: number;
   setTotalYears: (years: number) => void;
+  amountScale: AmountScale;
+  setAmountScale: (scale: AmountScale) => void;
   addInvestment: () => void;
   removeInvestment: (key: string) => void;
   updateInvestment: (key: string, updates: Partial<Investment>) => void;
@@ -40,6 +66,7 @@ export const BlendedInvestmentProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [totalYears, setTotalYears] = useState<number>(10);
+  const [amountScale, setAmountScale] = useState<AmountScale>("thousands");
   const [investments, setInvestments] = useState<Investment[]>([
     {
       key: "inv-1",
@@ -85,7 +112,7 @@ export const BlendedInvestmentProvider: React.FC<{ children: ReactNode }> = ({
       key: `inv-${Date.now()}`,
       id: nextNum.toString(),
       name: `Investment ${nextNum}`,
-      amount: 1000,
+      amount: 100000, // Default $100K
       rate: 5,
       color: nextColor,
     };
@@ -110,6 +137,8 @@ export const BlendedInvestmentProvider: React.FC<{ children: ReactNode }> = ({
         investments,
         totalYears,
         setTotalYears,
+        amountScale,
+        setAmountScale,
         addInvestment,
         removeInvestment,
         updateInvestment,
