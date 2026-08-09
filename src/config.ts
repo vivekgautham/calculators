@@ -15,8 +15,17 @@ import SavingsPower from "./components/calculators/SavingsPower";
 import PopulationGrowth from "./components/calculators/PopulationGrowth";
 import OrderBook from "./components/calculators/OrderBook";
 import DoublingGrowth from "./components/calculators/DoublingGrowth";
+import BalanceSheet from "./components/calculators/BalanceSheet";
 
 export const CALCULATORS_AND_SIMULATORS = [
+  {
+    name: "Balance Sheet Health Calculator",
+    value: "balancesheet",
+    tags: ["finance", "accounting", "analysis", "health"],
+    description:
+      "Evaluate corporate financial health across 5 critical balance sheet pillars: Cash Cushion, Debt Burden, Short-Term Solvency, Retained Earnings Track Record, and Asset Quality.",
+    panel: BalanceSheet,
+  },
   {
     name: "Doubling Growth Simulator",
     value: "doublinggrowth",
