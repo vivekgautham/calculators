@@ -448,7 +448,7 @@ export const Inputs: React.FC = () => {
                   variant="body2"
                   sx={{ fontWeight: "bold", color: "#1e293b" }}
                 >
-                  Spread Z: GST (bps)
+                  Spread Z: GST I (bps)
                 </Typography>
                 <Chip
                   label={`${spreadZ} bps`}
@@ -517,7 +517,7 @@ export const Inputs: React.FC = () => {
                   variant="body2"
                   sx={{ fontWeight: "bold", color: "#1e293b" }}
                 >
-                  Spread A: Custody & Servicing Fee (bps)
+                  Spread A: FX Conversion Half Yearly (bps)
                 </Typography>
                 <Chip
                   label={`${spreadA} bps`}
@@ -562,7 +562,7 @@ export const Inputs: React.FC = () => {
                   variant="body2"
                   sx={{ fontWeight: "bold", color: "#1e293b" }}
                 >
-                  Spread B: Payout Transfer & Withholding (bps)
+                  Spread B: GST II (bps)
                 </Typography>
                 <Chip
                   label={`${spreadB} bps`}

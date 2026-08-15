@@ -6,7 +6,6 @@ import { PanelProps } from "../../types";
 import { ForeignCurrencyFDProvider } from "./foreigncurrencyfd/ForeignCurrencyFDContext";
 import Inputs from "./foreigncurrencyfd/Inputs";
 import SummaryCards from "./foreigncurrencyfd/SummaryCards";
-import CashFlowChart from "./foreigncurrencyfd/CashFlowChart";
 import ScheduleTable from "./foreigncurrencyfd/ScheduleTable";
 
 const ForeignCurrencyFD: React.FunctionComponent<PanelProps> = (props) => {
@@ -68,7 +67,6 @@ const ForeignCurrencyFD: React.FunctionComponent<PanelProps> = (props) => {
           <Inputs />
           <ScheduleTable />
           <SummaryCards />
-          <CashFlowChart />
         </Stack>
       </Box>
     </ForeignCurrencyFDProvider>
