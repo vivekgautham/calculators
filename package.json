@@ -1,7 +1,7 @@
 {
   "name": "calculators",
   "private": true,
-  "version": "0.0.62",
+  "version": "0.0.63",
   "homepage": "https://vivekgautham.github.io/calculators",
   "type": "module",
   "scripts": {

@@ -10,6 +10,7 @@ import {
   TableHead,
   TableRow,
   Chip,
+  Stack,
 } from "@mui/material";
 import { useForeignCurrencyFD } from "./ForeignCurrencyFDContext";
 
@@ -47,7 +48,7 @@ export const ScheduleTable: React.FC = () => {
 
       <TableContainer
         component={Box}
-        sx={{ maxHeight: 400, overflowY: "auto" }}
+        sx={{ maxHeight: 450, overflowY: "auto" }}
       >
         <Table size="small" stickyHeader>
           <TableHead>
@@ -69,6 +70,12 @@ export const ScheduleTable: React.FC = () => {
                 sx={{ fontWeight: "bold", bgcolor: "#f8fafc" }}
               >
                 Gross Amount ($)
+              </TableCell>
+              <TableCell
+                align="left"
+                sx={{ fontWeight: "bold", bgcolor: "#f8fafc", minWidth: 220 }}
+              >
+                Fee Breakdown
               </TableCell>
               <TableCell
                 align="right"
@@ -138,6 +145,36 @@ export const ScheduleTable: React.FC = () => {
                     {formatCurrency(row.grossAmount)}
                   </TableCell>
 
+                  {/* Fee Breakdown Column */}
+                  <TableCell align="left">
+                    <Stack spacing={0.5}>
+                      {row.feeBreakdown.map((item) => (
+                        <Box
+                          key={item.label}
+                          sx={{
+                            fontSize: "0.75rem",
+                            color: "#475569",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            gap: 1,
+                          }}
+                        >
+                          <span>
+                            <strong>{item.label}</strong> ({item.bps} bps):
+                          </span>
+                          <span style={{ color: "#dc2626", fontWeight: 600 }}>
+                            -$
+                            {item.amount.toLocaleString(undefined, {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}
+                          </span>
+                        </Box>
+                      ))}
+                    </Stack>
+                  </TableCell>
+
+                  {/* Total Fees Paid Column */}
                   <TableCell
                     align="right"
                     sx={{ color: "#dc2626", fontWeight: "bold" }}

@@ -30,12 +30,20 @@ export const getScaleSuffix = (scale: AmountScale): string => {
   }
 };
 
+export interface FeeItem {
+  label: string;
+  bps: number;
+  amount: number;
+}
+
 export interface CashFlowPeriod {
   period: number;
   periodLabel: string;
   type: "Creation" | "Interest Payout" | "Maturity Redemption";
   grossAmount: number;
   feeAmount: number;
+  feeBreakdown: FeeItem[];
+  feeBreakdownStr: string;
   netAmount: number;
   cumulativeCashFlow: number;
 }
@@ -100,7 +108,7 @@ export const ForeignCurrencyFDProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [amountScale, setAmountScale] = useState<AmountScale>("thousands");
-  const [initialGrossAmount, setInitialGrossAmount] = useState<number>(2); // $2K ($2,000) default
+  const [initialGrossAmount, setInitialGrossAmount] = useState<number>(10); // $10K ($10,000) default
   const [years, setYears] = useState<number>(3); // Default 3 Years
   const [annualRate, setAnnualRate] = useState<number>(6.25); // Default 6.25% p.a.
 
@@ -206,6 +214,22 @@ export const ForeignCurrencyFDProvider: React.FC<{ children: ReactNode }> = ({
     const timeline: CashFlowPeriod[] = [];
     let cumulative = -effectiveGrossAmount;
 
+    // Creation breakdown
+    const creationFX1 = effectiveGrossAmount * (spreadX / 10000);
+    const creationFX2 = effectiveGrossAmount * (spreadY / 10000);
+    const creationGST = effectiveGrossAmount * (spreadZ / 10000);
+    const creationItems: FeeItem[] = [
+      { label: "FX Conversion I", bps: spreadX, amount: creationFX1 },
+      { label: "FX Conversion II", bps: spreadY, amount: creationFX2 },
+      { label: "GST I", bps: spreadZ, amount: creationGST },
+    ];
+    const creationStr = creationItems
+      .map(
+        (i) =>
+          `${i.label} (${i.bps} bps): -$${i.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      )
+      .join(" | ");
+
     // Period 0: Deposit Creation
     timeline.push({
       period: 0,
@@ -213,6 +237,8 @@ export const ForeignCurrencyFDProvider: React.FC<{ children: ReactNode }> = ({
       type: "Creation",
       grossAmount: -effectiveGrossAmount,
       feeAmount: creationFeesDollar,
+      feeBreakdown: creationItems,
+      feeBreakdownStr: creationStr,
       netAmount: -netInvestedDeposit,
       cumulativeCashFlow: cumulative,
     });
@@ -220,7 +246,19 @@ export const ForeignCurrencyFDProvider: React.FC<{ children: ReactNode }> = ({
     // Semi-Annual Payouts
     const grossHalfYearlyPayout =
       netInvestedDeposit * (grossHalfYearlyRatePct / 100);
-    const halfYearlyFee = netInvestedDeposit * (totalPayoutSpreadBps / 10000);
+    const payoutFX = netInvestedDeposit * (spreadA / 10000);
+    const payoutGST = netInvestedDeposit * (spreadB / 10000);
+    const payoutItems: FeeItem[] = [
+      { label: "FX Conv Half Yearly", bps: spreadA, amount: payoutFX },
+      { label: "GST II", bps: spreadB, amount: payoutGST },
+    ];
+    const payoutStr = payoutItems
+      .map(
+        (i) =>
+          `${i.label} (${i.bps} bps): -$${i.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      )
+      .join(" | ");
+    const halfYearlyFee = payoutFX + payoutGST;
 
     for (let p = 1; p <= totalPayoutsCount; p++) {
       const year = (p / 2).toFixed(1);
@@ -231,12 +269,27 @@ export const ForeignCurrencyFDProvider: React.FC<{ children: ReactNode }> = ({
         type: "Interest Payout",
         grossAmount: grossHalfYearlyPayout,
         feeAmount: halfYearlyFee,
+        feeBreakdown: payoutItems,
+        feeBreakdownStr: payoutStr,
         netAmount: halfYearlyPayoutDollar,
         cumulativeCashFlow: cumulative,
       });
     }
 
     // Maturity Redemption
+    const redemptionFX = netInvestedDeposit * (spreadU / 10000);
+    const redemptionGST = netInvestedDeposit * (spreadV / 10000);
+    const redemptionItems: FeeItem[] = [
+      { label: "Redemption FX Conv", bps: spreadU, amount: redemptionFX },
+      { label: "GST III", bps: spreadV, amount: redemptionGST },
+    ];
+    const redemptionStr = redemptionItems
+      .map(
+        (i) =>
+          `${i.label} (${i.bps} bps): -$${i.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      )
+      .join(" | ");
+
     cumulative += netPrincipalReturned;
     timeline.push({
       period: totalPayoutsCount + 1,
@@ -244,6 +297,8 @@ export const ForeignCurrencyFDProvider: React.FC<{ children: ReactNode }> = ({
       type: "Maturity Redemption",
       grossAmount: netInvestedDeposit,
       feeAmount: redemptionFeesDollar,
+      feeBreakdown: redemptionItems,
+      feeBreakdownStr: redemptionStr,
       netAmount: netPrincipalReturned,
       cumulativeCashFlow: cumulative,
     });
@@ -254,12 +309,18 @@ export const ForeignCurrencyFDProvider: React.FC<{ children: ReactNode }> = ({
     creationFeesDollar,
     netInvestedDeposit,
     grossHalfYearlyRatePct,
-    totalPayoutSpreadBps,
     halfYearlyPayoutDollar,
     totalPayoutsCount,
     netPrincipalReturned,
     redemptionFeesDollar,
     years,
+    spreadX,
+    spreadY,
+    spreadZ,
+    spreadA,
+    spreadB,
+    spreadU,
+    spreadV,
   ]);
 
   return (
