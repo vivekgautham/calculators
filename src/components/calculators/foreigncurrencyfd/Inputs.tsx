@@ -56,6 +56,12 @@ export const Inputs: React.FC = () => {
 
   const getAmountSliderConfig = (scale: AmountScale, currentVal: number) => {
     switch (scale) {
+      case "hundreds":
+        return {
+          step: 1,
+          min: 1,
+          max: Math.max(100, Math.ceil(currentVal * 1.3)),
+        };
       case "thousands":
         return {
           step: 1,
@@ -123,6 +129,15 @@ export const Inputs: React.FC = () => {
               value={amountScale}
               onChange={(e) => setAmountScale(e.target.value as AmountScale)}
             >
+              <FormControlLabel
+                value="hundreds"
+                control={<Radio size="small" sx={{ color: "#0284c7" }} />}
+                label={
+                  <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+                    Hundreds ($100)
+                  </Typography>
+                }
+              />
               <FormControlLabel
                 value="thousands"
                 control={<Radio size="small" sx={{ color: "#0284c7" }} />}

@@ -6,10 +6,12 @@ import React, {
   ReactNode,
 } from "react";
 
-export type AmountScale = "thousands" | "millions" | "billions";
+export type AmountScale = "hundreds" | "thousands" | "millions" | "billions";
 
 export const getScaleMultiplier = (scale: AmountScale): number => {
   switch (scale) {
+    case "hundreds":
+      return 100;
     case "thousands":
       return 1000;
     case "millions":
@@ -21,6 +23,8 @@ export const getScaleMultiplier = (scale: AmountScale): number => {
 
 export const getScaleSuffix = (scale: AmountScale): string => {
   switch (scale) {
+    case "hundreds":
+      return "H";
     case "thousands":
       return "K";
     case "millions":
@@ -108,22 +112,22 @@ const ForeignCurrencyFDContext = createContext<
 export const ForeignCurrencyFDProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [amountScale, setAmountScale] = useState<AmountScale>("thousands");
-  const [initialGrossAmount, setInitialGrossAmount] = useState<number>(10); // $10K ($10,000) default
+  const [amountScale, setAmountScale] = useState<AmountScale>("hundreds");
+  const [initialGrossAmount, setInitialGrossAmount] = useState<number>(20); // $20 Hundreds ($2,000) default
   const [years, setYears] = useState<number>(3); // Default 3 Years
   const [annualRate, setAnnualRate] = useState<number>(6.25); // Default 6.25% p.a.
 
   // Creation spreads (bps)
-  const [spreadX, setSpreadX] = useState<number>(220); // FX Conversion I default 220 bps
-  const [spreadY, setSpreadY] = useState<number>(220); // FX Conversion II default 220 bps
+  const [spreadX, setSpreadX] = useState<number>(150); // FX Conversion I default 150 bps
+  const [spreadY, setSpreadY] = useState<number>(150); // FX Conversion II default 150 bps
   const [spreadZ, setSpreadZ] = useState<number>(50); // GST I default 50 bps
 
   // Interest payout spreads (bps)
-  const [spreadA, setSpreadA] = useState<number>(220); // FX Conversion Half Yearly default 220 bps
+  const [spreadA, setSpreadA] = useState<number>(150); // FX Conversion Half Yearly default 150 bps
   const [spreadB, setSpreadB] = useState<number>(150); // GST II default 150 bps
 
   // Redemption spreads (bps)
-  const [spreadU, setSpreadU] = useState<number>(220); // Redemption FX Conversion default 220 bps
+  const [spreadU, setSpreadU] = useState<number>(150); // Redemption FX Conversion default 150 bps
   const [spreadV, setSpreadV] = useState<number>(150); // GST III default 150 bps
 
   const multiplier = getScaleMultiplier(amountScale);
