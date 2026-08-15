@@ -105,17 +105,17 @@ export const ForeignCurrencyFDProvider: React.FC<{ children: ReactNode }> = ({
   const [annualRate, setAnnualRate] = useState<number>(6.25); // Default 6.25% p.a.
 
   // Creation spreads (bps)
-  const [spreadX, setSpreadX] = useState<number>(120); // FX Conversion I default 120 bps
-  const [spreadY, setSpreadY] = useState<number>(120); // FX Conversion II default 120 bps
-  const [spreadZ, setSpreadZ] = useState<number>(15); // e.g. 15 bps GST I
+  const [spreadX, setSpreadX] = useState<number>(60); // FX Conversion I default 60 bps
+  const [spreadY, setSpreadY] = useState<number>(60); // FX Conversion II default 60 bps
+  const [spreadZ, setSpreadZ] = useState<number>(15); // GST I default 15 bps
 
   // Interest payout spreads (bps)
-  const [spreadA, setSpreadA] = useState<number>(120); // FX Conversion Half Yearly default 120 bps
+  const [spreadA, setSpreadA] = useState<number>(60); // FX Conversion Half Yearly default 60 bps
   const [spreadB, setSpreadB] = useState<number>(15); // GST II default 15 bps
 
   // Redemption spreads (bps)
-  const [spreadU, setSpreadU] = useState<number>(120); // Redemption FX Conversion default 120 bps
-  const [spreadV, setSpreadV] = useState<number>(15); // e.g. 15 bps Repatriation
+  const [spreadU, setSpreadU] = useState<number>(60); // Redemption FX Conversion default 60 bps
+  const [spreadV, setSpreadV] = useState<number>(15); // GST III default 15 bps
 
   const multiplier = getScaleMultiplier(amountScale);
   const effectiveGrossAmount = initialGrossAmount * multiplier;

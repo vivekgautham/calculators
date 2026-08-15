@@ -676,7 +676,7 @@ export const Inputs: React.FC = () => {
                   variant="body2"
                   sx={{ fontWeight: "bold", color: "#1e293b" }}
                 >
-                  Spread V: Offshore Repatriation Fee (bps)
+                  Spread V: GST III (bps)
                 </Typography>
                 <Chip
                   label={`${spreadV} bps`}
