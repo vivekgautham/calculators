@@ -40,66 +40,6 @@ export interface CashFlowPeriod {
   cumulativeCashFlow: number;
 }
 
-export interface FDPreset {
-  name: string;
-  amount: number; // scale units
-  scale: AmountScale;
-  years: number;
-  annualRate: number;
-  spreadX: number;
-  spreadY: number;
-  spreadZ: number;
-  spreadA: number;
-  spreadB: number;
-  spreadU: number;
-  spreadV: number;
-}
-
-export const PRESETS: FDPreset[] = [
-  {
-    name: "Standard Retail Offshore FD",
-    amount: 10, // $10K
-    scale: "thousands",
-    years: 5,
-    annualRate: 5.0,
-    spreadX: 40, // 40 bps
-    spreadY: 25, // 25 bps
-    spreadZ: 15, // 15 bps
-    spreadA: 15, // 15 bps
-    spreadB: 10, // 10 bps
-    spreadU: 35, // 35 bps
-    spreadV: 15, // 15 bps
-  },
-  {
-    name: "High-Fee Emerging Market FD",
-    amount: 50, // $50K
-    scale: "thousands",
-    years: 3,
-    annualRate: 8.5,
-    spreadX: 100, // 100 bps
-    spreadY: 75, // 75 bps
-    spreadZ: 50, // 50 bps
-    spreadA: 30, // 30 bps
-    spreadB: 20, // 20 bps
-    spreadU: 80, // 80 bps
-    spreadV: 40, // 40 bps
-  },
-  {
-    name: "Institutional Low-Spread FD",
-    amount: 5, // $5M
-    scale: "millions",
-    years: 10,
-    annualRate: 4.5,
-    spreadX: 10, // 10 bps
-    spreadY: 5, // 5 bps
-    spreadZ: 5, // 5 bps
-    spreadA: 5, // 5 bps
-    spreadB: 2, // 2 bps
-    spreadU: 10, // 10 bps
-    spreadV: 5, // 5 bps
-  },
-];
-
 interface ForeignCurrencyFDContextType {
   amountScale: AmountScale;
   setAmountScale: (scale: AmountScale) => void;
@@ -129,8 +69,6 @@ interface ForeignCurrencyFDContextType {
   setSpreadU: (val: number) => void;
   spreadV: number;
   setSpreadV: (val: number) => void;
-
-  loadPreset: (preset: FDPreset) => void;
 
   // Computed Outputs
   effectiveGrossAmount: number;
@@ -167,9 +105,9 @@ export const ForeignCurrencyFDProvider: React.FC<{ children: ReactNode }> = ({
   const [annualRate, setAnnualRate] = useState<number>(5.0);
 
   // Creation spreads (bps)
-  const [spreadX, setSpreadX] = useState<number>(40); // e.g. 40 bps FX conversion
-  const [spreadY, setSpreadY] = useState<number>(25); // e.g. 25 bps Transfer fee
-  const [spreadZ, setSpreadZ] = useState<number>(15); // e.g. 15 bps Setup fee
+  const [spreadX, setSpreadX] = useState<number>(120); // FX Conversion I default 120 bps
+  const [spreadY, setSpreadY] = useState<number>(120); // FX Conversion II default 120 bps
+  const [spreadZ, setSpreadZ] = useState<number>(15); // e.g. 15 bps GST
 
   // Interest payout spreads (bps)
   const [spreadA, setSpreadA] = useState<number>(15); // e.g. 15 bps Servicing
@@ -178,20 +116,6 @@ export const ForeignCurrencyFDProvider: React.FC<{ children: ReactNode }> = ({
   // Redemption spreads (bps)
   const [spreadU, setSpreadU] = useState<number>(35); // e.g. 35 bps Redemption FX
   const [spreadV, setSpreadV] = useState<number>(15); // e.g. 15 bps Repatriation
-
-  const loadPreset = (preset: FDPreset) => {
-    setAmountScale(preset.scale);
-    setInitialGrossAmount(preset.amount);
-    setYears(preset.years);
-    setAnnualRate(preset.annualRate);
-    setSpreadX(preset.spreadX);
-    setSpreadY(preset.spreadY);
-    setSpreadZ(preset.spreadZ);
-    setSpreadA(preset.spreadA);
-    setSpreadB(preset.spreadB);
-    setSpreadU(preset.spreadU);
-    setSpreadV(preset.spreadV);
-  };
 
   const multiplier = getScaleMultiplier(amountScale);
   const effectiveGrossAmount = initialGrossAmount * multiplier;
@@ -363,7 +287,6 @@ export const ForeignCurrencyFDProvider: React.FC<{ children: ReactNode }> = ({
         setSpreadU,
         spreadV,
         setSpreadV,
-        loadPreset,
         effectiveGrossAmount,
         totalCreationSpreadBps,
         creationFeesDollar,

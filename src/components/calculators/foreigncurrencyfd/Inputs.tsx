@@ -13,15 +13,12 @@ import {
   Radio,
   FormControl,
   FormLabel,
-  Divider,
 } from "@mui/material";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import {
   useForeignCurrencyFD,
   getScaleSuffix,
   AmountScale,
-  PRESETS,
-  FDPreset,
 } from "./ForeignCurrencyFDContext";
 
 export const Inputs: React.FC = () => {
@@ -48,7 +45,6 @@ export const Inputs: React.FC = () => {
     setSpreadU,
     spreadV,
     setSpreadV,
-    loadPreset,
     totalCreationSpreadBps,
     creationFeesDollar,
     totalPayoutSpreadBps,
@@ -93,38 +89,6 @@ export const Inputs: React.FC = () => {
         border: "1px solid #e2e8f0",
       }}
     >
-      {/* Preset Scenarios Header */}
-      <Stack
-        direction="row"
-        alignItems="center"
-        spacing={1}
-        sx={{ mb: 2, flexWrap: "wrap", gap: 1 }}
-      >
-        <Typography
-          variant="body2"
-          sx={{
-            fontWeight: "bold",
-            color: "#475569",
-            textTransform: "uppercase",
-          }}
-        >
-          Presets:
-        </Typography>
-        {PRESETS.map((preset: FDPreset) => (
-          <Chip
-            key={preset.name}
-            label={preset.name}
-            clickable
-            color="primary"
-            variant="outlined"
-            onClick={() => loadPreset(preset)}
-            sx={{ fontWeight: "bold" }}
-          />
-        ))}
-      </Stack>
-
-      <Divider sx={{ mb: 3 }} />
-
       {/* Top Controls: Scale Selector & Principal/Horizon */}
       <Stack
         direction="row"
@@ -394,7 +358,7 @@ export const Inputs: React.FC = () => {
                   variant="body2"
                   sx={{ fontWeight: "bold", color: "#1e293b" }}
                 >
-                  Spread X: FX Conversion (bps)
+                  Spread X: FX Conversion I (bps)
                 </Typography>
                 <Chip
                   label={`${spreadX} bps`}
@@ -439,7 +403,7 @@ export const Inputs: React.FC = () => {
                   variant="body2"
                   sx={{ fontWeight: "bold", color: "#1e293b" }}
                 >
-                  Spread Y: Interbank Wire (bps)
+                  Spread Y: FX Conversion II (bps)
                 </Typography>
                 <Chip
                   label={`${spreadY} bps`}
@@ -484,7 +448,7 @@ export const Inputs: React.FC = () => {
                   variant="body2"
                   sx={{ fontWeight: "bold", color: "#1e293b" }}
                 >
-                  Spread Z: Account Setup (bps)
+                  Spread Z: GST (bps)
                 </Typography>
                 <Chip
                   label={`${spreadZ} bps`}
