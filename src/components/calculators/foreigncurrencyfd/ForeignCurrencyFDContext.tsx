@@ -86,6 +86,7 @@ interface ForeignCurrencyFDContextType {
   totalPayoutSpreadBps: number;
   grossHalfYearlyRatePct: number;
   netHalfYearlyRatePct: number;
+  grossHalfYearlyPayoutDollar: number;
   halfYearlyPayoutDollar: number;
   totalPayoutsCount: number;
   cumulativeInterestDollar: number;
@@ -115,15 +116,15 @@ export const ForeignCurrencyFDProvider: React.FC<{ children: ReactNode }> = ({
   // Creation spreads (bps)
   const [spreadX, setSpreadX] = useState<number>(60); // FX Conversion I default 60 bps
   const [spreadY, setSpreadY] = useState<number>(60); // FX Conversion II default 60 bps
-  const [spreadZ, setSpreadZ] = useState<number>(15); // GST I default 15 bps
+  const [spreadZ, setSpreadZ] = useState<number>(50); // GST I default 50 bps
 
   // Interest payout spreads (bps)
   const [spreadA, setSpreadA] = useState<number>(60); // FX Conversion Half Yearly default 60 bps
-  const [spreadB, setSpreadB] = useState<number>(15); // GST II default 15 bps
+  const [spreadB, setSpreadB] = useState<number>(50); // GST II default 50 bps
 
   // Redemption spreads (bps)
   const [spreadU, setSpreadU] = useState<number>(60); // Redemption FX Conversion default 60 bps
-  const [spreadV, setSpreadV] = useState<number>(15); // GST III default 15 bps
+  const [spreadV, setSpreadV] = useState<number>(50); // GST III default 50 bps
 
   const multiplier = getScaleMultiplier(amountScale);
   const effectiveGrossAmount = initialGrossAmount * multiplier;
@@ -142,20 +143,43 @@ export const ForeignCurrencyFDProvider: React.FC<{ children: ReactNode }> = ({
     [effectiveGrossAmount, creationFeesDollar],
   );
 
-  // 2. Half-Yearly Payouts ($a, b$ bps)
+  // 2. Half-Yearly Payouts ($a, b$ bps applied directly to Gross Interest Payout)
   const totalPayoutSpreadBps = useMemo(
     () => spreadA + spreadB,
     [spreadA, spreadB],
   );
   const grossHalfYearlyRatePct = useMemo(() => annualRate / 2, [annualRate]);
-  const netHalfYearlyRatePct = useMemo(
-    () => Math.max(0, grossHalfYearlyRatePct - totalPayoutSpreadBps / 100),
-    [grossHalfYearlyRatePct, totalPayoutSpreadBps],
+  const grossHalfYearlyPayoutDollar = useMemo(
+    () => netInvestedDeposit * (grossHalfYearlyRatePct / 100),
+    [netInvestedDeposit, grossHalfYearlyRatePct],
   );
+
+  const payoutFXFee = useMemo(
+    () => grossHalfYearlyPayoutDollar * (spreadA / 10000),
+    [grossHalfYearlyPayoutDollar, spreadA],
+  );
+  const payoutGSTFee = useMemo(
+    () => grossHalfYearlyPayoutDollar * (spreadB / 10000),
+    [grossHalfYearlyPayoutDollar, spreadB],
+  );
+  const halfYearlyFeeTotal = useMemo(
+    () => payoutFXFee + payoutGSTFee,
+    [payoutFXFee, payoutGSTFee],
+  );
+
   const halfYearlyPayoutDollar = useMemo(
-    () => netInvestedDeposit * (netHalfYearlyRatePct / 100),
-    [netInvestedDeposit, netHalfYearlyRatePct],
+    () => Math.max(0, grossHalfYearlyPayoutDollar - halfYearlyFeeTotal),
+    [grossHalfYearlyPayoutDollar, halfYearlyFeeTotal],
   );
+
+  const netHalfYearlyRatePct = useMemo(
+    () =>
+      netInvestedDeposit > 0
+        ? (halfYearlyPayoutDollar / netInvestedDeposit) * 100
+        : 0,
+    [halfYearlyPayoutDollar, netInvestedDeposit],
+  );
+
   const totalPayoutsCount = useMemo(() => years * 2, [years]);
   const cumulativeInterestDollar = useMemo(
     () => halfYearlyPayoutDollar * totalPayoutsCount,
@@ -193,9 +217,8 @@ export const ForeignCurrencyFDProvider: React.FC<{ children: ReactNode }> = ({
   }, [totalCashReturned, effectiveGrossAmount, years]);
 
   const servicingFeesDollarTotal = useMemo(
-    () =>
-      netInvestedDeposit * (totalPayoutSpreadBps / 10000) * totalPayoutsCount,
-    [netInvestedDeposit, totalPayoutSpreadBps, totalPayoutsCount],
+    () => halfYearlyFeeTotal * totalPayoutsCount,
+    [halfYearlyFeeTotal, totalPayoutsCount],
   );
   const totalFeesDollar = useMemo(
     () => creationFeesDollar + servicingFeesDollarTotal + redemptionFeesDollar,
@@ -244,13 +267,9 @@ export const ForeignCurrencyFDProvider: React.FC<{ children: ReactNode }> = ({
     });
 
     // Semi-Annual Payouts
-    const grossHalfYearlyPayout =
-      netInvestedDeposit * (grossHalfYearlyRatePct / 100);
-    const payoutFX = netInvestedDeposit * (spreadA / 10000);
-    const payoutGST = netInvestedDeposit * (spreadB / 10000);
     const payoutItems: FeeItem[] = [
-      { label: "FX Conv Half Yearly", bps: spreadA, amount: payoutFX },
-      { label: "GST II", bps: spreadB, amount: payoutGST },
+      { label: "FX Conv Half Yearly", bps: spreadA, amount: payoutFXFee },
+      { label: "GST II", bps: spreadB, amount: payoutGSTFee },
     ];
     const payoutStr = payoutItems
       .map(
@@ -258,7 +277,6 @@ export const ForeignCurrencyFDProvider: React.FC<{ children: ReactNode }> = ({
           `${i.label} (${i.bps} bps): -$${i.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       )
       .join(" | ");
-    const halfYearlyFee = payoutFX + payoutGST;
 
     for (let p = 1; p <= totalPayoutsCount; p++) {
       const year = (p / 2).toFixed(1);
@@ -267,8 +285,8 @@ export const ForeignCurrencyFDProvider: React.FC<{ children: ReactNode }> = ({
         period: p,
         periodLabel: `Payout ${p} (Y${year})`,
         type: "Interest Payout",
-        grossAmount: grossHalfYearlyPayout,
-        feeAmount: halfYearlyFee,
+        grossAmount: grossHalfYearlyPayoutDollar,
+        feeAmount: halfYearlyFeeTotal,
         feeBreakdown: payoutItems,
         feeBreakdownStr: payoutStr,
         netAmount: halfYearlyPayoutDollar,
@@ -308,7 +326,10 @@ export const ForeignCurrencyFDProvider: React.FC<{ children: ReactNode }> = ({
     effectiveGrossAmount,
     creationFeesDollar,
     netInvestedDeposit,
-    grossHalfYearlyRatePct,
+    grossHalfYearlyPayoutDollar,
+    payoutFXFee,
+    payoutGSTFee,
+    halfYearlyFeeTotal,
     halfYearlyPayoutDollar,
     totalPayoutsCount,
     netPrincipalReturned,
@@ -355,6 +376,7 @@ export const ForeignCurrencyFDProvider: React.FC<{ children: ReactNode }> = ({
         totalPayoutSpreadBps,
         grossHalfYearlyRatePct,
         netHalfYearlyRatePct,
+        grossHalfYearlyPayoutDollar,
         halfYearlyPayoutDollar,
         totalPayoutsCount,
         cumulativeInterestDollar,

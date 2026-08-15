@@ -490,7 +490,7 @@ export const Inputs: React.FC = () => {
             B. Half-Yearly Interest Servicing Costs (a, b in bps)
           </Typography>
           <Chip
-            label={`Total Payout Servicing Spread: ${totalPayoutSpreadBps} bps (${(totalPayoutSpreadBps / 100).toFixed(2)}% deducted per payout)`}
+            label={`Total Payout Servicing Spread: ${totalPayoutSpreadBps} bps (${(totalPayoutSpreadBps / 100).toFixed(2)}% deducted from interest payout)`}
             size="small"
             sx={{ fontWeight: "bold", bgcolor: "#ffedd5", color: "#c2410c" }}
           />
