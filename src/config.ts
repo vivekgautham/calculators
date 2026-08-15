@@ -16,8 +16,17 @@ import PopulationGrowth from "./components/calculators/PopulationGrowth";
 import OrderBook from "./components/calculators/OrderBook";
 import DoublingGrowth from "./components/calculators/DoublingGrowth";
 import BalanceSheet from "./components/calculators/BalanceSheet";
+import ForeignCurrencyFD from "./components/calculators/ForeignCurrencyFD";
 
 export const CALCULATORS_AND_SIMULATORS = [
+  {
+    name: "Foreign Currency Fixed Deposit",
+    value: "foreigncurrencyfd",
+    tags: ["finance", "forex", "investment", "fixed deposit", "fees"],
+    description:
+      "Calculate net cash flows, yields, and fee drag for Foreign Currency Fixed Deposits with 3 creation spreads (x, y, z bps), semi-annual interest servicing spreads (a, b bps), and maturity redemption spreads (u, v bps).",
+    panel: ForeignCurrencyFD,
+  },
   {
     name: "Balance Sheet Health Calculator",
     value: "balancesheet",
