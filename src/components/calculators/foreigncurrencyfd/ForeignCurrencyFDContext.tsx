@@ -120,11 +120,11 @@ export const ForeignCurrencyFDProvider: React.FC<{ children: ReactNode }> = ({
 
   // Interest payout spreads (bps)
   const [spreadA, setSpreadA] = useState<number>(220); // FX Conversion Half Yearly default 220 bps
-  const [spreadB, setSpreadB] = useState<number>(50); // GST II default 50 bps
+  const [spreadB, setSpreadB] = useState<number>(150); // GST II default 150 bps
 
   // Redemption spreads (bps)
   const [spreadU, setSpreadU] = useState<number>(220); // Redemption FX Conversion default 220 bps
-  const [spreadV, setSpreadV] = useState<number>(50); // GST III default 50 bps
+  const [spreadV, setSpreadV] = useState<number>(150); // GST III default 150 bps
 
   const multiplier = getScaleMultiplier(amountScale);
   const effectiveGrossAmount = initialGrossAmount * multiplier;
