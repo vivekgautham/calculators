@@ -17,8 +17,17 @@ import OrderBook from "./components/calculators/OrderBook";
 import DoublingGrowth from "./components/calculators/DoublingGrowth";
 import BalanceSheet from "./components/calculators/BalanceSheet";
 import ForeignCurrencyFD from "./components/calculators/ForeignCurrencyFD";
+import PEValuation from "./components/calculators/PEValuation";
 
 export const CALCULATORS_AND_SIMULATORS = [
+  {
+    name: "TTM P/E & Forward P/E Valuation",
+    value: "pevaluation",
+    tags: ["finance", "stocks", "valuation", "pe ratio", "earnings"],
+    description:
+      "Analyze stock valuations by comparing Trailing Twelve Months (TTM) P/E ratios against Forward Next Twelve Months (NTM) P/E multiples, earnings yield, PEG ratios, and multiple contraction/expansion.",
+    panel: PEValuation,
+  },
   {
     name: "Foreign Currency Fixed Deposit",
     value: "foreigncurrencyfd",
