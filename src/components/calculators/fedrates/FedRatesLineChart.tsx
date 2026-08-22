@@ -9,7 +9,7 @@ import dayjs from "dayjs";
 const FedRatesLineChart: React.FC = () => {
   const { data, isLoading, isError } = useFedRatesData();
 
-  const chartOptions = useMemo(() => {
+  const chartOptions: Highcharts.Options | null = useMemo(() => {
     if (!data || !data.seriesList || data.seriesList.length === 0) return null;
 
     const series = data.seriesList.map((s, index) => ({
@@ -36,6 +36,42 @@ const FedRatesLineChart: React.FC = () => {
           type: "x",
         },
         panKey: "shift",
+        events: {
+          load: function () {
+            const chart = this as any;
+            if (chart.pointer) {
+              // Disable hover tooltip trigger on pointer movement
+              chart.pointer.runPointActions = function () {
+                return undefined;
+              };
+              chart.pointer.reset = function () {
+                return undefined;
+              };
+            }
+          },
+          click: function (e: any) {
+            const chart = this as any;
+            if (!e.xAxis || !e.xAxis[0]) return;
+            const clickedX = e.xAxis[0].value;
+            const points: any[] = [];
+            chart.series.forEach((s: any) => {
+              if (!s.visible || !s.points || s.points.length === 0) return;
+              let closest: any = null;
+              let minDiff = Infinity;
+              for (const p of s.points) {
+                const diff = Math.abs(p.x - clickedX);
+                if (diff < minDiff) {
+                  minDiff = diff;
+                  closest = p;
+                }
+              }
+              if (closest) points.push(closest);
+            });
+            if (points.length > 0) {
+              chart.tooltip.refresh(points);
+            }
+          },
+        },
       },
       title: {
         text: "US Treasury Yields & Fed Interest Rates",
@@ -46,7 +82,7 @@ const FedRatesLineChart: React.FC = () => {
           data.updatedAt
             ? `Source: Federal Reserve Economic Data (FRED) • Last updated: ${dayjs(data.updatedAt).format("MMM D, YYYY")}`
             : "Source: Federal Reserve Economic Data (FRED)",
-          '<span style="color: #64748b; font-size: 0.85em; display: block; margin-top: 4px;">Drag on chart or axis to zoom • Hold Shift to pan • Scroll to zoom</span>',
+          '<span style="color: #64748b; font-size: 0.85em; display: block; margin-top: 4px;">Click on any date to inspect rates • Drag on chart to zoom • Hold Shift to pan • Scroll to zoom</span>',
         ].join("<br/>"),
       },
       xAxis: {
@@ -55,6 +91,29 @@ const FedRatesLineChart: React.FC = () => {
       },
       yAxis: {
         title: { text: "Rate (%)" },
+      },
+      plotOptions: {
+        series: {
+          stickyTracking: false,
+          point: {
+            events: {
+              click: function () {
+                const point = this as any;
+                const chart = point.series.chart;
+                const xVal = point.x;
+                const points: any[] = [];
+                chart.series.forEach((s: any) => {
+                  if (!s.visible || !s.points) return;
+                  const p = s.points.find((pt: any) => pt.x === xVal);
+                  if (p) points.push(p);
+                });
+                if (points.length > 0) {
+                  chart.tooltip.refresh(points);
+                }
+              },
+            },
+          },
+        },
       },
       tooltip: {
         shared: true,
