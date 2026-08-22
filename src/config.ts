@@ -80,7 +80,7 @@ export const CALCULATORS_AND_SIMULATORS = [
     value: "fedrates",
     tags: ["finance", "economics", "fed"],
     description:
-      "Federal Reserve interest rates (EFFR, SOFR, etc.) from the NY Fed API.",
+      "US Treasury Yields (2Y, 10Y, 30Y) and Federal Reserve Interest Rates (EFFR, SOFR).",
     panel: FedRates,
   },
   {

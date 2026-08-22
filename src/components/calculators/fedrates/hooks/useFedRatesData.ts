@@ -1,57 +1,79 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useFedRates } from "../FedRatesContext";
+import { SeriesOption } from "../constants";
 
-export interface FedRateObservation {
-  effectiveDate: string;
-  type: string;
-  percentRate: number;
+interface StaticRatesFile {
+  updatedAt: string;
+  dates: string[];
+  series: Record<string, (number | null)[]>;
 }
 
-interface FedRatesResponse {
-  refRates: FedRateObservation[];
-}
-
-export interface SeriesData {
-  type: string;
+export interface FedSeriesResult {
+  series: SeriesOption;
   observations: { date: number; value: number }[];
 }
 
-export const useFedRatesData = () => {
-  const { startDate, endDate } = useFedRates();
+export interface FedRatesDataResponse {
+  updatedAt?: string;
+  seriesList: FedSeriesResult[];
+}
 
-  const startStr = startDate.format("YYYY-MM-DD");
-  const endStr = endDate.format("YYYY-MM-DD");
+export const useFedRatesData = () => {
+  const { startDate, endDate, selectedSeries } = useFedRates();
+
+  const startStr = startDate ? startDate.format("YYYY-MM-DD") : "";
+  const endStr = endDate ? endDate.format("YYYY-MM-DD") : "";
 
   return useQuery({
-    queryKey: ["fedRates", startStr, endStr],
-    queryFn: async () => {
-      const url = `https://markets.newyorkfed.org/api/rates/all/search.json?startDate=${startStr}&endDate=${endStr}&type=rate`;
-      const response = await axios.get<FedRatesResponse>(url);
+    queryKey: [
+      "fedRatesStatic",
+      startStr,
+      endStr,
+      selectedSeries.map((s) => s.id).join(","),
+    ],
+    queryFn: async (): Promise<FedRatesDataResponse> => {
+      const url = `${import.meta.env.BASE_URL}data/fed_rates.json`;
+      const response = await axios.get<StaticRatesFile>(url);
+      const data = response.data;
+      const dates = data.dates || [];
 
-      const rates = response.data.refRates || [];
+      // Pre-filter date indices
+      const validIndices: number[] = [];
+      for (let i = 0; i < dates.length; i++) {
+        const d = dates[i];
+        if (startStr && d < startStr) continue;
+        if (endStr && d > endStr) continue;
+        validIndices.push(i);
+      }
 
-      // Group by type
-      const grouped = rates.reduce((acc: Record<string, SeriesData>, curr) => {
-        if (!acc[curr.type]) {
-          acc[curr.type] = {
-            type: curr.type,
-            observations: [],
+      const seriesList: FedSeriesResult[] = selectedSeries
+        .map((seriesOption) => {
+          const values = data.series[seriesOption.id];
+          if (!values) return null;
+
+          const observations: { date: number; value: number }[] = [];
+          for (const idx of validIndices) {
+            const val = values[idx];
+            if (val !== null && val !== undefined) {
+              observations.push({
+                date: new Date(dates[idx]).getTime(),
+                value: val,
+              });
+            }
+          }
+
+          return {
+            series: seriesOption,
+            observations,
           };
-        }
-        acc[curr.type].observations.push({
-          date: new Date(curr.effectiveDate).getTime(),
-          value: curr.percentRate,
-        });
-        return acc;
-      }, {});
+        })
+        .filter(Boolean) as FedSeriesResult[];
 
-      // Sort observations by date for each type
-      Object.values(grouped).forEach((series) => {
-        series.observations.sort((a, b) => a.date - b.date);
-      });
-
-      return Object.values(grouped);
+      return {
+        updatedAt: data.updatedAt,
+        seriesList,
+      };
     },
     staleTime: 1000 * 60 * 60, // 1 hour
   });

@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+  schedule:
+    # Run at 22:00 UTC (6:00 PM ET) Monday through Friday after US market close
+    - cron: '0 22 * * 1-5'
+  workflow_dispatch: # Allow manual one-click deployment & rate updates
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -38,6 +42,11 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Fetch Latest Rates
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY || '2d9fe8dbad89dabfd5afba8ca6e5f4f6' }}
+        run: npm run fetch:rates
 
       - name: Build
         run: npm run build

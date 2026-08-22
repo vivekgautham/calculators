@@ -59,7 +59,7 @@ const FedRates: React.FunctionComponent<PanelProps> = (props) => {
           <Paper elevation={3} sx={{ p: 1 }}>
             <Inputs />
           </Paper>
-          <Paper elevation={3} sx={{ p: 1, minHeight: 450 }}>
+          <Paper elevation={3} sx={{ p: 1, minHeight: 650 }}>
             <FedRatesLineChart />
           </Paper>
         </Stack>

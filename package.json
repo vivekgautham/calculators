@@ -1,11 +1,12 @@
 {
   "name": "calculators",
   "private": true,
-  "version": "0.0.70",
+  "version": "0.0.82",
   "homepage": "https://vivekgautham.github.io/calculators",
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "fetch:rates": "node scripts/fetch-fed-rates.mjs && node scripts/fetch-fx-rates.mjs",
     "build": "tsc && vite build",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint . --fix",
