@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useRef, useEffect } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { Box, CircularProgress, Typography } from "@mui/material";
@@ -8,6 +8,33 @@ import dayjs from "dayjs";
 
 const FedRatesLineChart: React.FC = () => {
   const { data, isLoading, isError } = useFedRatesData();
+  const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        chartComponentRef.current?.chart?.tooltip?.hide();
+      }
+    };
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        chartComponentRef.current?.chart?.tooltip?.hide();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const chartOptions: Highcharts.Options | null = useMemo(() => {
     if (!data || !data.seriesList || data.seriesList.length === 0) return null;
@@ -51,7 +78,10 @@ const FedRatesLineChart: React.FC = () => {
           },
           click: function (e: any) {
             const chart = this as any;
-            if (!e.xAxis || !e.xAxis[0]) return;
+            if (!e.xAxis || !e.xAxis[0]) {
+              chart.tooltip?.hide();
+              return;
+            }
             const clickedX = e.xAxis[0].value;
             const points: any[] = [];
             chart.series.forEach((s: any) => {
@@ -69,6 +99,8 @@ const FedRatesLineChart: React.FC = () => {
             });
             if (points.length > 0) {
               chart.tooltip.refresh(points);
+            } else {
+              chart.tooltip?.hide();
             }
           },
         },
@@ -82,7 +114,7 @@ const FedRatesLineChart: React.FC = () => {
           data.updatedAt
             ? `Source: Federal Reserve Economic Data (FRED) • Last updated: ${dayjs(data.updatedAt).format("MMM D, YYYY")}`
             : "Source: Federal Reserve Economic Data (FRED)",
-          '<span style="color: #64748b; font-size: 0.85em; display: block; margin-top: 4px;">Click on any date to inspect rates • Drag on chart to zoom • Hold Shift to pan • Scroll to zoom</span>',
+          '<span style="color: #64748b; font-size: 0.85em; display: block; margin-top: 4px;">Click on any date to inspect rates (Esc or click outside to dismiss) • Drag on chart to zoom • Hold Shift to pan</span>',
         ].join("<br/>"),
       },
       xAxis: {
@@ -156,9 +188,13 @@ const FedRatesLineChart: React.FC = () => {
   }
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box ref={containerRef} sx={{ width: "100%" }}>
       {chartOptions && (
-        <HighchartsReact highcharts={Highcharts} options={chartOptions} />
+        <HighchartsReact
+          ref={chartComponentRef}
+          highcharts={Highcharts}
+          options={chartOptions}
+        />
       )}
     </Box>
   );
