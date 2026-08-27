@@ -6,6 +6,7 @@ import { PanelProps } from "../../types";
 import { FedRatesProvider } from "./fedrates/FedRatesContext";
 import Inputs from "./fedrates/Inputs";
 import FedRatesLineChart from "./fedrates/FedRatesLineChart";
+import YieldSpreadChart from "./fedrates/YieldSpreadChart";
 
 const FedRates: React.FunctionComponent<PanelProps> = (props) => {
   return (
@@ -61,6 +62,9 @@ const FedRates: React.FunctionComponent<PanelProps> = (props) => {
           </Paper>
           <Paper elevation={3} sx={{ p: 1, minHeight: 650 }}>
             <FedRatesLineChart />
+          </Paper>
+          <Paper elevation={3} sx={{ p: 1, minHeight: 550 }}>
+            <YieldSpreadChart />
           </Paper>
         </Stack>
       </Box>
