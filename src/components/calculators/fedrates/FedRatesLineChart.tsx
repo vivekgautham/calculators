@@ -6,6 +6,10 @@ import { useFedRatesData } from "./hooks/useFedRatesData";
 import { AVAILABLE_COLORS } from "../rateofgrowth/RateOfGrowthContext";
 import dayjs from "dayjs";
 
+interface ExtendedPointerEvent extends Highcharts.PointerEventObject {
+  xAxis?: { value: number }[];
+}
+
 const FedRatesLineChart: React.FC = () => {
   const { data, isLoading, isError } = useFedRatesData();
   const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
@@ -64,29 +68,30 @@ const FedRatesLineChart: React.FC = () => {
         },
         panKey: "shift",
         events: {
-          load: function () {
-            const chart = this as any;
-            if (chart.pointer) {
-              // Disable hover tooltip trigger on pointer movement
-              chart.pointer.runPointActions = function () {
-                return undefined;
+          load: function (this: Highcharts.Chart) {
+            if (this.pointer) {
+              const ptr = this.pointer as unknown as {
+                runPointActions?: () => undefined;
+                reset?: () => undefined;
               };
-              chart.pointer.reset = function () {
-                return undefined;
-              };
+              ptr.runPointActions = () => undefined;
+              ptr.reset = () => undefined;
             }
           },
-          click: function (e: any) {
-            const chart = this as any;
-            if (!e.xAxis || !e.xAxis[0]) {
-              chart.tooltip?.hide();
+          click: function (
+            this: Highcharts.Chart,
+            e: Highcharts.PointerEventObject,
+          ) {
+            const extEvent = e as ExtendedPointerEvent;
+            if (!extEvent.xAxis || !extEvent.xAxis[0]) {
+              this.tooltip?.hide();
               return;
             }
-            const clickedX = e.xAxis[0].value;
-            const points: any[] = [];
-            chart.series.forEach((s: any) => {
+            const clickedX = extEvent.xAxis[0].value;
+            const points: Highcharts.Point[] = [];
+            this.series.forEach((s) => {
               if (!s.visible || !s.points || s.points.length === 0) return;
-              let closest: any = null;
+              let closest: Highcharts.Point | null = null;
               let minDiff = Infinity;
               for (const p of s.points) {
                 const diff = Math.abs(p.x - clickedX);
@@ -98,9 +103,9 @@ const FedRatesLineChart: React.FC = () => {
               if (closest) points.push(closest);
             });
             if (points.length > 0) {
-              chart.tooltip.refresh(points);
+              this.tooltip.refresh(points);
             } else {
-              chart.tooltip?.hide();
+              this.tooltip?.hide();
             }
           },
         },
@@ -129,14 +134,13 @@ const FedRatesLineChart: React.FC = () => {
           stickyTracking: false,
           point: {
             events: {
-              click: function () {
-                const point = this as any;
-                const chart = point.series.chart;
-                const xVal = point.x;
-                const points: any[] = [];
-                chart.series.forEach((s: any) => {
+              click: function (this: Highcharts.Point) {
+                const chart = this.series.chart;
+                const xVal = this.x;
+                const points: Highcharts.Point[] = [];
+                chart.series.forEach((s) => {
                   if (!s.visible || !s.points) return;
-                  const p = s.points.find((pt: any) => pt.x === xVal);
+                  const p = s.points.find((pt) => pt.x === xVal);
                   if (p) points.push(p);
                 });
                 if (points.length > 0) {

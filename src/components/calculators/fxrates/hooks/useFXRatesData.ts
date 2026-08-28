@@ -1,72 +1,87 @@
-import { useQueries, UseQueryResult } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useFXRates, SeriesData } from "../FXRatesContext";
-import { ALLOW_ORIGINS, API_KEY, LOCAL_DEV_URL } from "../constants";
+import { useFXRates } from "../FXRatesContext";
+import { FXSeriesOption } from "../constants";
 
-interface Observation {
-  date: string;
-  value: string;
+interface StaticRatesFile {
+  updatedAt: string;
+  dates: string[];
+  series: Record<string, (number | null)[]>;
 }
 
-interface FredResponse {
-  observations: Observation[];
+export interface FXObservation {
+  date: number;
+  dateStr: string;
+  value: number;
 }
 
-export const useFXRatesData = (): UseQueryResult<SeriesData, Error>[] => {
+export interface FXSeriesResult {
+  series: FXSeriesOption;
+  observations: FXObservation[];
+}
+
+export interface FXRatesDataResponse {
+  updatedAt?: string;
+  seriesList: FXSeriesResult[];
+}
+
+export const useFXRatesData = () => {
   const { startDate, endDate, selectedSeries } = useFXRates();
 
-  const startStr = startDate?.format("YYYY-MM-DD");
-  const endStr = endDate?.format("YYYY-MM-DD");
+  const startStr = startDate ? startDate.format("YYYY-MM-DD") : "";
+  const endStr = endDate ? endDate.format("YYYY-MM-DD") : "";
 
-  const results = useQueries({
-    queries: selectedSeries.map((series) => ({
-      queryKey: ["fxRate", series.id, startStr, endStr],
-      queryFn: async () => {
-        const prodSeriesApi = `https://api.stlouisfed.org/fred/series/observations?api_key=${API_KEY}&series_id=${series.id}&file_type=json`;
-        const prodUrl = `${ALLOW_ORIGINS}${encodeURIComponent(prodSeriesApi)}`;
-        const localDevUrl = `${LOCAL_DEV_URL}&series_id=${series.id}&file_type=json`;
-        const url = import.meta.env.DEV ? localDevUrl : prodUrl;
+  return useQuery({
+    queryKey: [
+      "fxRatesStatic",
+      startStr,
+      endStr,
+      selectedSeries.map((s) => s.id).join(","),
+    ],
+    queryFn: async (): Promise<FXRatesDataResponse> => {
+      const url = `${import.meta.env.BASE_URL}data/fx_rates.json`;
+      const response = await axios.get<StaticRatesFile>(url);
+      const data = response.data;
+      const dates = data.dates || [];
 
-        const response = await axios.get<FredResponse>(url);
+      // Pre-filter date indices
+      const validIndices: number[] = [];
+      for (let i = 0; i < dates.length; i++) {
+        const d = dates[i];
+        if (startStr && d < startStr) continue;
+        if (endStr && d > endStr) continue;
+        validIndices.push(i);
+      }
 
-        const isBaseNotUsd = !series.name.startsWith("USD/");
-        const invertedName = isBaseNotUsd
-          ? `USD/${series.name.split("/")[0]}`
-          : series.name;
+      const seriesList: FXSeriesResult[] = selectedSeries
+        .map((seriesOption) => {
+          const values = data.series[seriesOption.id];
+          if (!values) return null;
 
-        let observations = response.data.observations
-          .map((obs) => {
-            const rawValue = parseFloat(obs.value);
-            const value =
-              isBaseNotUsd && rawValue !== 0 ? 1 / rawValue : rawValue;
+          const observations: FXObservation[] = [];
+          for (const idx of validIndices) {
+            const val = values[idx];
+            if (val !== null && val !== undefined) {
+              observations.push({
+                date: new Date(dates[idx]).getTime(),
+                dateStr: dates[idx],
+                value: val,
+              });
+            }
+          }
 
-            return {
-              date: new Date(obs.date).getTime(),
-              dateStr: obs.date, // Keep string for filtering
-              value: value,
-            };
-          })
-          .filter((obs) => !isNaN(obs.value));
+          return {
+            series: seriesOption,
+            observations,
+          };
+        })
+        .filter(Boolean) as FXSeriesResult[];
 
-        // Local filtering
-        if (startStr) {
-          observations = observations.filter((obs) => obs.dateStr >= startStr);
-        }
-        if (endStr) {
-          observations = observations.filter((obs) => obs.dateStr <= endStr);
-        }
-
-        return {
-          series: {
-            ...series,
-            name: invertedName,
-          },
-          observations,
-        };
-      },
-      staleTime: 1000 * 60 * 60, // 1 hour
-    })),
+      return {
+        updatedAt: data.updatedAt,
+        seriesList,
+      };
+    },
+    staleTime: 1000 * 60 * 60, // 1 hour
   });
-
-  return results;
 };

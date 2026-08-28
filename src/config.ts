@@ -2,6 +2,7 @@ import RateOfGrowth from "./components/calculators/RateOfGrowth";
 import GrowthTarget from "./components/calculators/GrowthTarget";
 import BasicFinancialPlanner from "./components/calculators/BasicFinancialPlanner";
 import FedRates from "./components/calculators/FedRates";
+import FXRates from "./components/calculators/FXRates";
 import ProgressiveTax from "./components/calculators/ProgressiveTax";
 import BlendedInvestment from "./components/calculators/BlendedInvestment";
 import StockAnalysis from "./components/calculators/StockAnalysis";
@@ -68,13 +69,14 @@ export const CALCULATORS_AND_SIMULATORS = [
       "A simple tool to plan your financial future based on corpus, expenses, and growth.",
     panel: BasicFinancialPlanner,
   },
-  // {
-  //   name: "FX Rates",
-  //   value: "fxrates",
-  //   tags: ["finance", "forex"],
-  //   description: "Historical FX rates for fiat currencies.",
-  //   panel: FXRates,
-  // },
+  {
+    name: "FX Rates",
+    value: "fxrates",
+    tags: ["finance", "forex", "economics", "fred"],
+    description:
+      "Historical foreign exchange (FX) rates for major developed (G10) and emerging market currencies from FRED.",
+    panel: FXRates,
+  },
   {
     name: "Fed Rates",
     value: "fedrates",

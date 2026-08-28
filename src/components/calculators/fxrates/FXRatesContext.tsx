@@ -1,25 +1,25 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import dayjs, { Dayjs } from "dayjs";
+import { FXSeriesOption, DEFAULT_FX_SERIES } from "./constants";
 
-import { SERIES_NAMES } from "./constants";
-
-export interface SeriesInfo {
-  id: string;
-  name: string;
+export interface SeriesObservation {
+  date: number;
+  dateStr: string;
+  value: number;
 }
 
 export interface SeriesData {
-  series: SeriesInfo;
-  observations: { date: number; dateStr: string; value: number }[];
+  series: FXSeriesOption;
+  observations: SeriesObservation[];
 }
 
 interface FXRatesContextType {
-  startDate: Dayjs | null;
-  endDate: Dayjs | null;
-  selectedSeries: SeriesInfo[];
-  setStartDate: (date: Dayjs | null) => void;
-  setEndDate: (date: Dayjs | null) => void;
-  setSelectedSeries: (series: SeriesInfo[]) => void;
+  startDate: Dayjs;
+  endDate: Dayjs;
+  selectedSeries: FXSeriesOption[];
+  setStartDate: (date: Dayjs) => void;
+  setEndDate: (date: Dayjs) => void;
+  setSelectedSeries: (series: FXSeriesOption[]) => void;
 }
 
 const FXRatesContext = createContext<FXRatesContextType | undefined>(undefined);
@@ -27,13 +27,12 @@ const FXRatesContext = createContext<FXRatesContextType | undefined>(undefined);
 export const FXRatesProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [startDate, setStartDate] = useState<Dayjs | null>(
-    dayjs().subtract(1, "year"),
+  const [startDate, setStartDate] = useState<Dayjs>(
+    dayjs().subtract(5, "year"),
   );
-  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
-  const [selectedSeries, setSelectedSeries] = useState<SeriesInfo[]>([
-    SERIES_NAMES[0],
-  ]);
+  const [endDate, setEndDate] = useState<Dayjs>(dayjs());
+  const [selectedSeries, setSelectedSeries] =
+    useState<FXSeriesOption[]>(DEFAULT_FX_SERIES);
 
   return (
     <FXRatesContext.Provider
