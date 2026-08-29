@@ -8,9 +8,14 @@ import {
   TextField,
   IconButton,
   Tooltip,
+  Chip,
+  InputAdornment,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
+import SearchIcon from "@mui/icons-material/Search";
+import LayersIcon from "@mui/icons-material/Layers";
+import GitHubIcon from "@mui/icons-material/GitHub";
 import { CALCULATORS_AND_SIMULATORS, getTagStyles } from "../config";
 import packageJson from "../../package.json";
 
@@ -143,26 +148,28 @@ function CalculatorOutlet() {
 
   return (
     <Stack sx={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
-      {/* Top Header Bar */}
+      {/* 1. Unified Premium Header Bar */}
       <Stack
         direction="row"
         alignItems="center"
         justifyContent="space-between"
         sx={{
-          height: "56px",
+          height: "54px",
           px: 3,
-          backgroundColor: "#1b1c1d", // Match theme
+          background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
           color: "white",
-          borderBottom: "1px solid rgba(255,255,255,0.1)",
+          borderBottom: "1px solid rgba(255,255,255,0.08)",
           flexShrink: 0,
+          boxShadow: "0 2px 10px rgba(0,0,0,0.15)",
+          zIndex: 10,
         }}
       >
-        {/* Logo / Title */}
+        {/* Logo & Brand Title */}
         <Stack
           direction="row"
           alignItems="center"
           spacing={1.5}
-          sx={{ cursor: "pointer" }}
+          sx={{ cursor: "pointer", userSelect: "none" }}
           onClick={() => {
             setActiveCalculator("basicfinancialplanner");
             setOpenCalculators((prev) => {
@@ -174,54 +181,110 @@ function CalculatorOutlet() {
             setInputValue("");
           }}
         >
-          <Icon
-            name="calculator"
-            size="large"
-            style={{ color: "#00b5ad", margin: 0 }}
-          />
-          <Typography
-            variant="h6"
-            sx={{ fontWeight: "bold", letterSpacing: "0.5px" }}
+          <Box
+            sx={{
+              width: 34,
+              height: 34,
+              borderRadius: "9px",
+              background: "linear-gradient(135deg, #00b5ad 0%, #2563eb 100%)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: "0 2px 8px rgba(0, 181, 173, 0.4)",
+            }}
           >
-            Advanced Calculators & Simulators
-          </Typography>
+            <Icon
+              name="calculator"
+              style={{ color: "white", margin: 0, fontSize: "16px" }}
+            />
+          </Box>
+          <Stack spacing={0}>
+            <Typography
+              variant="subtitle1"
+              sx={{
+                fontWeight: 800,
+                letterSpacing: "-0.2px",
+                fontSize: "15px",
+                lineHeight: 1.2,
+                color: "#ffffff",
+              }}
+            >
+              Calculators & Simulators
+            </Typography>
+            <Typography
+              variant="caption"
+              sx={{
+                color: "#94a3b8",
+                fontSize: "11px",
+                letterSpacing: "0.4px",
+                fontWeight: 500,
+              }}
+            >
+              Financial Analytics & Macro Suite
+            </Typography>
+          </Stack>
         </Stack>
 
-        {/* Right GitHub & Version Info */}
+        {/* Right Info Controls */}
         <Stack direction="row" alignItems="center" spacing={2}>
+          <Chip
+            icon={<LayersIcon style={{ fontSize: 13, color: "#38bdf8" }} />}
+            label={`${openCalculators.length} Open`}
+            size="small"
+            sx={{
+              bgcolor: "rgba(255,255,255,0.06)",
+              color: "#e2e8f0",
+              fontWeight: 600,
+              fontSize: "11px",
+              border: "1px solid rgba(255,255,255,0.1)",
+              height: "24px",
+            }}
+          />
+
           <Typography
             variant="caption"
-            sx={{ color: "rgba(255,255,255,0.5)", fontWeight: "medium" }}
+            sx={{
+              color: "#64748b",
+              fontWeight: 600,
+              fontSize: "11px",
+              letterSpacing: "0.5px",
+            }}
           >
             v{packageJson.version}
           </Typography>
-          <Box
-            component="a"
-            href="https://www.github.com/vivekgautham"
-            target="_blank"
-            rel="noopener noreferrer"
-            sx={{
-              color: "#00b5ad",
-              display: "flex",
-              alignItems: "center",
-              transition: "color 0.2s ease",
-              "&:hover": {
-                color: "#00e5db",
-              },
-            }}
-          >
-            <i className="github icon large" style={{ margin: 0 }}></i>
-          </Box>
+
+          <Tooltip title="View Source on GitHub" arrow>
+            <Box
+              component="a"
+              href="https://www.github.com/vivekgautham"
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{
+                color: "#94a3b8",
+                display: "flex",
+                alignItems: "center",
+                p: 0.6,
+                borderRadius: "6px",
+                transition: "all 0.2s ease",
+                "&:hover": {
+                  color: "#38bdf8",
+                  bgcolor: "rgba(255,255,255,0.08)",
+                },
+              }}
+            >
+              <GitHubIcon sx={{ fontSize: 18 }} />
+            </Box>
+          </Tooltip>
         </Stack>
       </Stack>
 
-      {/* Dedicated Search Bar Row Below Title */}
+      {/* 2. Spotlight Search Row */}
       <Box
         sx={{
-          py: 1.5,
+          py: 1,
           px: 3,
-          backgroundColor: "#f8f9fa", // Clean off-white sub-bar
-          borderBottom: "1px solid #e9ecef",
+          backgroundColor: "#ffffff",
+          borderBottom: "1px solid #e2e8f0",
           flexShrink: 0,
         }}
       >
@@ -242,7 +305,7 @@ function CalculatorOutlet() {
               return nameMatch || descMatch || tagMatch;
             });
           }}
-          value={null} // Keep it empty by default so it acts as an open/add field launcher
+          value={null}
           inputValue={inputValue}
           onInputChange={(_, newInputValue) => {
             setInputValue(newInputValue);
@@ -263,14 +326,27 @@ function CalculatorOutlet() {
             <TextField
               {...params}
               size="small"
-              placeholder="Search by title or tags (e.g., 'trading', 'tax', 'accounting')..."
+              placeholder="Quick search across 20+ calculators & simulators (e.g. 'trading', 'fx rates', 'portfolio', 'tax')..."
+              InputProps={{
+                ...params.InputProps,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon sx={{ color: "#94a3b8", fontSize: 19 }} />
+                  </InputAdornment>
+                ),
+              }}
               sx={{
-                bgcolor: "white",
-                borderRadius: 1,
+                bgcolor: "#f8fafc",
+                borderRadius: 1.5,
                 "& .MuiOutlinedInput-root": {
-                  "& fieldset": { borderColor: "#ced4da" },
-                  "&:hover fieldset": { borderColor: "#00b5ad" },
-                  "&.Mui-focused fieldset": { borderColor: "#00b5ad" },
+                  fontSize: "13px",
+                  "& fieldset": { borderColor: "#e2e8f0" },
+                  "&:hover fieldset": { borderColor: "#cbd5e1" },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#2563eb",
+                    borderWidth: "1.5px",
+                  },
+                  "&.Mui-focused": { bgcolor: "#ffffff" },
                 },
               }}
             />
@@ -288,14 +364,22 @@ function CalculatorOutlet() {
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  p: 1.5,
-                  borderBottom: "1px solid #f0f0f0",
+                  p: 1.2,
+                  borderBottom: "1px solid #f1f5f9",
                   width: "100%",
+                  "&:hover": {
+                    bgcolor: "#f8fafc !important",
+                  },
                 }}
               >
                 <Typography
                   variant="body2"
-                  sx={{ fontWeight: "bold", color: "#1a2035", mr: 2 }}
+                  sx={{
+                    fontWeight: 600,
+                    color: "#1e293b",
+                    mr: 2,
+                    fontSize: "13px",
+                  }}
                 >
                   {option.name}
                 </Typography>
@@ -314,15 +398,15 @@ function CalculatorOutlet() {
                       <span
                         key={tag}
                         style={{
-                          fontSize: "8px",
-                          padding: "2px 4px",
-                          borderRadius: "3px",
-                          fontWeight: "bold",
+                          fontSize: "9px",
+                          padding: "2px 5px",
+                          borderRadius: "4px",
+                          fontWeight: 700,
                           textTransform: "uppercase",
                           backgroundColor: style.backgroundColor,
                           color: style.color,
                           border: `1px solid ${style.borderColor}`,
-                          letterSpacing: "0.5px",
+                          letterSpacing: "0.3px",
                           lineHeight: "1",
                         }}
                       >
@@ -338,32 +422,32 @@ function CalculatorOutlet() {
         />
       </Box>
 
-      {/* Dynamic Browser-like Tab Bar Row */}
+      {/* 3. Modern Chrome/Studio-Style Tabs Bar */}
       <Stack
         direction="row"
         alignItems="center"
         justifyContent="space-between"
         sx={{
-          px: 3,
-          py: 1,
-          backgroundColor: "#f8f9fa",
-          borderBottom: "1px solid #e9ecef",
+          px: 2.5,
+          pt: 1,
+          pb: 0,
+          backgroundColor: "#f1f5f9",
+          borderBottom: "1px solid #cbd5e1",
           flexShrink: 0,
         }}
       >
-        {/* Scrollable Tabs Stack */}
+        {/* Scrollable Tabs List */}
         <Stack
           direction="row"
-          spacing={1}
-          alignItems="center"
+          spacing={0.8}
+          alignItems="flex-end"
           sx={{
             overflowX: "auto",
             whiteSpace: "nowrap",
             flexGrow: 1,
-            py: 0.2,
             "&::-webkit-scrollbar": { height: 4 },
             "&::-webkit-scrollbar-thumb": {
-              backgroundColor: "#ced4da",
+              backgroundColor: "#cbd5e1",
               borderRadius: 2,
             },
           }}
@@ -376,117 +460,150 @@ function CalculatorOutlet() {
             const isActive = val === activeCalculator;
 
             return (
-              <Stack
+              <Box
                 key={val}
-                direction="row"
-                alignItems="center"
-                spacing={1}
                 onClick={() => setActiveCalculator(val)}
                 sx={{
-                  px: 2.2,
-                  py: 0.8,
-                  borderRadius: "20px", // Rounded pill styling
-                  background: isActive
-                    ? "linear-gradient(135deg, #00b5ad 0%, #008f89 100%)"
-                    : "white",
+                  position: "relative",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 1,
+                  px: 2,
+                  py: 1,
+                  borderTopLeftRadius: "8px",
+                  borderTopRightRadius: "8px",
+                  borderBottomLeftRadius: 0,
+                  borderBottomRightRadius: 0,
+                  bgcolor: isActive ? "#ffffff" : "rgba(241, 245, 249, 0.8)",
                   border: "1px solid",
-                  borderColor: isActive ? "transparent" : "#dee2e6",
+                  borderColor: isActive ? "#cbd5e1" : "transparent",
+                  borderBottom: isActive
+                    ? "1px solid #ffffff"
+                    : "1px solid transparent",
+                  mb: "-1px", // Seamless connection to content box below
                   cursor: "pointer",
                   userSelect: "none",
-                  fontWeight: isActive ? 600 : 500,
-                  color: isActive ? "white" : "#495057",
-                  transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-                  mr: 0.5,
+                  transition: "all 0.15s ease",
                   boxShadow: isActive
-                    ? "0px 4px 10px rgba(0, 181, 173, 0.25)"
-                    : "0px 2px 4px rgba(0,0,0,0.02)",
+                    ? "0 -2px 8px rgba(0,0,0,0.04), 0 2px 0 #ffffff"
+                    : "none",
                   "&:hover": {
-                    background: isActive
-                      ? "linear-gradient(135deg, #00c7be 0%, #009d97 100%)"
-                      : "#f1f3f5",
-                    borderColor: isActive ? "transparent" : "#ced4da",
-                    transform: isActive ? "translateY(-1px)" : "none",
-                    boxShadow: isActive
-                      ? "0px 6px 12px rgba(0, 181, 173, 0.3)"
-                      : "0px 3px 6px rgba(0,0,0,0.04)",
-                  },
-                  "&:active": {
-                    transform: "translateY(0px)",
+                    bgcolor: isActive ? "#ffffff" : "#e2e8f0",
+                    color: "#0f172a",
                   },
                 }}
               >
+                {/* Active Indicator Accent Top Bar */}
+                {isActive && (
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: -1,
+                      left: 0,
+                      right: 0,
+                      height: "3px",
+                      borderTopLeftRadius: "8px",
+                      borderTopRightRadius: "8px",
+                      background:
+                        "linear-gradient(90deg, #00b5ad 0%, #2563eb 100%)",
+                    }}
+                  />
+                )}
+
+                {/* Active Dot Indicator */}
+                {isActive && (
+                  <Box
+                    sx={{
+                      width: 6,
+                      height: 6,
+                      borderRadius: "50%",
+                      bgcolor: "#00b5ad",
+                      boxShadow: "0 0 6px #00b5ad",
+                      flexShrink: 0,
+                    }}
+                  />
+                )}
+
                 <Typography
                   variant="body2"
                   sx={{
-                    fontWeight: "inherit",
+                    fontWeight: isActive ? 700 : 500,
                     fontSize: "13px",
-                    letterSpacing: "0.2px",
+                    color: isActive ? "#0f172a" : "#64748b",
+                    letterSpacing: "-0.1px",
+                    transition: "color 0.15s ease",
                   }}
                 >
                   {calc.name}
                 </Typography>
+
+                {/* Tab Close Button */}
                 {openCalculators.length > 1 && (
-                  <CloseIcon
+                  <Box
+                    component="span"
                     onClick={(e: React.MouseEvent) => handleCloseTab(val, e)}
                     sx={{
-                      marginLeft: 1,
-                      fontSize: "14px",
-                      color: isActive
-                        ? "rgba(255,255,255,0.7)"
-                        : "rgba(0,0,0,0.4)",
-                      transition: "all 0.2s ease",
-                      cursor: "pointer",
                       display: "inline-flex",
                       alignItems: "center",
                       justifyContent: "center",
+                      width: 18,
+                      height: 18,
+                      borderRadius: "50%",
+                      color: isActive ? "#94a3b8" : "#94a3b8",
+                      transition: "all 0.15s ease",
+                      ml: 0.5,
                       "&:hover": {
-                        color: isActive ? "#ffcdd2" : "#d32f2f",
-                        transform: "rotate(90deg)",
+                        bgcolor: "#fee2e2",
+                        color: "#ef4444",
+                        transform: "scale(1.1)",
                       },
                     }}
-                  />
+                  >
+                    <CloseIcon sx={{ fontSize: "12px" }} />
+                  </Box>
                 )}
-              </Stack>
+              </Box>
             );
           })}
         </Stack>
 
-        {/* Delete All Open Tabs Icon Button on the Same Row as Tabs */}
+        {/* Delete All Open Tabs Action */}
         {openCalculators.length > 1 && (
-          <Tooltip title="Close all tabs" arrow>
+          <Tooltip title="Close all tabs (reset to Home)" arrow>
             <IconButton
               color="error"
               onClick={handleCloseAllTabs}
               size="small"
               sx={{
                 ml: 1.5,
+                mb: 0.8,
                 flexShrink: 0,
-                border: "1px solid #ef5350",
+                border: "1px solid #fca5a5",
                 borderRadius: "6px",
-                height: "32px",
-                width: "32px",
-                backgroundColor: "transparent",
+                height: "28px",
+                width: "28px",
+                bgcolor: "white",
                 "&:hover": {
-                  backgroundColor: "#ffebee",
-                  borderColor: "#d32f2f",
+                  bgcolor: "#fee2e2",
+                  borderColor: "#ef4444",
                 },
               }}
             >
-              <DeleteSweepIcon fontSize="small" />
+              <DeleteSweepIcon sx={{ fontSize: 16 }} />
             </IconButton>
           </Tooltip>
         )}
       </Stack>
 
-      {/* Main Content View Container (Preserves states using display: none) */}
+      {/* 4. Main Content View Container */}
       <Box
         sx={{
           flexGrow: 1,
-          height: "calc(100vh - 56px - 64px - 44px)", // Offsets for title bar, search bar, and tab bar
+          height: "calc(100vh - 54px - 58px - 44px)",
           overflow: "hidden",
           width: "100vw",
           position: "relative",
-          // Force panels to 100% height instead of 100vh so their internal scrollbars fit the parent viewport
+          bgcolor: "#ffffff",
           "& > div > div": {
             height: "100% !important",
           },
