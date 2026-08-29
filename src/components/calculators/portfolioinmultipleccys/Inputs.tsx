@@ -3,7 +3,6 @@ import {
   TextField,
   Stack,
   Box,
-  IconButton,
   Typography,
   Divider,
   Grid,
@@ -15,8 +14,6 @@ import {
   Chip,
   Autocomplete,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import PublicIcon from "@mui/icons-material/Public";
@@ -47,14 +44,8 @@ const POPULAR_CURRENCIES = [
 ];
 
 const Inputs: React.FC = () => {
-  const {
-    currencies,
-    totalYears,
-    setTotalYears,
-    addCurrency,
-    removeCurrency,
-    updateCurrency,
-  } = usePortfolioInMultipleCcys();
+  const { currencies, totalYears, setTotalYears, updateCurrency } =
+    usePortfolioInMultipleCcys();
 
   const handleCorpusStep = (key: string, delta: number) => {
     const curr = currencies.find((c) => c.key === key);
@@ -182,7 +173,7 @@ const Inputs: React.FC = () => {
                 variant="subtitle1"
                 sx={{ fontWeight: "bold", color: "#1e293b" }}
               >
-                Currencies ({currencies.length})
+                Currency Holdings ({currencies.length})
               </Typography>
               <Tooltip title="Configure each currency holding in its native currency (e.g. USD $, INR ₹), converted to USD at current FRED spot rates for Year 0 comparison.">
                 <HelpOutlineIcon
@@ -190,20 +181,6 @@ const Inputs: React.FC = () => {
                 />
               </Tooltip>
             </Stack>
-            <Button
-              variant="contained"
-              size="small"
-              startIcon={<AddIcon />}
-              onClick={addCurrency}
-              sx={{
-                bgcolor: "#2563eb",
-                fontWeight: 600,
-                textTransform: "none",
-                "&:hover": { bgcolor: "#1d4ed8" },
-              }}
-            >
-              Add Currency
-            </Button>
           </Stack>
 
           <Stack spacing={2.5}>
@@ -296,17 +273,6 @@ const Inputs: React.FC = () => {
                           }}
                         />
                       </Tooltip>
-
-                      {currencies.length > 1 && (
-                        <IconButton
-                          size="small"
-                          color="error"
-                          onClick={() => removeCurrency(currency.key)}
-                          title="Remove Currency"
-                        >
-                          <DeleteIcon fontSize="small" />
-                        </IconButton>
-                      )}
                     </Stack>
                   </Stack>
 
