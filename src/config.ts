@@ -19,8 +19,17 @@ import DoublingGrowth from "./components/calculators/DoublingGrowth";
 import BalanceSheet from "./components/calculators/BalanceSheet";
 import ForeignCurrencyFD from "./components/calculators/ForeignCurrencyFD";
 import PEValuation from "./components/calculators/PEValuation";
+import AreaConverter from "./components/calculators/AreaConverter";
 
 export const CALCULATORS_AND_SIMULATORS = [
+  {
+    name: "Area Converter",
+    value: "areaconverter",
+    tags: ["conversion", "units", "area", "land", "real estate", "geometry"],
+    description:
+      "Convert land and surface areas seamlessly across Hectares, Acres, Cents (0.01 acre), Square Feet, Square Meters, Square Kilometers, and Square Miles with instant calculations, visual benchmarks, and plot boundary dimensions.",
+    panel: AreaConverter,
+  },
   {
     name: "TTM P/E & Forward P/E Valuation",
     value: "pevaluation",
