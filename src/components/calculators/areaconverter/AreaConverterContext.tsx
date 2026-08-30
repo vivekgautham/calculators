@@ -11,7 +11,6 @@ import {
   AreaUnit,
   ConvertedResult,
   BenchmarkComparison,
-  PlotDimension,
   UnitCategory,
 } from "./types";
 
@@ -33,7 +32,6 @@ interface AreaConverterContextType {
   coreResults: ConvertedResult[];
   filteredResults: ConvertedResult[];
   benchmarks: BenchmarkComparison[];
-  plotDimensions: PlotDimension[];
   formatValue: (num: number) => string;
   quickSet: (num: number, unitId?: string) => void;
   copyToClipboard: (text: string, label?: string) => Promise<boolean>;
@@ -259,104 +257,12 @@ export const AreaConverterProvider: React.FC<AreaConverterProviderProps> = ({
         icon: "🏢",
         unitLabel: "Apartment Units",
       },
-      {
-        id: "central_park",
-        name: "Central Park (New York)",
-        description: "Famous urban park (843 acres = 3.41 km²)",
-        areaSqMeters: 3410000,
-        icon: "🌳",
-        unitLabel: "Central Parks",
-      },
     ];
 
     return BENCHMARK_ITEMS.map((item) => ({
       ...item,
       count: areaInSqMeters / item.areaSqMeters,
     }));
-  }, [areaInSqMeters]);
-
-  // Land plot geometric dimensions
-  const plotDimensions: PlotDimension[] = useMemo(() => {
-    if (areaInSqMeters <= 0) return [];
-
-    const sqFt = areaInSqMeters / 0.09290304;
-
-    // 1. Square Plot: s = sqrt(A)
-    const squareSideM = Math.sqrt(areaInSqMeters);
-    const squareSideFt = Math.sqrt(sqFt);
-
-    // 2. Rectangle 1:2 (e.g. 30' x 60' or 40' x 80')
-    // w * 2w = A => w = sqrt(A / 2), l = 2w
-    const rect1_2_w_M = Math.sqrt(areaInSqMeters / 2);
-    const rect1_2_l_M = rect1_2_w_M * 2;
-    const rect1_2_w_Ft = Math.sqrt(sqFt / 2);
-    const rect1_2_l_Ft = rect1_2_w_Ft * 2;
-
-    // 3. Rectangle 3:4 (Standard residential building site e.g. 30' x 40' or 60' x 80')
-    // 3k * 4k = A => 12 k^2 = A => k = sqrt(A / 12)
-    const k_M = Math.sqrt(areaInSqMeters / 12);
-    const rect3_4_w_M = 3 * k_M;
-    const rect3_4_l_M = 4 * k_M;
-    const k_Ft = Math.sqrt(sqFt / 12);
-    const rect3_4_w_Ft = 3 * k_Ft;
-    const rect3_4_l_Ft = 4 * k_Ft;
-
-    // 4. Rectangle 1:3 (Narrow Long Plot)
-    const rect1_3_w_M = Math.sqrt(areaInSqMeters / 3);
-    const rect1_3_l_M = rect1_3_w_M * 3;
-    const rect1_3_w_Ft = Math.sqrt(sqFt / 3);
-    const rect1_3_l_Ft = rect1_3_w_Ft * 3;
-
-    return [
-      {
-        shape: "square",
-        label: "Square Plot",
-        aspectRatio: "1 : 1",
-        description: "Equal length & width",
-        widthMeters: squareSideM,
-        lengthMeters: squareSideM,
-        widthFeet: squareSideFt,
-        lengthFeet: squareSideFt,
-        perimeterMeters: 4 * squareSideM,
-        perimeterFeet: 4 * squareSideFt,
-      },
-      {
-        shape: "rect_3_4",
-        label: "Standard Plot",
-        aspectRatio: "3 : 4 (or 4 : 3)",
-        description: "Classic residential site (e.g., 30×40 or 60×80)",
-        widthMeters: rect3_4_w_M,
-        lengthMeters: rect3_4_l_M,
-        widthFeet: rect3_4_w_Ft,
-        lengthFeet: rect3_4_l_Ft,
-        perimeterMeters: 2 * (rect3_4_w_M + rect3_4_l_M),
-        perimeterFeet: 2 * (rect3_4_w_Ft + rect3_4_l_Ft),
-      },
-      {
-        shape: "rect_1_2",
-        label: "Double-Depth Plot",
-        aspectRatio: "1 : 2",
-        description: "Length is twice the frontage width",
-        widthMeters: rect1_2_w_M,
-        lengthMeters: rect1_2_l_M,
-        widthFeet: rect1_2_w_Ft,
-        lengthFeet: rect1_2_l_Ft,
-        perimeterMeters: 2 * (rect1_2_w_M + rect1_2_l_M),
-        perimeterFeet: 2 * (rect1_2_w_Ft + rect1_2_l_Ft),
-      },
-      {
-        shape: "rect_1_3",
-        label: "Narrow Strip Plot",
-        aspectRatio: "1 : 3",
-        description: "Long corridor / agricultural strip",
-        widthMeters: rect1_3_w_M,
-        lengthMeters: rect1_3_l_M,
-        widthFeet: rect1_3_w_Ft,
-        lengthFeet: rect1_3_l_Ft,
-        perimeterMeters: 2 * (rect1_3_w_M + rect1_3_l_M),
-        perimeterFeet: 2 * (rect1_3_w_Ft + rect1_3_l_Ft),
-      },
-    ];
   }, [areaInSqMeters]);
 
   // Quick preset helper
@@ -373,7 +279,7 @@ export const AreaConverterProvider: React.FC<AreaConverterProviderProps> = ({
     setInputUnit("acre");
     setPrecision("auto");
     setNumberFormat("standard");
-    setCategoryFilter("core");
+    setCategoryFilter("all");
   }, []);
 
   // Copy helper
@@ -413,7 +319,6 @@ export const AreaConverterProvider: React.FC<AreaConverterProviderProps> = ({
         coreResults,
         filteredResults,
         benchmarks,
-        plotDimensions,
         formatValue,
         quickSet,
         copyToClipboard,
