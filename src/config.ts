@@ -20,8 +20,17 @@ import BalanceSheet from "./components/calculators/BalanceSheet";
 import ForeignCurrencyFD from "./components/calculators/ForeignCurrencyFD";
 import PEValuation from "./components/calculators/PEValuation";
 import AreaConverter from "./components/calculators/AreaConverter";
+import DutchAuction from "./components/calculators/DutchAuction";
 
 export const CALCULATORS_AND_SIMULATORS = [
+  {
+    name: "Treasury Dutch Auction Simulator",
+    value: "dutchauction",
+    tags: ["treasury", "bonds", "yields", "auction", "fixed income", "finance"],
+    description:
+      "Simulate US Treasury single-price Dutch auctions, calculate the stop-out clearing yield, pro-rata cutoff allotment ratio, bid-to-cover ratio, auction tail / stop-through, and dealer-by-dealer allocation breakdowns.",
+    panel: DutchAuction,
+  },
   {
     name: "Area Converter",
     value: "areaconverter",
