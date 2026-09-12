@@ -8,9 +8,7 @@ import {
   Chip,
   Divider,
 } from "@mui/material";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import TrendingDownIcon from "@mui/icons-material/TrendingDown";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { usePercentChange } from "./PercentChangeContext";
 
 export const ReturnToBaselineCard: React.FC = () => {
@@ -30,26 +28,13 @@ export const ReturnToBaselineCard: React.FC = () => {
   const isDecrease = percentChangeNeeded < -0.001;
   const isNeutral = !isIncrease && !isDecrease;
 
-  // Theme styling based on status
-  const cardBorderColor = isIncrease
-    ? "#86efac"
-    : isDecrease
-      ? "#fca5a5"
-      : "#cbd5e1";
-  const accentColor = isIncrease
-    ? "#16a34a"
-    : isDecrease
-      ? "#dc2626"
-      : "#0284c7";
-  const bannerBg = isIncrease ? "#f0fdf4" : isDecrease ? "#fef2f2" : "#f8fafc";
-
   return (
     <Card
       elevation={3}
       sx={{
         borderRadius: 2,
         bgcolor: "#ffffff",
-        border: `1px solid ${cardBorderColor}`,
+        border: "1px solid #e2e8f0",
         overflow: "hidden",
       }}
     >
@@ -63,13 +48,7 @@ export const ReturnToBaselineCard: React.FC = () => {
             spacing={1.5}
           >
             <Stack direction="row" spacing={1.2} alignItems="center">
-              {isIncrease ? (
-                <TrendingUpIcon sx={{ color: "#16a34a", fontSize: 26 }} />
-              ) : isDecrease ? (
-                <TrendingDownIcon sx={{ color: "#dc2626", fontSize: 26 }} />
-              ) : (
-                <CheckCircleIcon sx={{ color: "#0284c7", fontSize: 26 }} />
-              )}
+              <RestartAltIcon sx={{ color: "#475569", fontSize: 26 }} />
               <Typography
                 variant="h6"
                 sx={{ fontWeight: "bold", color: "#1e293b" }}
@@ -85,37 +64,39 @@ export const ReturnToBaselineCard: React.FC = () => {
                 variant="outlined"
                 sx={{
                   fontWeight: 600,
-                  borderColor: "#94a3b8",
+                  borderColor: "#cbd5e1",
                   color: "#475569",
+                  bgcolor: "#f8fafc",
                 }}
               />
               <Chip
                 label={`Current: ${formatNumber(finalValue)}`}
                 size="small"
+                variant="outlined"
                 sx={{
-                  fontWeight: "bold",
-                  bgcolor: bannerBg,
-                  color: accentColor,
-                  border: `1px solid ${cardBorderColor}`,
+                  fontWeight: 600,
+                  borderColor: "#cbd5e1",
+                  color: "#1e293b",
+                  bgcolor: "#f8fafc",
                 }}
               />
             </Stack>
           </Stack>
 
-          {/* Central Callout Banner */}
+          {/* Central Callout Banner (Neutral Styled) */}
           <Box
             sx={{
               p: 2.5,
               borderRadius: 2,
-              bgcolor: bannerBg,
-              border: `1px solid ${cardBorderColor}`,
+              bgcolor: "#f8fafc",
+              border: "1px solid #e2e8f0",
               textAlign: "center",
             }}
           >
             <Typography
               variant="h3"
               component="div"
-              sx={{ fontWeight: 800, color: accentColor, mb: 0.5 }}
+              sx={{ fontWeight: 800, color: "#0f172a", mb: 0.5 }}
             >
               {isIncrease
                 ? `+${percentChangeNeeded.toFixed(2)}% Increase`
@@ -125,7 +106,7 @@ export const ReturnToBaselineCard: React.FC = () => {
             </Typography>
             <Typography
               variant="body1"
-              sx={{ fontWeight: 600, color: "#334155" }}
+              sx={{ fontWeight: 600, color: "#475569" }}
             >
               {isIncrease &&
                 `+${formatNumber(Math.abs(pointsDiff))} index points needed to recover back to baseline`}
@@ -215,12 +196,7 @@ export const ReturnToBaselineCard: React.FC = () => {
                 variant="h6"
                 sx={{
                   fontWeight: 700,
-                  color:
-                    pointsDiff > 0
-                      ? "#16a34a"
-                      : pointsDiff < 0
-                        ? "#dc2626"
-                        : "#475569",
+                  color: "#1e293b",
                 }}
               >
                 {pointsDiff > 0
