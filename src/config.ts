@@ -21,8 +21,17 @@ import ForeignCurrencyFD from "./components/calculators/ForeignCurrencyFD";
 import PEValuation from "./components/calculators/PEValuation";
 import AreaConverter from "./components/calculators/AreaConverter";
 import DutchAuction from "./components/calculators/DutchAuction";
+import PercentChange from "./components/calculators/PercentChange";
 
 export const CALCULATORS_AND_SIMULATORS = [
+  {
+    name: "Percent Change",
+    value: "percentchange",
+    tags: ["math", "finance", "percentage", "simulation", "growth"],
+    description:
+      "Start with an initial index and apply multiple sequential positive or negative percentage changes, visualizing the resulting rise and fall on an interactive bar chart.",
+    panel: PercentChange,
+  },
   {
     name: "Treasury Dutch Auction Simulator",
     value: "dutchauction",
