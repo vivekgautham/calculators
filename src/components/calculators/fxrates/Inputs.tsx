@@ -13,6 +13,7 @@ import {
   Paper,
   Typography,
   Checkbox,
+  Tooltip,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import PublicIcon from "@mui/icons-material/Public";
@@ -44,6 +45,8 @@ const Inputs: React.FC = () => {
     setSelectedSeries,
   } = useFXRates();
 
+  const [isTagsExpanded, setIsTagsExpanded] = React.useState(false);
+
   const handleSelectDefault = () => {
     setSelectedSeries([...DEFAULT_FX_SERIES]);
   };
@@ -68,6 +71,7 @@ const Inputs: React.FC = () => {
 
   const handleClearAll = () => {
     setSelectedSeries([]);
+    setIsTagsExpanded(false);
   };
 
   const handleQuickRange = (years: number | "max") => {
@@ -158,6 +162,8 @@ const Inputs: React.FC = () => {
               bgcolor: "#f8fafc",
               border: "1px solid #e2e8f0",
               transition: "border-color 0.2s ease",
+              overflow: "hidden",
+              maxWidth: "100%",
               "&:hover": {
                 borderColor: "#cbd5e1",
               },
@@ -198,7 +204,26 @@ const Inputs: React.FC = () => {
                 />
               </Stack>
 
-              <Stack direction="row" spacing={1}>
+              <Stack direction="row" spacing={1} alignItems="center">
+                {selectedSeries.length > 6 && (
+                  <Button
+                    size="small"
+                    variant="text"
+                    onClick={() => setIsTagsExpanded((prev) => !prev)}
+                    sx={{
+                      fontSize: "12px",
+                      textTransform: "none",
+                      fontWeight: 600,
+                      color: "#0284c7",
+                      py: 0.25,
+                      px: 1,
+                    }}
+                  >
+                    {isTagsExpanded
+                      ? "Show Less"
+                      : `Show All (${selectedSeries.length})`}
+                  </Button>
+                )}
                 <Button
                   size="small"
                   variant="text"
@@ -249,55 +274,144 @@ const Inputs: React.FC = () => {
               value={selectedSeries}
               onChange={(_, newValue) => setSelectedSeries(newValue)}
               disableCloseOnSelect
-              limitTags={7}
-              renderTags={(tagValue, getTagProps) =>
-                tagValue.map((option, index) => {
-                  const { key, ...tagProps } = getTagProps({ index });
-                  return (
-                    <Chip
-                      key={key}
-                      {...tagProps}
-                      size="small"
-                      label={
-                        <Stack
-                          direction="row"
-                          spacing={0.6}
-                          alignItems="center"
-                        >
-                          <span style={{ fontSize: "14px" }}>
-                            {option.flag}
-                          </span>
-                          <span style={{ fontWeight: 700, color: "#0f172a" }}>
-                            {option.code}
-                          </span>
-                        </Stack>
-                      }
-                      sx={{
-                        m: 0.3,
-                        bgcolor: "#ffffff",
-                        border: "1px solid #bae6fd",
-                        borderRadius: "6px",
-                        boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
-                        "&:hover": {
-                          bgcolor: "#f0f9ff",
-                          borderColor: "#38bdf8",
-                        },
-                        "& .MuiChip-deleteIcon": {
-                          color: "#94a3b8",
-                          fontSize: "16px",
-                          "&:hover": { color: "#ef4444" },
-                        },
-                      }}
-                    />
-                  );
-                })
-              }
+              slotProps={{
+                popper: {
+                  sx: { zIndex: 1300, maxWidth: "100vw" },
+                },
+                paper: {
+                  sx: {
+                    borderRadius: 2,
+                    mt: 0.8,
+                    boxShadow:
+                      "0 10px 25px -5px rgba(0,0,0,0.12), 0 8px 10px -6px rgba(0,0,0,0.08)",
+                    border: "1px solid #e2e8f0",
+                    overflow: "hidden",
+                  },
+                },
+              }}
+              ListboxProps={{
+                sx: {
+                  maxHeight: 320,
+                  p: 0,
+                },
+              }}
+              renderTags={(tagValue, getTagProps) => {
+                const isLimited = !isTagsExpanded && tagValue.length > 6;
+                const visibleTags = isLimited ? tagValue.slice(0, 6) : tagValue;
+                const remaining = tagValue.length - 6;
+
+                return (
+                  <>
+                    {visibleTags.map((option, index) => {
+                      const { key, ...tagProps } = getTagProps({ index });
+                      return (
+                        <Chip
+                          key={key}
+                          {...tagProps}
+                          size="small"
+                          label={
+                            <Stack
+                              direction="row"
+                              spacing={0.6}
+                              alignItems="center"
+                            >
+                              <span style={{ fontSize: "14px" }}>
+                                {option.flag}
+                              </span>
+                              <span
+                                style={{ fontWeight: 700, color: "#0f172a" }}
+                              >
+                                {option.code}
+                              </span>
+                            </Stack>
+                          }
+                          sx={{
+                            m: "2px",
+                            bgcolor: "#ffffff",
+                            border: "1px solid #bae6fd",
+                            borderRadius: "6px",
+                            boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
+                            "&:hover": {
+                              bgcolor: "#f0f9ff",
+                              borderColor: "#38bdf8",
+                            },
+                            "& .MuiChip-deleteIcon": {
+                              color: "#94a3b8",
+                              fontSize: "16px",
+                              "&:hover": { color: "#ef4444" },
+                            },
+                          }}
+                        />
+                      );
+                    })}
+
+                    {isLimited && (
+                      <Tooltip title="Click to view all currency pairs" arrow>
+                        <Chip
+                          size="small"
+                          label={`+${remaining} more`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setIsTagsExpanded(true);
+                          }}
+                          sx={{
+                            m: "2px",
+                            bgcolor: "#f0f9ff",
+                            border: "1px solid #bae6fd",
+                            borderRadius: "6px",
+                            fontWeight: 700,
+                            fontSize: "11px",
+                            color: "#0284c7",
+                            cursor: "pointer",
+                            userSelect: "none",
+                            transition: "all 0.15s ease",
+                            "&:hover": {
+                              bgcolor: "#e0f2fe",
+                              borderColor: "#0284c7",
+                              color: "#0369a1",
+                            },
+                          }}
+                        />
+                      </Tooltip>
+                    )}
+
+                    {isTagsExpanded && tagValue.length > 6 && (
+                      <Tooltip title="Click to collapse tags" arrow>
+                        <Chip
+                          size="small"
+                          label="Show less ▴"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setIsTagsExpanded(false);
+                          }}
+                          sx={{
+                            m: "2px",
+                            bgcolor: "#f1f5f9",
+                            border: "1px solid #cbd5e1",
+                            borderRadius: "6px",
+                            fontWeight: 700,
+                            fontSize: "11px",
+                            color: "#64748b",
+                            cursor: "pointer",
+                            userSelect: "none",
+                            transition: "all 0.15s ease",
+                            "&:hover": {
+                              bgcolor: "#e2e8f0",
+                              color: "#334155",
+                            },
+                          }}
+                        />
+                      </Tooltip>
+                    )}
+                  </>
+                );
+              }}
               renderOption={(props, option, { selected }) => (
                 <li
                   {...props}
                   key={option.id}
                   style={{
-                    padding: "6px 12px",
+                    padding: "7px 12px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
@@ -420,16 +534,17 @@ const Inputs: React.FC = () => {
                   InputProps={{
                     ...params.InputProps,
                     startAdornment: (
-                      <Stack
-                        direction="row"
-                        alignItems="center"
-                        sx={{ pl: 0.5 }}
-                      >
+                      <>
                         <SearchIcon
-                          sx={{ color: "#0284c7", fontSize: 20, mr: 0.5 }}
+                          sx={{
+                            color: "#0284c7",
+                            fontSize: 20,
+                            mr: 0.5,
+                            flexShrink: 0,
+                          }}
                         />
                         {params.InputProps.startAdornment}
-                      </Stack>
+                      </>
                     ),
                   }}
                   sx={{
@@ -438,7 +553,13 @@ const Inputs: React.FC = () => {
                     "& .MuiOutlinedInput-root": {
                       borderRadius: 2,
                       backgroundColor: "#ffffff",
-                      p: "4px 8px !important",
+                      display: "flex",
+                      flexWrap: "wrap",
+                      alignItems: "center",
+                      gap: "2px",
+                      py: "5px",
+                      pl: 1,
+                      pr: "65px !important",
                       "&:hover fieldset": {
                         borderColor: "#0284c7",
                       },
@@ -446,6 +567,11 @@ const Inputs: React.FC = () => {
                         borderColor: "#0284c7",
                         borderWidth: 2,
                       },
+                    },
+                    "& .MuiAutocomplete-input": {
+                      minWidth: "70px",
+                      flexGrow: 1,
+                      py: "3px !important",
                     },
                   }}
                 />
