@@ -182,6 +182,67 @@ async function fetchSeries(series) {
   return { id: series.id, obsMap };
 }
 
+async function supplementLatestRates(seriesMaps, dateSet) {
+  const dates = Array.from(dateSet).sort();
+  const lastDate = dates[dates.length - 1];
+  const todayStr = new Date().toISOString().split("T")[0];
+  if (!lastDate || lastDate >= todayStr) return;
+
+  console.log(
+    `Supplementing latest FX rates beyond FRED H.10 release (${lastDate})...`,
+  );
+
+  // 1. Fetch range of daily observations from European Central Bank (Frankfurter)
+  try {
+    const rangeUrl = `https://api.frankfurter.app/${lastDate}..${todayStr}?from=USD`;
+    const res = await fetch(rangeUrl);
+    if (res.ok) {
+      const data = await res.json();
+      const ratesMap = data.rates || {};
+      for (const [date, dayRates] of Object.entries(ratesMap)) {
+        if (date <= lastDate) continue;
+        dateSet.add(date);
+        for (const s of FX_SERIES) {
+          const ccy = s.code.replace("USD/", "");
+          if (dayRates[ccy] !== undefined) {
+            if (!seriesMaps[s.id]) seriesMaps[s.id] = {};
+            seriesMaps[s.id][date] = parseFloat(dayRates[ccy].toFixed(4));
+          }
+        }
+      }
+    }
+  } catch (e) {
+    console.warn("Could not supplement from Frankfurter:", e.message);
+  }
+
+  // 2. Fetch latest live rates from open.er-api to ensure all currencies (e.g. TWD) have the latest date
+  try {
+    const liveRes = await fetch("https://open.er-api.com/v6/latest/USD");
+    if (liveRes.ok) {
+      const liveData = await liveRes.json();
+      if (liveData.rates) {
+        const sortedNow = Array.from(dateSet).sort();
+        const latestAvailableDate = sortedNow[sortedNow.length - 1] || todayStr;
+
+        for (const s of FX_SERIES) {
+          const ccy = s.code.replace("USD/", "");
+          if (!seriesMaps[s.id]) seriesMaps[s.id] = {};
+          if (
+            seriesMaps[s.id][latestAvailableDate] === undefined &&
+            liveData.rates[ccy] !== undefined
+          ) {
+            seriesMaps[s.id][latestAvailableDate] = parseFloat(
+              Number(liveData.rates[ccy]).toFixed(4),
+            );
+          }
+        }
+      }
+    }
+  } catch (e) {
+    console.warn("Could not supplement from open.er-api:", e.message);
+  }
+}
+
 async function main() {
   const outputDir = path.resolve(__dirname, "../public/data");
   if (!fs.existsSync(outputDir)) {
@@ -200,6 +261,8 @@ async function main() {
       console.error(`Error fetching series ${s.id}:`, err);
     }
   }
+
+  await supplementLatestRates(seriesMaps, dateSet);
 
   const sortedDates = Array.from(dateSet).sort();
   const output = {

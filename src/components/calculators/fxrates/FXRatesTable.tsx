@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useMemo } from "react";
+import dayjs from "dayjs";
 import {
   Table,
   TableBody,
@@ -10,11 +11,24 @@ import {
   Typography,
   Chip,
   Box,
+  Stack,
 } from "@mui/material";
 import { useFXRatesData } from "./hooks/useFXRatesData";
 
 const FXRatesTable: React.FC = () => {
   const { data, isLoading } = useFXRatesData();
+
+  const latestDateStr = useMemo(() => {
+    let max = "";
+    for (const item of data?.seriesList || []) {
+      const obs = item.observations;
+      if (obs && obs.length > 0) {
+        const last = obs[obs.length - 1].dateStr;
+        if (last > max) max = last;
+      }
+    }
+    return max;
+  }, [data]);
 
   if (isLoading || !data || !data.seriesList || data.seriesList.length === 0) {
     return null;
@@ -66,15 +80,39 @@ const FXRatesTable: React.FC = () => {
 
   return (
     <TableContainer component={Paper} elevation={3}>
-      <Box sx={{ p: 2, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Typography variant="h6" component="div">
-          Exchange Rates Summary & Performance
-        </Typography>
+      <Box
+        sx={{
+          p: 2,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: 1,
+        }}
+      >
+        <Stack direction="row" spacing={1.5} alignItems="center">
+          <Typography variant="h6" component="div">
+            Exchange Rates Summary & Performance
+          </Typography>
+          {latestDateStr && (
+            <Chip
+              label={`Latest Rates: ${dayjs(latestDateStr).format("MMM D, YYYY")}`}
+              size="small"
+              color="primary"
+              variant="outlined"
+              sx={{ fontWeight: "bold" }}
+            />
+          )}
+        </Stack>
         <Typography variant="caption" color="text.secondary">
           Quotes expressed as amount of Foreign Currency per 1 USD
         </Typography>
       </Box>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="fx rates summary table">
+      <Table
+        sx={{ minWidth: 650 }}
+        size="small"
+        aria-label="fx rates summary table"
+      >
         <TableHead>
           <TableRow sx={{ backgroundColor: "action.hover" }}>
             <TableCell>
@@ -90,7 +128,12 @@ const FXRatesTable: React.FC = () => {
               <strong>Start Rate</strong>
             </TableCell>
             <TableCell align="right">
-              <strong>End Rate</strong>
+              <strong>
+                End Rate{" "}
+                {latestDateStr
+                  ? `(${dayjs(latestDateStr).format("M/D/YYYY")})`
+                  : ""}
+              </strong>
             </TableCell>
             <TableCell align="right">
               <strong>Period Low / High</strong>
@@ -125,13 +168,17 @@ const FXRatesTable: React.FC = () => {
               <TableCell align="right">
                 <strong>{row.endRate}</strong>
               </TableCell>
-              <TableCell align="right" sx={{ color: "text.secondary", fontSize: "0.85rem" }}>
+              <TableCell
+                align="right"
+                sx={{ color: "text.secondary", fontSize: "0.85rem" }}
+              >
                 {row.minRate} - {row.maxRate}
               </TableCell>
               <TableCell
                 align="right"
                 sx={{
-                  color: row.rawPercentChange >= 0 ? "success.main" : "error.main",
+                  color:
+                    row.rawPercentChange >= 0 ? "success.main" : "error.main",
                   fontWeight: "bold",
                 }}
               >

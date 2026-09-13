@@ -57,12 +57,14 @@ const FXRatesLineChart: React.FC = () => {
     const series = data.seriesList.map((item, index) => {
       const initialValue =
         item.observations.length > 0 ? item.observations[0].value : 1;
-      const normalizedData: [number, number][] = item.observations.map((obs) => [
-        obs.date,
-        parseFloat(
-          (((obs.value - initialValue) / initialValue) * 100).toFixed(2),
-        ),
-      ]);
+      const normalizedData: [number, number][] = item.observations.map(
+        (obs) => [
+          obs.date,
+          parseFloat(
+            (((obs.value - initialValue) / initialValue) * 100).toFixed(2),
+          ),
+        ],
+      );
 
       return {
         name: `${item.series.code} (${item.series.currencyName})`,
@@ -72,6 +74,14 @@ const FXRatesLineChart: React.FC = () => {
         marker: { enabled: false },
       };
     });
+
+    let maxDateStr = "";
+    for (const item of data.seriesList) {
+      if (item.observations && item.observations.length > 0) {
+        const last = item.observations[item.observations.length - 1].dateStr;
+        if (last > maxDateStr) maxDateStr = last;
+      }
+    }
 
     return {
       chart: {
@@ -138,9 +148,7 @@ const FXRatesLineChart: React.FC = () => {
       subtitle: {
         useHTML: true,
         text: [
-          data.updatedAt
-            ? `Source: Federal Reserve Economic Data (FRED) • Last updated: ${dayjs(data.updatedAt).format("MMM D, YYYY")}`
-            : "Source: Federal Reserve Economic Data (FRED)",
+          `Source: Federal Reserve (FRED) & Global FX Feeds${maxDateStr ? ` • Latest rate: ${dayjs(maxDateStr).format("MMM D, YYYY")}` : ""}${data.updatedAt ? ` • Updated: ${dayjs(data.updatedAt).format("MMM D, YYYY")}` : ""}`,
           '<span style="color: #64748b; font-size: 0.85em; display: block; margin-top: 4px;">Positive % indicates USD strengthened (foreign currency depreciated) • Click on any date to inspect rates • Drag to zoom • Hold Shift to pan</span>',
         ].join("<br/>"),
       },
@@ -250,12 +258,8 @@ const FXRatesLineChart: React.FC = () => {
           onChange={(_, newMode) => newMode && setChartMode(newMode)}
           aria-label="chart display mode"
         >
-          <ToggleButton value="normalized">
-            Comparative (% Change)
-          </ToggleButton>
-          <ToggleButton value="individual">
-            Individual Spot Rates
-          </ToggleButton>
+          <ToggleButton value="normalized">Comparative (% Change)</ToggleButton>
+          <ToggleButton value="individual">Individual Spot Rates</ToggleButton>
         </ToggleButtonGroup>
       </Stack>
 
