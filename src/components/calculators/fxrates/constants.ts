@@ -4,6 +4,8 @@ export interface FXSeriesOption {
   name: string;
   currencyName: string;
   category: "Major Currencies" | "Emerging Market Currencies";
+  flag: string;
+  symbol: string;
 }
 
 export const FX_SERIES_OPTIONS: FXSeriesOption[] = [
@@ -14,6 +16,8 @@ export const FX_SERIES_OPTIONS: FXSeriesOption[] = [
     name: "USD/EUR (Euro)",
     currencyName: "Euro",
     category: "Major Currencies",
+    flag: "🇪🇺",
+    symbol: "€",
   },
   {
     id: "DEXJPUS",
@@ -21,6 +25,8 @@ export const FX_SERIES_OPTIONS: FXSeriesOption[] = [
     name: "USD/JPY (Japanese Yen)",
     currencyName: "Japanese Yen",
     category: "Major Currencies",
+    flag: "🇯🇵",
+    symbol: "¥",
   },
   {
     id: "DEXUSUK",
@@ -28,6 +34,8 @@ export const FX_SERIES_OPTIONS: FXSeriesOption[] = [
     name: "USD/GBP (British Pound)",
     currencyName: "British Pound",
     category: "Major Currencies",
+    flag: "🇬🇧",
+    symbol: "£",
   },
   {
     id: "DEXCAUS",
@@ -35,6 +43,8 @@ export const FX_SERIES_OPTIONS: FXSeriesOption[] = [
     name: "USD/CAD (Canadian Dollar)",
     currencyName: "Canadian Dollar",
     category: "Major Currencies",
+    flag: "🇨🇦",
+    symbol: "C$",
   },
   {
     id: "DEXUSAL",
@@ -42,6 +52,8 @@ export const FX_SERIES_OPTIONS: FXSeriesOption[] = [
     name: "USD/AUD (Australian Dollar)",
     currencyName: "Australian Dollar",
     category: "Major Currencies",
+    flag: "🇦🇺",
+    symbol: "A$",
   },
   {
     id: "DEXSZUS",
@@ -49,6 +61,8 @@ export const FX_SERIES_OPTIONS: FXSeriesOption[] = [
     name: "USD/CHF (Swiss Franc)",
     currencyName: "Swiss Franc",
     category: "Major Currencies",
+    flag: "🇨🇭",
+    symbol: "CHF",
   },
   {
     id: "DEXUSNZ",
@@ -56,6 +70,8 @@ export const FX_SERIES_OPTIONS: FXSeriesOption[] = [
     name: "USD/NZD (New Zealand Dollar)",
     currencyName: "New Zealand Dollar",
     category: "Major Currencies",
+    flag: "🇳🇿",
+    symbol: "NZ$",
   },
   {
     id: "DEXSIUS",
@@ -63,6 +79,8 @@ export const FX_SERIES_OPTIONS: FXSeriesOption[] = [
     name: "USD/SGD (Singapore Dollar)",
     currencyName: "Singapore Dollar",
     category: "Major Currencies",
+    flag: "🇸🇬",
+    symbol: "S$",
   },
   {
     id: "DEXHKUS",
@@ -70,6 +88,8 @@ export const FX_SERIES_OPTIONS: FXSeriesOption[] = [
     name: "USD/HKD (Hong Kong Dollar)",
     currencyName: "Hong Kong Dollar",
     category: "Major Currencies",
+    flag: "🇭🇰",
+    symbol: "HK$",
   },
   {
     id: "DEXNOUS",
@@ -77,6 +97,8 @@ export const FX_SERIES_OPTIONS: FXSeriesOption[] = [
     name: "USD/NOK (Norwegian Krone)",
     currencyName: "Norwegian Krone",
     category: "Major Currencies",
+    flag: "🇳🇴",
+    symbol: "kr",
   },
   {
     id: "DEXSDUS",
@@ -84,6 +106,8 @@ export const FX_SERIES_OPTIONS: FXSeriesOption[] = [
     name: "USD/SEK (Swedish Krona)",
     currencyName: "Swedish Krona",
     category: "Major Currencies",
+    flag: "🇸🇪",
+    symbol: "kr",
   },
   {
     id: "DEXKOUS",
@@ -91,6 +115,8 @@ export const FX_SERIES_OPTIONS: FXSeriesOption[] = [
     name: "USD/KRW (South Korean Won)",
     currencyName: "South Korean Won",
     category: "Major Currencies",
+    flag: "🇰🇷",
+    symbol: "₩",
   },
 
   // Emerging Market Currencies
@@ -100,6 +126,8 @@ export const FX_SERIES_OPTIONS: FXSeriesOption[] = [
     name: "USD/INR (Indian Rupee)",
     currencyName: "Indian Rupee",
     category: "Emerging Market Currencies",
+    flag: "🇮🇳",
+    symbol: "₹",
   },
   {
     id: "DEXCHUS",
@@ -107,6 +135,8 @@ export const FX_SERIES_OPTIONS: FXSeriesOption[] = [
     name: "USD/CNY (Chinese Yuan)",
     currencyName: "Chinese Yuan",
     category: "Emerging Market Currencies",
+    flag: "🇨🇳",
+    symbol: "¥",
   },
   {
     id: "DEXTAUS",
@@ -114,6 +144,8 @@ export const FX_SERIES_OPTIONS: FXSeriesOption[] = [
     name: "USD/TWD (Taiwan Dollar)",
     currencyName: "Taiwan Dollar",
     category: "Emerging Market Currencies",
+    flag: "🇹🇼",
+    symbol: "NT$",
   },
   {
     id: "DEXBZUS",
@@ -121,6 +153,8 @@ export const FX_SERIES_OPTIONS: FXSeriesOption[] = [
     name: "USD/BRL (Brazilian Real)",
     currencyName: "Brazilian Real",
     category: "Emerging Market Currencies",
+    flag: "🇧🇷",
+    symbol: "R$",
   },
   {
     id: "DEXMXUS",
@@ -128,6 +162,8 @@ export const FX_SERIES_OPTIONS: FXSeriesOption[] = [
     name: "USD/MXN (Mexican Peso)",
     currencyName: "Mexican Peso",
     category: "Emerging Market Currencies",
+    flag: "🇲🇽",
+    symbol: "Mex$",
   },
   {
     id: "DEXSFUS",
@@ -135,6 +171,8 @@ export const FX_SERIES_OPTIONS: FXSeriesOption[] = [
     name: "USD/ZAR (South African Rand)",
     currencyName: "South African Rand",
     category: "Emerging Market Currencies",
+    flag: "🇿🇦",
+    symbol: "R",
   },
 ];
 
