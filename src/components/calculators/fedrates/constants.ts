@@ -3,6 +3,9 @@ export interface SeriesOption {
   name: string;
   shortName: string;
   category: "Treasury Yields" | "Fed Policy Rates";
+  badge: string;
+  icon: string;
+  tenor: string;
 }
 
 export const FED_SERIES_OPTIONS: SeriesOption[] = [
@@ -11,48 +14,72 @@ export const FED_SERIES_OPTIONS: SeriesOption[] = [
     name: "2-Year Treasury Yield",
     shortName: "2Y Treasury",
     category: "Treasury Yields",
+    badge: "2Y",
+    icon: "📈",
+    tenor: "2 Years",
   },
   {
     id: "DGS10",
     name: "10-Year Treasury Yield",
     shortName: "10Y Treasury",
     category: "Treasury Yields",
+    badge: "10Y",
+    icon: "📈",
+    tenor: "10 Years",
   },
   {
     id: "DGS30",
     name: "30-Year Treasury Yield",
     shortName: "30Y Treasury",
     category: "Treasury Yields",
+    badge: "30Y",
+    icon: "📈",
+    tenor: "30 Years",
   },
   {
     id: "DGS5",
     name: "5-Year Treasury Yield",
     shortName: "5Y Treasury",
     category: "Treasury Yields",
+    badge: "5Y",
+    icon: "📈",
+    tenor: "5 Years",
   },
   {
     id: "DGS1",
     name: "1-Year Treasury Yield",
     shortName: "1Y Treasury",
     category: "Treasury Yields",
+    badge: "1Y",
+    icon: "📈",
+    tenor: "1 Year",
   },
   {
     id: "DGS3MO",
     name: "3-Month Treasury Yield",
     shortName: "3M Treasury",
     category: "Treasury Yields",
+    badge: "3M",
+    icon: "📈",
+    tenor: "3 Months",
   },
   {
     id: "DFF",
     name: "Effective Federal Funds Rate (EFFR)",
     shortName: "EFFR",
     category: "Fed Policy Rates",
+    badge: "FED",
+    icon: "🏛️",
+    tenor: "Overnight",
   },
   {
     id: "SOFR",
     name: "Secured Overnight Financing Rate (SOFR)",
     shortName: "SOFR",
     category: "Fed Policy Rates",
+    badge: "SOFR",
+    icon: "🏛️",
+    tenor: "Overnight",
   },
 ];
 
