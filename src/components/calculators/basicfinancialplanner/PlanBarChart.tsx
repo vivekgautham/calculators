@@ -22,8 +22,15 @@ const formatNumber = (value: number): string => {
   return sign + formatted;
 };
 
+interface CustomPoint extends Highcharts.Point {
+  projectedBalance?: number;
+  netExpense?: number;
+  taxAmount?: number;
+  withdrawnAmount?: number;
+}
+
 const PlanBarChart: React.FC = () => {
-  const { planData } = useBasicFinancialPlanner();
+  const { planData, withdrawalTaxRate } = useBasicFinancialPlanner();
 
   const chartOptions = useMemo(() => {
     const categories = planData.map((d) =>
@@ -31,7 +38,11 @@ const PlanBarChart: React.FC = () => {
     );
     const seriesData = planData.map((d) => ({
       y: d.remainingBalance,
-      color: d.remainingBalance < 0 ? "#d32f2f" : "#2e7d32", // Material-UI Error and Success colors
+      color: d.remainingBalance < 0 ? "#d32f2f" : "#2e7d32",
+      projectedBalance: d.projectedBalance,
+      netExpense: d.netExpense,
+      taxAmount: d.taxAmount,
+      withdrawnAmount: d.withdrawnAmount,
     }));
 
     return {
@@ -43,6 +54,12 @@ const PlanBarChart: React.FC = () => {
       },
       title: {
         text: "Projected Remaining Balance",
+      },
+      subtitle: {
+        text:
+          withdrawalTaxRate > 0
+            ? `Accounting for ${withdrawalTaxRate}% withdrawal tax on living expenses`
+            : "Tax-free withdrawals (0% tax rate)",
       },
       xAxis: {
         categories: categories,
@@ -74,13 +91,37 @@ const PlanBarChart: React.FC = () => {
         },
       },
       tooltip: {
-        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat:
-          '<tr><td style="color:{series.color};padding:0">Balance: </td>' +
-          '<td style="padding:0"><b>${point.y:,.0f}</b></td></tr>',
-        footerFormat: "</table>",
-        shared: true,
         useHTML: true,
+        backgroundColor: "#ffffff",
+        borderColor: "#cbd5e1",
+        borderRadius: 8,
+        shadow: true,
+        formatter: function (this: Highcharts.Point): string {
+          const point = this as CustomPoint;
+          const category = String(point.category ?? "");
+          const isInitial = category === "Initial";
+          const val = point.y ?? 0;
+          const prefix = val < 0 ? "-$" : "$";
+          const valFormatted = prefix + formatNumber(Math.abs(val));
+          const color = val < 0 ? "#d32f2f" : "#2e7d32";
+
+          let s = `<div style="font-size:12px; padding: 4px; line-height: 1.5; font-family: sans-serif;">`;
+          s += `<div style="font-weight: 700; color: #1e293b; margin-bottom: 4px;">${category}</div>`;
+          s += `<div>Remaining Balance: <b style="color:${color};">${valFormatted}</b> ($${Math.round(val).toLocaleString()})</div>`;
+
+          if (!isInitial && point.projectedBalance !== undefined) {
+            s += `<div style="margin-top: 4px; padding-top: 4px; border-top: 1px solid #e2e8f0;">`;
+            s += `<div>Projected Balance: <b>$${Math.round(point.projectedBalance).toLocaleString()}</b></div>`;
+            s += `<div>Net Living Expense: <b style="color: #0284c7;">$${Math.round(point.netExpense ?? 0).toLocaleString()}</b></div>`;
+            if ((point.taxAmount ?? 0) > 0) {
+              s += `<div>Withdrawal Tax: <b style="color: #d97706;">$${Math.round(point.taxAmount ?? 0).toLocaleString()}</b></div>`;
+            }
+            s += `<div>Total Gross Withdrawn: <b>$${Math.round(point.withdrawnAmount ?? 0).toLocaleString()}</b></div>`;
+            s += `</div>`;
+          }
+          s += `</div>`;
+          return s;
+        },
       },
       plotOptions: {
         column: {
@@ -100,7 +141,7 @@ const PlanBarChart: React.FC = () => {
         enabled: false,
       },
     };
-  }, [planData]);
+  }, [planData, withdrawalTaxRate]);
 
   return (
     <Box sx={{ width: "100%" }}>
