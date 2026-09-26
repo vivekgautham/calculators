@@ -7,6 +7,7 @@ import { BasicFinancialPlannerProvider } from "./basicfinancialplanner/BasicFina
 import Inputs from "./basicfinancialplanner/Inputs";
 import PlanTable from "./basicfinancialplanner/PlanTable";
 import PlanBarChart from "./basicfinancialplanner/PlanBarChart";
+import WithdrawalsChart from "./basicfinancialplanner/WithdrawalsChart";
 import Summary from "./basicfinancialplanner/Summary";
 
 const BasicFinancialPlanner: React.FunctionComponent<PanelProps> = (props) => {
@@ -64,6 +65,9 @@ const BasicFinancialPlanner: React.FunctionComponent<PanelProps> = (props) => {
           <Summary />
           <Paper elevation={3} sx={{ p: 1, minHeight: 400 }}>
             <PlanBarChart />
+          </Paper>
+          <Paper elevation={3} sx={{ p: 1, minHeight: 400 }}>
+            <WithdrawalsChart />
           </Paper>
           <PlanTable />
         </Stack>

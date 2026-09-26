@@ -30,7 +30,7 @@ function CalculatorOutlet() {
     if (CALCULATORS_AND_SIMULATORS.some((c) => c.value === hash)) {
       return hash;
     }
-    return "basicfinancialplanner";
+    return "fedrates";
   });
 
   const [openCalculators, setOpenCalculators] = useState<string[]>(() => {
@@ -49,7 +49,7 @@ function CalculatorOutlet() {
     const hash = window.location.hash.replace("#", "");
     const initial = CALCULATORS_AND_SIMULATORS.some((c) => c.value === hash)
       ? hash
-      : "basicfinancialplanner";
+      : "fedrates";
     return [initial];
   });
 
@@ -142,8 +142,8 @@ function CalculatorOutlet() {
   };
 
   const handleCloseAllTabs = () => {
-    setOpenCalculators(["basicfinancialplanner"]);
-    setActiveCalculator("basicfinancialplanner");
+    setOpenCalculators(["fedrates"]);
+    setActiveCalculator("fedrates");
   };
 
   return (
@@ -171,10 +171,10 @@ function CalculatorOutlet() {
           spacing={1.5}
           sx={{ cursor: "pointer", userSelect: "none" }}
           onClick={() => {
-            setActiveCalculator("basicfinancialplanner");
+            setActiveCalculator("fedrates");
             setOpenCalculators((prev) => {
-              if (!prev.includes("basicfinancialplanner")) {
-                return [...prev, "basicfinancialplanner"];
+              if (!prev.includes("fedrates")) {
+                return [...prev, "fedrates"];
               }
               return prev;
             });
