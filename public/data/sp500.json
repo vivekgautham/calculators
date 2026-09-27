@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-09-12T20:15:20.378Z",
+  "updatedAt": "2026-09-27T20:47:38.522Z",
   "seriesId": "SP500",
   "name": "S&P 500",
-  "date": "2026-09-11",
-  "value": 7656.98,
+  "date": "2026-09-25",
+  "value": 7743.41,
   "source": "https://fred.stlouisfed.org/series/sp500"
 }

@@ -22,8 +22,17 @@ import PEValuation from "./components/calculators/PEValuation";
 import AreaConverter from "./components/calculators/AreaConverter";
 import DutchAuction from "./components/calculators/DutchAuction";
 import PercentChange from "./components/calculators/PercentChange";
+import NextDayVol from "./components/calculators/NextDayVol";
 
 export const CALCULATORS_AND_SIMULATORS = [
+  {
+    name: "Next-Day S&P 500 Volatility",
+    value: "nextdayvol",
+    tags: ["finance", "volatility", "vix", "sp500", "options", "trading"],
+    description:
+      "Predict next trading day S&P 500 implied volatility and price targets from CBOE VIX, visualized on a clean High/Low expected range bracket.",
+    panel: NextDayVol,
+  },
   {
     name: "Percent Change",
     value: "percentchange",
