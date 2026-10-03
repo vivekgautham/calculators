@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FBBF24"/>
+      <stop offset="45%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+    <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#F59E0B" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <!-- Background Squircle -->
+  <rect x="3" y="3" width="58" height="58" rx="14" fill="url(#goldGrad)" filter="url(#goldGlow)"/>
+  <rect x="3" y="3" width="58" height="58" rx="14" fill="none" stroke="#FFFFFF" stroke-opacity="0.45" stroke-width="1.5"/>
+
+  <!-- Screen -->
+  <rect x="11" y="11" width="42" height="13" rx="3.5" fill="#1E293B"/>
+  <rect x="28" y="15" width="20" height="5" rx="1.5" fill="#38BDF8"/>
+
+  <!-- Keypad Row 1 -->
+  <rect x="11" y="28" width="9" height="8" rx="2" fill="#FFFFFF"/>
+  <rect x="22" y="28" width="9" height="8" rx="2" fill="#FFFFFF"/>
+  <rect x="33" y="28" width="9" height="8" rx="2" fill="#FFFFFF"/>
+  <rect x="44" y="28" width="9" height="8" rx="2" fill="#1E293B"/>
+
+  <!-- Keypad Row 2 -->
+  <rect x="11" y="38" width="9" height="8" rx="2" fill="#FFFFFF"/>
+  <rect x="22" y="38" width="9" height="8" rx="2" fill="#FFFFFF"/>
+  <rect x="33" y="38" width="9" height="8" rx="2" fill="#FFFFFF"/>
+  <rect x="44" y="38" width="9" height="8" rx="2" fill="#1E293B"/>
+
+  <!-- Keypad Row 3 -->
+  <rect x="11" y="48" width="20" height="8" rx="2" fill="#FFFFFF"/>
+  <rect x="33" y="48" width="9" height="8" rx="2" fill="#FFFFFF"/>
+  <rect x="44" y="48" width="9" height="8" rx="2" fill="#EF4444"/>
+</svg>

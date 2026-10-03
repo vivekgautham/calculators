@@ -18,6 +18,8 @@ import LayersIcon from "@mui/icons-material/Layers";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { CALCULATORS_AND_SIMULATORS, getTagStyles } from "../config";
 import packageJson from "../../package.json";
+import { useAppTheme } from "../context/ThemeContext";
+import { ThemeSettingsButton } from "./common/ThemeSettingsPopover";
 
 function CalculatorOutlet() {
   const [activeCalculator, setActiveCalculator] = useState<string>(() => {
@@ -54,6 +56,7 @@ function CalculatorOutlet() {
   });
 
   const [inputValue, setInputValue] = useState("");
+  const { preset, headerStyle } = useAppTheme();
 
   // Alphabetically sort all calculator options
   const sortedCalculators = useMemo(() => {
@@ -156,11 +159,13 @@ function CalculatorOutlet() {
         sx={{
           height: "54px",
           px: 3,
-          background: "linear-gradient(135deg, #0f172a 0%, #1e293b 100%)",
-          color: "white",
-          borderBottom: "1px solid rgba(255,255,255,0.08)",
+          background: headerStyle.background,
+          color: headerStyle.text,
+          borderBottom: `1px solid ${headerStyle.border}`,
           flexShrink: 0,
-          boxShadow: "0 2px 10px rgba(0,0,0,0.15)",
+          boxShadow: headerStyle.isLight
+            ? "0 2px 10px rgba(0,0,0,0.06)"
+            : "0 2px 10px rgba(0,0,0,0.25)",
           zIndex: 10,
         }}
       >
@@ -186,11 +191,11 @@ function CalculatorOutlet() {
               width: 34,
               height: 34,
               borderRadius: "9px",
-              background: "linear-gradient(135deg, #00b5ad 0%, #2563eb 100%)",
+              background: preset.gradient,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              boxShadow: "0 2px 8px rgba(0, 181, 173, 0.4)",
+              boxShadow: `0 2px 8px ${preset.glow}`,
             }}
           >
             <Icon
@@ -206,7 +211,7 @@ function CalculatorOutlet() {
                 letterSpacing: "-0.2px",
                 fontSize: "15px",
                 lineHeight: 1.2,
-                color: "#ffffff",
+                color: headerStyle.text,
               }}
             >
               Calculators & Simulators
@@ -214,7 +219,7 @@ function CalculatorOutlet() {
             <Typography
               variant="caption"
               sx={{
-                color: "#94a3b8",
+                color: headerStyle.subtitle,
                 fontSize: "11px",
                 letterSpacing: "0.4px",
                 fontWeight: 500,
@@ -226,17 +231,17 @@ function CalculatorOutlet() {
         </Stack>
 
         {/* Right Info Controls */}
-        <Stack direction="row" alignItems="center" spacing={2}>
+        <Stack direction="row" alignItems="center" spacing={1.5}>
           <Chip
-            icon={<LayersIcon style={{ fontSize: 13, color: "#38bdf8" }} />}
+            icon={<LayersIcon style={{ fontSize: 13, color: preset.accent }} />}
             label={`${openCalculators.length} Open`}
             size="small"
             sx={{
-              bgcolor: "rgba(255,255,255,0.06)",
-              color: "#e2e8f0",
+              bgcolor: headerStyle.chipBg,
+              color: headerStyle.text,
               fontWeight: 600,
               fontSize: "11px",
-              border: "1px solid rgba(255,255,255,0.1)",
+              border: `1px solid ${headerStyle.chipBorder}`,
               height: "24px",
             }}
           />
@@ -244,7 +249,7 @@ function CalculatorOutlet() {
           <Typography
             variant="caption"
             sx={{
-              color: "#64748b",
+              color: headerStyle.meta,
               fontWeight: 600,
               fontSize: "11px",
               letterSpacing: "0.5px",
@@ -260,21 +265,26 @@ function CalculatorOutlet() {
               target="_blank"
               rel="noopener noreferrer"
               sx={{
-                color: "#94a3b8",
+                color: headerStyle.subtitle,
                 display: "flex",
                 alignItems: "center",
                 p: 0.6,
                 borderRadius: "6px",
                 transition: "all 0.2s ease",
                 "&:hover": {
-                  color: "#38bdf8",
-                  bgcolor: "rgba(255,255,255,0.08)",
+                  color: preset.accent,
+                  bgcolor: headerStyle.isLight
+                    ? "rgba(15, 23, 42, 0.06)"
+                    : "rgba(255,255,255,0.08)",
                 },
               }}
             >
               <GitHubIcon sx={{ fontSize: 18 }} />
             </Box>
           </Tooltip>
+
+          {/* Color Theme Settings Button on the right top corner */}
+          <ThemeSettingsButton />
         </Stack>
       </Stack>
 
@@ -343,7 +353,7 @@ function CalculatorOutlet() {
                   "& fieldset": { borderColor: "#e2e8f0" },
                   "&:hover fieldset": { borderColor: "#cbd5e1" },
                   "&.Mui-focused fieldset": {
-                    borderColor: "#2563eb",
+                    borderColor: preset.primary,
                     borderWidth: "1.5px",
                   },
                   "&.Mui-focused": { bgcolor: "#ffffff" },
@@ -504,8 +514,7 @@ function CalculatorOutlet() {
                       height: "3px",
                       borderTopLeftRadius: "8px",
                       borderTopRightRadius: "8px",
-                      background:
-                        "linear-gradient(90deg, #00b5ad 0%, #2563eb 100%)",
+                      background: preset.tabGradient,
                     }}
                   />
                 )}
@@ -517,8 +526,8 @@ function CalculatorOutlet() {
                       width: 6,
                       height: 6,
                       borderRadius: "50%",
-                      bgcolor: "#00b5ad",
-                      boxShadow: "0 0 6px #00b5ad",
+                      bgcolor: preset.primary,
+                      boxShadow: `0 0 6px ${preset.primary}`,
                       flexShrink: 0,
                     }}
                   />
