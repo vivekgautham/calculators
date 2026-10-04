@@ -19,12 +19,23 @@ import dayjs from "dayjs";
 import { useDailyReserveRunway } from "./DailyReserveRunwayContext";
 
 const RESERVE_PRESETS = [
+  { label: "$10K", value: 10000 },
+  { label: "$25K", value: 25000 },
   { label: "$50K", value: 50000 },
+  { label: "$75K", value: 75000 },
   { label: "$100K", value: 100000 },
+  { label: "$150K", value: 150000 },
+  { label: "$200K", value: 200000 },
   { label: "$250K", value: 250000 },
+  { label: "$350K", value: 350000 },
   { label: "$500K", value: 500000 },
+  { label: "$750K", value: 750000 },
   { label: "$1M", value: 1000000 },
+  { label: "$1.5M", value: 1500000 },
+  { label: "$2M", value: 2000000 },
   { label: "$2.5M", value: 2500000 },
+  { label: "$5M", value: 5000000 },
+  { label: "$10M", value: 10000000 },
 ];
 
 const YEAR_PRESETS = [
@@ -140,10 +151,15 @@ export const Inputs: React.FC = () => {
 
           <Box sx={{ px: 1, mt: 1.5 }}>
             <Slider
-              value={Math.min(2500000, totalReserve)}
-              min={10000}
-              max={2500000}
-              step={10000}
+              value={Math.min(
+                totalReserve > 5000000 ? 10000000 : totalReserve > 2500000 ? 5000000 : 2500000,
+                totalReserve,
+              )}
+              min={5000}
+              max={
+                totalReserve > 5000000 ? 10000000 : totalReserve > 2500000 ? 5000000 : 2500000
+              }
+              step={totalReserve >= 1000000 ? 50000 : 10000}
               onChange={(_, val) => setTotalReserve(val as number)}
               sx={{ color: "#0284c7" }}
             />
