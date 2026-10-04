@@ -23,8 +23,17 @@ import AreaConverter from "./components/calculators/AreaConverter";
 import DutchAuction from "./components/calculators/DutchAuction";
 import PercentChange from "./components/calculators/PercentChange";
 import NextDayVol from "./components/calculators/NextDayVol";
+import DailyReserveRunway from "./components/calculators/DailyReserveRunway";
 
 export const CALCULATORS_AND_SIMULATORS = [
+  {
+    name: "Daily Reserve & Runway",
+    value: "dailyreserverunway",
+    tags: ["finance", "reserves", "budget", "runway", "planning", "daily"],
+    description:
+      "Estimate how much spendable cash you have for each day based on total reserve dollars, start date, and target horizon in years, factoring in leap years, investment returns, inflation, and interactive depletion schedules.",
+    panel: DailyReserveRunway,
+  },
   {
     name: "Next-Day S&P 500 Volatility",
     value: "nextdayvol",
