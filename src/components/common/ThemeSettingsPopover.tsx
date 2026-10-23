@@ -11,7 +11,7 @@ import PaletteIcon from "@mui/icons-material/Palette";
 import CheckIcon from "@mui/icons-material/Check";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import CloseIcon from "@mui/icons-material/Close";
-import { useAppTheme } from "../../context/ThemeContext";
+import { resolveAssetPath, useAppTheme } from "../../context/ThemeContext";
 
 interface ThemeSettingsButtonProps {
   buttonSx?: object;
@@ -269,9 +269,7 @@ export const ThemeSettingsButton: React.FC<ThemeSettingsButtonProps> = ({
                     justifyContent: "space-between",
                     cursor: "pointer",
                     transition: "all 0.15s ease",
-                    boxShadow: isSelected
-                      ? `0 0 10px ${p.glow}`
-                      : "none",
+                    boxShadow: isSelected ? `0 0 10px ${p.glow}` : "none",
                     "&:hover": {
                       borderColor: p.primary,
                       bgcolor: "rgba(255, 255, 255, 0.08)",
@@ -357,9 +355,7 @@ export const ThemeSettingsButton: React.FC<ThemeSettingsButtonProps> = ({
                     justifyContent: "space-between",
                     cursor: "pointer",
                     transition: "all 0.15s ease",
-                    boxShadow: isSelected
-                      ? `0 0 10px ${preset.glow}`
-                      : "none",
+                    boxShadow: isSelected ? `0 0 10px ${preset.glow}` : "none",
                     "&:hover": {
                       borderColor: preset.primary,
                       bgcolor: "rgba(255, 255, 255, 0.08)",
@@ -459,9 +455,7 @@ export const ThemeSettingsButton: React.FC<ThemeSettingsButtonProps> = ({
                     justifyContent: "space-between",
                     cursor: "pointer",
                     transition: "all 0.15s ease",
-                    boxShadow: isSelected
-                      ? `0 0 10px ${preset.glow}`
-                      : "none",
+                    boxShadow: isSelected ? `0 0 10px ${preset.glow}` : "none",
                     "&:hover": {
                       borderColor: preset.primary,
                       bgcolor: "rgba(255, 255, 255, 0.08)",
@@ -471,13 +465,23 @@ export const ThemeSettingsButton: React.FC<ThemeSettingsButtonProps> = ({
                   <Stack direction="row" alignItems="center" spacing={1.5}>
                     <Box
                       component="img"
-                      src={opt.path}
+                      src={resolveAssetPath(opt.path)}
                       alt={opt.name}
+                      onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                        const target = e.currentTarget;
+                        if (!target.dataset.fallbackTried) {
+                          target.dataset.fallbackTried = "true";
+                          target.src = opt.path.startsWith("/")
+                            ? opt.path.slice(1)
+                            : `/${opt.path}`;
+                        }
+                      }}
                       sx={{
-                        width: 22,
-                        height: 22,
+                        width: 24,
+                        height: 24,
                         borderRadius: "5px",
                         flexShrink: 0,
+                        objectFit: "contain",
                       }}
                     />
                     <Box>

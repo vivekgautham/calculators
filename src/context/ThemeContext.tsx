@@ -152,29 +152,42 @@ export const HEADER_STYLES: HeaderStyle[] = [
   },
 ];
 
+export const resolveAssetPath = (path: string): string => {
+  if (path.startsWith("http://") || path.startsWith("https://")) {
+    return path;
+  }
+  const base = import.meta.env.BASE_URL || "/";
+  const normalizedBase = base.endsWith("/") ? base : `${base}/`;
+  if (path.startsWith(normalizedBase)) {
+    return path;
+  }
+  const normalizedPath = path.startsWith("/") ? path.slice(1) : path;
+  return `${normalizedBase}${normalizedPath}`;
+};
+
 export const FAVICON_OPTIONS: FaviconOption[] = [
   {
     id: "electric-calculator",
     name: "Electric Calculator",
-    path: "/icons/favicon-electric-calculator.svg",
+    path: resolveAssetPath("icons/favicon-electric-calculator.svg"),
     description: "Cyan & Blue gradient calculator",
   },
   {
     id: "math-matrix",
     name: "Math Matrix",
-    path: "/icons/favicon-math-matrix.svg",
+    path: resolveAssetPath("icons/favicon-math-matrix.svg"),
     description: "4-Quadrant +, −, ×, = symbol grid",
   },
   {
     id: "analytics-chart",
     name: "Analytics Chart",
-    path: "/icons/favicon-analytics-chart.svg",
+    path: resolveAssetPath("icons/favicon-analytics-chart.svg"),
     description: "Emerald rising trend & volume bars",
   },
   {
     id: "golden-calculator",
     name: "Golden Calculator",
-    path: "/icons/favicon-golden-calculator.svg",
+    path: resolveAssetPath("icons/favicon-golden-calculator.svg"),
     description: "Warm amber & gold luminous calculator",
   },
 ];
@@ -198,16 +211,32 @@ const ThemeContext = createContext<ThemeContextType | null>(null);
 
 export const updateFaviconInDOM = (href: string) => {
   if (typeof document === "undefined") return;
-  let link = document.querySelector(
-    "link[rel~='icon']",
-  ) as HTMLLinkElement | null;
-  if (!link) {
-    link = document.createElement("link");
-    link.rel = "icon";
-    document.head.appendChild(link);
+  const resolvedHref =
+    href.startsWith("http") || href.startsWith(import.meta.env.BASE_URL)
+      ? href
+      : resolveAssetPath(href);
+
+  // Update existing icon link or append a new one
+  const existingLinks =
+    document.querySelectorAll<HTMLLinkElement>("link[rel*='icon']");
+
+  if (existingLinks.length > 0) {
+    existingLinks.forEach((link, idx) => {
+      if (idx === 0) {
+        link.rel = "icon";
+        link.type = "image/svg+xml";
+        link.href = resolvedHref;
+      } else {
+        link.remove();
+      }
+    });
+  } else {
+    const newLink = document.createElement("link");
+    newLink.rel = "icon";
+    newLink.type = "image/svg+xml";
+    newLink.href = resolvedHref;
+    document.head.appendChild(newLink);
   }
-  link.type = "image/svg+xml";
-  link.href = href;
 };
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({

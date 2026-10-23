@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Icon } from "semantic-ui-react";
 import {
   Stack,
   Box,
@@ -18,7 +17,7 @@ import LayersIcon from "@mui/icons-material/Layers";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { CALCULATORS_AND_SIMULATORS, getTagStyles } from "../config";
 import packageJson from "../../package.json";
-import { useAppTheme } from "../context/ThemeContext";
+import { resolveAssetPath, useAppTheme } from "../context/ThemeContext";
 import { ThemeSettingsButton } from "./common/ThemeSettingsPopover";
 
 function CalculatorOutlet() {
@@ -56,7 +55,7 @@ function CalculatorOutlet() {
   });
 
   const [inputValue, setInputValue] = useState("");
-  const { preset, headerStyle } = useAppTheme();
+  const { preset, headerStyle, faviconOption } = useAppTheme();
 
   // Alphabetically sort all calculator options
   const sortedCalculators = useMemo(() => {
@@ -196,11 +195,30 @@ function CalculatorOutlet() {
               alignItems: "center",
               justifyContent: "center",
               boxShadow: `0 2px 8px ${preset.glow}`,
+              p: 0.5,
+              flexShrink: 0,
             }}
           >
-            <Icon
-              name="calculator"
-              style={{ color: "white", margin: 0, fontSize: "16px" }}
+            <Box
+              component="img"
+              src={resolveAssetPath(faviconOption.path)}
+              alt={faviconOption.name}
+              onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                const target = e.currentTarget;
+                if (!target.dataset.fallbackTried) {
+                  target.dataset.fallbackTried = "true";
+                  target.src = faviconOption.path.startsWith("/")
+                    ? faviconOption.path.slice(1)
+                    : `/${faviconOption.path}`;
+                }
+              }}
+              sx={{
+                width: 24,
+                height: 24,
+                borderRadius: "5px",
+                display: "block",
+                objectFit: "contain",
+              }}
             />
           </Box>
           <Stack spacing={0}>
