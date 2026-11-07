@@ -174,6 +174,15 @@ export const FX_SERIES_OPTIONS: FXSeriesOption[] = [
     flag: "🇿🇦",
     symbol: "R",
   },
+  {
+    id: "USDCLP",
+    code: "USD/CLP",
+    name: "USD/CLP (Chilean Peso)",
+    currencyName: "Chilean Peso",
+    category: "Emerging Market Currencies",
+    flag: "🇨🇱",
+    symbol: "CL$",
+  },
 ];
 
 export const DEFAULT_FX_SERIES: FXSeriesOption[] = [

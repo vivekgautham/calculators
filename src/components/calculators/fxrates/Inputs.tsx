@@ -270,6 +270,18 @@ const Inputs: React.FC = () => {
               getOptionLabel={(option) =>
                 `${option.code} (${option.currencyName})`
               }
+              filterOptions={(options, { inputValue }) => {
+                const q = inputValue.toLowerCase().trim();
+                if (!q) return options;
+                return options.filter(
+                  (op) =>
+                    op.code.toLowerCase().includes(q) ||
+                    op.currencyName.toLowerCase().includes(q) ||
+                    op.id.toLowerCase().includes(q) ||
+                    op.symbol.toLowerCase().includes(q) ||
+                    op.name.toLowerCase().includes(q),
+                );
+              }}
               isOptionEqualToValue={(option, value) => option.id === value.id}
               value={selectedSeries}
               onChange={(_, newValue) => setSelectedSeries(newValue)}

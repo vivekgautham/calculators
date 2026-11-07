@@ -155,6 +155,16 @@ export const FX_SERIES = [
     invert: false,
     category: "Emerging Market Currencies",
   },
+  {
+    id: "USDCLP",
+    code: "USD/CLP",
+    name: "USD/CLP (Chilean Peso)",
+    currencyName: "Chilean Peso",
+    invert: false,
+    category: "Emerging Market Currencies",
+    source: "yahoo",
+    yahooSymbol: "CLP=X",
+  },
 ];
 
 const START_DATE = "2006-01-01";
@@ -176,6 +186,46 @@ async function fetchSeries(series) {
     if (!isNaN(rawValue) && rawValue !== 0) {
       const val = series.invert ? 1 / rawValue : rawValue;
       obsMap[obs.date] = parseFloat(val.toFixed(4));
+    }
+  }
+
+  return { id: series.id, obsMap };
+}
+
+async function fetchYahooSeries(series) {
+  const symbol = series.yahooSymbol || "CLP=X";
+  const startSec = Math.floor(new Date(START_DATE).getTime() / 1000);
+  const endSec = Math.floor(Date.now() / 1000);
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?period1=${startSec}&period2=${endSec}&interval=1d`;
+  console.log(
+    `Fetching ${series.name} (${series.id}) from Yahoo Finance (${symbol})...`,
+  );
+  const res = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" } });
+  if (!res.ok) {
+    throw new Error(
+      `Failed to fetch ${symbol}: ${res.status} ${res.statusText}`,
+    );
+  }
+  const data = await res.json();
+  const result = data.chart?.result?.[0];
+  const timestamps = result?.timestamp || [];
+  const closes = result?.indicators?.quote?.[0]?.close || [];
+  const obsMap = {};
+
+  for (let i = 0; i < timestamps.length; i++) {
+    // Add 4 hours (14400s) to handle GMT timezone alignment to trading date
+    const dateStr = new Date((timestamps[i] + 14400) * 1000)
+      .toISOString()
+      .split("T")[0];
+    const rawValue = closes[i];
+    if (
+      rawValue !== null &&
+      rawValue !== undefined &&
+      !isNaN(rawValue) &&
+      rawValue !== 0
+    ) {
+      const val = series.invert ? 1 / rawValue : rawValue;
+      obsMap[dateStr] = parseFloat(val.toFixed(4));
     }
   }
 
@@ -254,9 +304,12 @@ async function main() {
 
   for (const s of FX_SERIES) {
     try {
-      const { id, obsMap } = await fetchSeries(s);
+      const { id, obsMap } =
+        s.source === "yahoo" ? await fetchYahooSeries(s) : await fetchSeries(s);
       seriesMaps[id] = obsMap;
-      Object.keys(obsMap).forEach((d) => dateSet.add(d));
+      if (s.source !== "yahoo") {
+        Object.keys(obsMap).forEach((d) => dateSet.add(d));
+      }
     } catch (err) {
       console.error(`Error fetching series ${s.id}:`, err);
     }
@@ -273,9 +326,15 @@ async function main() {
 
   for (const s of FX_SERIES) {
     if (seriesMaps[s.id]) {
-      output.series[s.id] = sortedDates.map((d) =>
-        seriesMaps[s.id][d] !== undefined ? seriesMaps[s.id][d] : null,
-      );
+      let lastVal = null;
+      output.series[s.id] = sortedDates.map((d) => {
+        const val = seriesMaps[s.id][d];
+        if (val !== undefined && val !== null) {
+          lastVal = val;
+          return val;
+        }
+        return lastVal;
+      });
     }
   }
 
