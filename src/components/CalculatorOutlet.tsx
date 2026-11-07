@@ -15,23 +15,31 @@ import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import SearchIcon from "@mui/icons-material/Search";
 import LayersIcon from "@mui/icons-material/Layers";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import AddIcon from "@mui/icons-material/Add";
 import { CALCULATORS_AND_SIMULATORS, getTagStyles } from "../config";
 import packageJson from "../../package.json";
 import { resolveAssetPath, useAppTheme } from "../context/ThemeContext";
 import { ThemeSettingsButton } from "./common/ThemeSettingsPopover";
+import CalculatorCatalog from "./CalculatorCatalog";
 
 function CalculatorOutlet() {
   const [activeCalculator, setActiveCalculator] = useState<string>(() => {
     const params = new URLSearchParams(window.location.search);
     const active = params.get("active");
+    if (active === "home") {
+      return "home";
+    }
     if (active && CALCULATORS_AND_SIMULATORS.some((c) => c.value === active)) {
       return active;
     }
     const hash = window.location.hash.replace("#", "");
+    if (hash === "home") {
+      return "home";
+    }
     if (CALCULATORS_AND_SIMULATORS.some((c) => c.value === hash)) {
       return hash;
     }
-    return "fedrates";
+    return "home";
   });
 
   const [openCalculators, setOpenCalculators] = useState<string[]>(() => {
@@ -48,10 +56,14 @@ function CalculatorOutlet() {
       }
     }
     const hash = window.location.hash.replace("#", "");
-    const initial = CALCULATORS_AND_SIMULATORS.some((c) => c.value === hash)
-      ? hash
-      : "fedrates";
-    return [initial];
+    if (CALCULATORS_AND_SIMULATORS.some((c) => c.value === hash)) {
+      return [hash];
+    }
+    const active = params.get("active");
+    if (active && CALCULATORS_AND_SIMULATORS.some((c) => c.value === active)) {
+      return [active];
+    }
+    return [];
   });
 
   const [inputValue, setInputValue] = useState("");
@@ -74,7 +86,10 @@ function CalculatorOutlet() {
       let newOpen = openCalculators;
       let changed = false;
 
-      if (
+      if (active === "home" && activeCalculator !== "home") {
+        newActive = "home";
+        changed = true;
+      } else if (
         active &&
         CALCULATORS_AND_SIMULATORS.some((c) => c.value === active) &&
         active !== activeCalculator
@@ -83,7 +98,10 @@ function CalculatorOutlet() {
         changed = true;
       } else {
         const hash = window.location.hash.replace("#", "");
-        if (
+        if (hash === "home" && activeCalculator !== "home") {
+          newActive = "home";
+          changed = true;
+        } else if (
           CALCULATORS_AND_SIMULATORS.some((c) => c.value === hash) &&
           hash !== activeCalculator
         ) {
@@ -92,16 +110,15 @@ function CalculatorOutlet() {
         }
       }
 
-      if (openParam) {
+      if (openParam !== null) {
         const split = openParam
-          .split(",")
-          .filter((val) =>
-            CALCULATORS_AND_SIMULATORS.some((c) => c.value === val),
-          );
-        if (
-          split.length > 0 &&
-          JSON.stringify(split) !== JSON.stringify(openCalculators)
-        ) {
+          ? openParam
+              .split(",")
+              .filter((val) =>
+                CALCULATORS_AND_SIMULATORS.some((c) => c.value === val),
+              )
+          : [];
+        if (JSON.stringify(split) !== JSON.stringify(openCalculators)) {
           newOpen = split;
           changed = true;
         }
@@ -123,29 +140,47 @@ function CalculatorOutlet() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    params.set("open", openCalculators.join(","));
+    if (openCalculators.length > 0) {
+      params.set("open", openCalculators.join(","));
+    } else {
+      params.delete("open");
+    }
     params.set("active", activeCalculator);
     const newSearch = params.toString();
     const newUrl = `${window.location.pathname}?${newSearch}${window.location.hash}`;
     window.history.replaceState({}, "", newUrl);
   }, [openCalculators, activeCalculator]);
 
+  const handleSelectCalculator = (val: string) => {
+    setOpenCalculators((prev) => {
+      if (!prev.includes(val)) {
+        return [...prev, val];
+      }
+      return prev;
+    });
+    setActiveCalculator(val);
+  };
+
   const handleCloseTab = (valToClose: string, event: React.MouseEvent) => {
     event.stopPropagation(); // Prevent selecting the tab when clicking close
-    if (openCalculators.length <= 1) return; // Keep at least one tab open
 
     const newOpen = openCalculators.filter((c) => c !== valToClose);
     setOpenCalculators(newOpen);
 
     if (activeCalculator === valToClose) {
-      // Switch active tab to the last remaining tab
-      setActiveCalculator(newOpen[newOpen.length - 1]);
+      if (newOpen.length > 0) {
+        // Switch active tab to the last remaining tab
+        setActiveCalculator(newOpen[newOpen.length - 1]);
+      } else {
+        // Return to home if no tabs remain
+        setActiveCalculator("home");
+      }
     }
   };
 
   const handleCloseAllTabs = () => {
-    setOpenCalculators(["fedrates"]);
-    setActiveCalculator("fedrates");
+    setOpenCalculators([]);
+    setActiveCalculator("home");
   };
 
   return (
@@ -175,13 +210,7 @@ function CalculatorOutlet() {
           spacing={1.5}
           sx={{ cursor: "pointer", userSelect: "none" }}
           onClick={() => {
-            setActiveCalculator("fedrates");
-            setOpenCalculators((prev) => {
-              if (!prev.includes("fedrates")) {
-                return [...prev, "fedrates"];
-              }
-              return prev;
-            });
+            setActiveCalculator("home");
             setInputValue("");
           }}
         >
@@ -450,122 +479,123 @@ function CalculatorOutlet() {
         />
       </Box>
 
-      {/* 3. Modern Chrome/Studio-Style Tabs Bar */}
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{
-          px: 2.5,
-          pt: 1,
-          pb: 0,
-          backgroundColor: "#f1f5f9",
-          borderBottom: "1px solid #cbd5e1",
-          flexShrink: 0,
-        }}
-      >
-        {/* Scrollable Tabs List */}
+      {/* 3. Modern Chrome/Studio-Style Tabs Bar - only show when calculators are open */}
+      {openCalculators.length > 0 && (
         <Stack
           direction="row"
-          spacing={0.8}
-          alignItems="flex-end"
+          alignItems="center"
+          justifyContent="space-between"
           sx={{
-            overflowX: "auto",
-            whiteSpace: "nowrap",
-            flexGrow: 1,
-            "&::-webkit-scrollbar": { height: 4 },
-            "&::-webkit-scrollbar-thumb": {
-              backgroundColor: "#cbd5e1",
-              borderRadius: 2,
-            },
+            px: 2.5,
+            pt: 1,
+            pb: 0,
+            backgroundColor: "#f1f5f9",
+            borderBottom: "1px solid #cbd5e1",
+            flexShrink: 0,
           }}
         >
-          {openCalculators.map((val) => {
-            const calc = CALCULATORS_AND_SIMULATORS.find(
-              (c) => c.value === val,
-            );
-            if (!calc) return null;
-            const isActive = val === activeCalculator;
+          {/* Scrollable Tabs List */}
+          <Stack
+            direction="row"
+            spacing={0.8}
+            alignItems="flex-end"
+            sx={{
+              overflowX: "auto",
+              whiteSpace: "nowrap",
+              flexGrow: 1,
+              "&::-webkit-scrollbar": { height: 4 },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "#cbd5e1",
+                borderRadius: 2,
+              },
+            }}
+          >
+            {/* User's Opened Calculator Tabs */}
+            {openCalculators.map((val) => {
+              const calc = CALCULATORS_AND_SIMULATORS.find(
+                (c) => c.value === val,
+              );
+              if (!calc) return null;
+              const isActive = val === activeCalculator;
 
-            return (
-              <Box
-                key={val}
-                onClick={() => setActiveCalculator(val)}
-                sx={{
-                  position: "relative",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 1,
-                  px: 2,
-                  py: 1,
-                  borderTopLeftRadius: "8px",
-                  borderTopRightRadius: "8px",
-                  borderBottomLeftRadius: 0,
-                  borderBottomRightRadius: 0,
-                  bgcolor: isActive ? "#ffffff" : "rgba(241, 245, 249, 0.8)",
-                  border: "1px solid",
-                  borderColor: isActive ? "#cbd5e1" : "transparent",
-                  borderBottom: isActive
-                    ? "1px solid #ffffff"
-                    : "1px solid transparent",
-                  mb: "-1px", // Seamless connection to content box below
-                  cursor: "pointer",
-                  userSelect: "none",
-                  transition: "all 0.15s ease",
-                  boxShadow: isActive
-                    ? "0 -2px 8px rgba(0,0,0,0.04), 0 2px 0 #ffffff"
-                    : "none",
-                  "&:hover": {
-                    bgcolor: isActive ? "#ffffff" : "#e2e8f0",
-                    color: "#0f172a",
-                  },
-                }}
-              >
-                {/* Active Indicator Accent Top Bar */}
-                {isActive && (
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      top: -1,
-                      left: 0,
-                      right: 0,
-                      height: "3px",
-                      borderTopLeftRadius: "8px",
-                      borderTopRightRadius: "8px",
-                      background: preset.tabGradient,
-                    }}
-                  />
-                )}
-
-                {/* Active Dot Indicator */}
-                {isActive && (
-                  <Box
-                    sx={{
-                      width: 6,
-                      height: 6,
-                      borderRadius: "50%",
-                      bgcolor: preset.primary,
-                      boxShadow: `0 0 6px ${preset.primary}`,
-                      flexShrink: 0,
-                    }}
-                  />
-                )}
-
-                <Typography
-                  variant="body2"
+              return (
+                <Box
+                  key={val}
+                  onClick={() => setActiveCalculator(val)}
                   sx={{
-                    fontWeight: isActive ? 700 : 500,
-                    fontSize: "13px",
-                    color: isActive ? "#0f172a" : "#64748b",
-                    letterSpacing: "-0.1px",
-                    transition: "color 0.15s ease",
+                    position: "relative",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 1,
+                    px: 2,
+                    py: 1,
+                    borderTopLeftRadius: "8px",
+                    borderTopRightRadius: "8px",
+                    borderBottomLeftRadius: 0,
+                    borderBottomRightRadius: 0,
+                    bgcolor: isActive ? "#ffffff" : "rgba(241, 245, 249, 0.8)",
+                    border: "1px solid",
+                    borderColor: isActive ? "#cbd5e1" : "transparent",
+                    borderBottom: isActive
+                      ? "1px solid #ffffff"
+                      : "1px solid transparent",
+                    mb: "-1px", // Seamless connection to content box below
+                    cursor: "pointer",
+                    userSelect: "none",
+                    transition: "all 0.15s ease",
+                    boxShadow: isActive
+                      ? "0 -2px 8px rgba(0,0,0,0.04), 0 2px 0 #ffffff"
+                      : "none",
+                    "&:hover": {
+                      bgcolor: isActive ? "#ffffff" : "#e2e8f0",
+                      color: "#0f172a",
+                    },
                   }}
                 >
-                  {calc.name}
-                </Typography>
+                  {/* Active Indicator Accent Top Bar */}
+                  {isActive && (
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        top: -1,
+                        left: 0,
+                        right: 0,
+                        height: "3px",
+                        borderTopLeftRadius: "8px",
+                        borderTopRightRadius: "8px",
+                        background: preset.tabGradient,
+                      }}
+                    />
+                  )}
 
-                {/* Tab Close Button */}
-                {openCalculators.length > 1 && (
+                  {/* Active Dot Indicator */}
+                  {isActive && (
+                    <Box
+                      sx={{
+                        width: 6,
+                        height: 6,
+                        borderRadius: "50%",
+                        bgcolor: preset.primary,
+                        boxShadow: `0 0 6px ${preset.primary}`,
+                        flexShrink: 0,
+                      }}
+                    />
+                  )}
+
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontWeight: isActive ? 700 : 500,
+                      fontSize: "13px",
+                      color: isActive ? "#0f172a" : "#64748b",
+                      letterSpacing: "-0.1px",
+                      transition: "color 0.15s ease",
+                    }}
+                  >
+                    {calc.name}
+                  </Typography>
+
+                  {/* Tab Close Button */}
                   <Box
                     component="span"
                     onClick={(e: React.MouseEvent) => handleCloseTab(val, e)}
@@ -588,15 +618,50 @@ function CalculatorOutlet() {
                   >
                     <CloseIcon sx={{ fontSize: "12px" }} />
                   </Box>
-                )}
-              </Box>
-            );
-          })}
-        </Stack>
+                </Box>
+              );
+            })}
 
-        {/* Delete All Open Tabs Action */}
-        {openCalculators.length > 1 && (
-          <Tooltip title="Close all tabs (reset to Home)" arrow>
+            {/* Quick Button to browse and add more calculators */}
+            <Tooltip title="Browse all calculators" arrow>
+              <Box
+                onClick={() => setActiveCalculator("home")}
+                sx={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 28,
+                  height: 28,
+                  borderRadius: "6px",
+                  bgcolor:
+                    activeCalculator === "home" ? "#ffffff" : "transparent",
+                  border:
+                    activeCalculator === "home"
+                      ? "1px solid #cbd5e1"
+                      : "1px dashed #cbd5e1",
+                  color:
+                    activeCalculator === "home" ? preset.primary : "#64748b",
+                  mb: "4px",
+                  ml: 0.5,
+                  cursor: "pointer",
+                  transition: "all 0.15s ease",
+                  "&:hover": {
+                    bgcolor: "#ffffff",
+                    borderColor: preset.primary,
+                    color: preset.primary,
+                  },
+                }}
+              >
+                <AddIcon sx={{ fontSize: 18 }} />
+              </Box>
+            </Tooltip>
+          </Stack>
+
+          {/* Delete All Open Tabs Action */}
+          <Tooltip
+            title="Close all open tabs (return to All Calculators)"
+            arrow
+          >
             <IconButton
               color="error"
               onClick={handleCloseAllTabs}
@@ -619,14 +684,15 @@ function CalculatorOutlet() {
               <DeleteSweepIcon sx={{ fontSize: 16 }} />
             </IconButton>
           </Tooltip>
-        )}
-      </Stack>
+        </Stack>
+      )}
 
       {/* 4. Main Content View Container */}
       <Box
         sx={{
           flexGrow: 1,
-          height: "calc(100vh - 54px - 58px - 44px)",
+          height: 0,
+          minHeight: 0,
           overflow: "hidden",
           width: "100vw",
           position: "relative",
@@ -636,6 +702,21 @@ function CalculatorOutlet() {
           },
         }}
       >
+        {/* All Tools / Catalog View */}
+        <Box
+          sx={{
+            display: activeCalculator === "home" ? "block" : "none",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <CalculatorCatalog
+            onSelectCalculator={handleSelectCalculator}
+            openCalculators={openCalculators}
+          />
+        </Box>
+
+        {/* Individual Calculator Panels */}
         {CALCULATORS_AND_SIMULATORS.map((item) => {
           const isOpen = openCalculators.includes(item.value);
           if (!isOpen) return null;
