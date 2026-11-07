@@ -82,7 +82,7 @@ export const Inputs: React.FC = () => {
               },
             }}
           >
-            Reset to FRED Data (SPX: {latestData.sp500Value.toFixed(1)}, VIX:{" "}
+            Reset to Market Close (SPX: {latestData.sp500Value.toFixed(1)}, VIX:{" "}
             {latestData.vixValue.toFixed(1)})
           </Button>
         )}
@@ -108,7 +108,7 @@ export const Inputs: React.FC = () => {
             }}
             helperText={
               latestData?.sp500Date
-                ? `FRED latest close: ${latestData.sp500Date}`
+                ? `Latest close: ${latestData.sp500Date}`
                 : "Current S&P 500 Index level"
             }
             size="small"
@@ -136,7 +136,7 @@ export const Inputs: React.FC = () => {
             }}
             helperText={
               latestData?.vixDate
-                ? `FRED latest close: ${latestData.vixDate}`
+                ? `Latest close: ${latestData.vixDate}`
                 : "30-day annualized implied volatility"
             }
             size="small"
