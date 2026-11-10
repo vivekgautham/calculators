@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-11-07T22:26:32.550Z",
+  "updatedAt": "2026-11-10T03:51:40.326Z",
   "seriesId": "VIXCLS",
   "name": "CBOE Volatility Index: VIX",
-  "date": "2026-11-06",
-  "value": 25.64,
+  "date": "2026-11-09",
+  "value": 19.92,
   "source": "https://finance.yahoo.com/quote/%5EVIX"
 }
