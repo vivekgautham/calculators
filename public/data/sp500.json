@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-11-27T03:50:11.497Z",
+  "updatedAt": "2026-11-28T03:35:38.674Z",
   "seriesId": "SP500",
   "name": "S&P 500",
-  "date": "2026-11-25",
-  "value": 7182.78,
+  "date": "2026-11-27",
+  "value": 7297.49,
   "source": "https://finance.yahoo.com/quote/%5EGSPC"
 }
